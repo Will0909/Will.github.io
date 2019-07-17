@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang>
+<html class="theme-next mist use-motion" lang>
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="test4just a test">
+<meta name="description" content="this is some tips for vue.  组件间通信 v-bind=”$attrs”, inheritAttrs v-bind缩写“：”，v-on缩写为“@” v-model的使用及原理（自定义组件中的使用） this.$on和this.$emit必须是同一个this，所以在子组件中使用this.$parent.$emit provide/inject的使用 async-valida">
 <meta property="og:type" content="article">
-<meta property="og:title" content="test">
-<meta property="og:url" content="https://will0909.github.io/2019/07/16/test/index.html">
+<meta property="og:title" content="tips for vue">
+<meta property="og:url" content="https://will0909.github.io/2019/07/17/tips for vue/index.html">
 <meta property="og:site_name" content="Will&#39;s website">
-<meta property="og:description" content="test4just a test">
+<meta property="og:description" content="this is some tips for vue.  组件间通信 v-bind=”$attrs”, inheritAttrs v-bind缩写“：”，v-on缩写为“@” v-model的使用及原理（自定义组件中的使用） this.$on和this.$emit必须是同一个this，所以在子组件中使用this.$parent.$emit provide/inject的使用 async-valida">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-17T07:04:36.861Z">
+<meta property="og:updated_time" content="2019-07-17T09:13:12.660Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="test">
-<meta name="twitter:description" content="test4just a test">
+<meta name="twitter:title" content="tips for vue">
+<meta name="twitter:description" content="this is some tips for vue.  组件间通信 v-bind=”$attrs”, inheritAttrs v-bind缩写“：”，v-on缩写为“@” v-model的使用及原理（自定义组件中的使用） this.$on和this.$emit必须是同一个this，所以在子组件中使用this.$parent.$emit provide/inject的使用 async-valida">
 
 
 
@@ -97,7 +97,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Mist',
     version: '5.1.4',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="https://will0909.github.io/2019/07/16/test/">
+  <link rel="canonical" href="https://will0909.github.io/2019/07/17/tips for vue/">
 
 
 
 
 
-  <title>test | Will's website</title>
+  <title>tips for vue | Will's website</title>
   
 
 
@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://will0909.github.io/2019/07/16/test/">
+    <link itemprop="mainEntityOfPage" href="https://will0909.github.io/2019/07/17/tips for vue/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Will">
@@ -249,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">test</h1>
+          <h1 class="post-title" itemprop="name headline">tips for vue</h1>
         
 
         <div class="post-meta">
@@ -261,8 +261,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-16T18:19:20+08:00">
-                2019-07-16
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-17T17:08:26+08:00">
+                2019-07-17
               </time>
             
 
@@ -299,7 +299,18 @@
       
 
       
-        <h2 id="test4"><a href="#test4" class="headerlink" title="test4"></a>test4</h2><p>just a test </p>
+        <p>this is some tips for vue.</p>
+<ul>
+<li>组件间通信</li>
+<li>v-bind=”$attrs”, inheritAttrs</li>
+<li>v-bind缩写“：”，v-on缩写为“@”</li>
+<li>v-model的使用及原理（自定义组件中的使用）</li>
+<li>this.$on和this.$emit必须是同一个this，所以在子组件中使用this.$parent.$emit</li>
+<li>provide/inject的使用</li>
+<li>async-validator的使用</li>
+<li>es6中的计算属性</li>
+<li>手动create, render函数的用法</li>
+</ul>
 
       
     </div>
@@ -384,17 +395,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -437,22 +439,6 @@
       </section>
 
       
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#test4"><span class="nav-number">1.</span> <span class="nav-text">test4</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
 
       
 
@@ -484,7 +470,7 @@
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
 
 
 
