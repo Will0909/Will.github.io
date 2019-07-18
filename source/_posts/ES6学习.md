@@ -1,5 +1,7 @@
 ---
 title: es6学习
+tags: es6
+categories: 前端
 ---
 # 简介
 ## ECMAScript和JavaScript
