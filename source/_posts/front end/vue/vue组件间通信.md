@@ -3,9 +3,9 @@ title: vue组件间通信
 tags: vue
 categories: 前端
 ---
-### 一. 父组件 => 子组件
+### 父组件 => 子组件
 
-#### 1. 通过属性props传入
+#### 通过属性props传入
 
 大致使用如下:
 
@@ -81,7 +81,7 @@ props: ['postTitle'] //camelCase (驼峰命名法)
    }
 ```
 
-#### 2. 引用refs
+#### 引用refs
 
 ```js
 // parent
@@ -90,7 +90,7 @@ props: ['postTitle'] //camelCase (驼峰命名法)
 this.$refs.hw
 ```
 
-### 二. 子组件 => 父组件
+### 子组件 => 父组件
 
 通过自定义事件
 
@@ -101,7 +101,7 @@ this.$emit('add', good)
 <Cart @add="cartAdd()"></Cart>
 ```
 
-### 三. 兄弟间通讯
+### 兄弟间通讯
 
 通过通过共同的祖辈组件搭桥，$parent或$root
 
@@ -112,7 +112,7 @@ this.$parent.$on('foo', handle)
 this.$parent.$emit('foo')
 ```
 
-### 四. 祖先和后代之间
+### 祖先和后代之间
 
 #### 祖先 => 后代
 
