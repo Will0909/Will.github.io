@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="vue,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="父组件 =&amp;gt; 子组件通过属性props传入大致使用如下: 1234// childprops: &amp;#123; msg: String &amp;#125;// parent   &amp;lt;Helloworld msg = &apos;welcome to vue study/&amp;gt;  prop的大小写123props: [&apos;postTitle&apos;] //camelCase (驼峰命名法)&amp;lt;Hellowor">
+<meta name="keywords" content="vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue组件间通信">
+<meta property="og:url" content="https://jobten.github.io/2019/07/24/front end/vue/vue组件间通信/index.html">
+<meta property="og:site_name" content="Will&#39;s Blog">
+<meta property="og:description" content="父组件 =&amp;gt; 子组件通过属性props传入大致使用如下: 1234// childprops: &amp;#123; msg: String &amp;#125;// parent   &amp;lt;Helloworld msg = &apos;welcome to vue study/&amp;gt;  prop的大小写123props: [&apos;postTitle&apos;] //camelCase (驼峰命名法)&amp;lt;Hellowor">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-08-04T05:56:47.250Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue组件间通信">
+<meta name="twitter:description" content="父组件 =&amp;gt; 子组件通过属性props传入大致使用如下: 1234// childprops: &amp;#123; msg: String &amp;#125;// parent   &amp;lt;Helloworld msg = &apos;welcome to vue study/&amp;gt;  prop的大小写123props: [&apos;postTitle&apos;] //camelCase (驼峰命名法)&amp;lt;Hellowor">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jobten.github.io/2019/07/24/front end/vue/vue组件间通信/">
+
+
+
+
+
+  <title>vue组件间通信 | Will's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Will's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jobten.github.io/2019/07/24/front end/vue/vue组件间通信/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Will">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Will's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vue组件间通信</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-24T23:12:46+08:00">
+                2019-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="父组件-gt-子组件"><a href="#父组件-gt-子组件" class="headerlink" title="父组件 =&gt; 子组件"></a>父组件 =&gt; 子组件</h3><h4 id="通过属性props传入"><a href="#通过属性props传入" class="headerlink" title="通过属性props传入"></a>通过属性props传入</h4><p>大致使用如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// child</span></span><br><span class="line">props: &#123; <span class="attr">msg</span>: <span class="built_in">String</span> &#125;</span><br><span class="line"><span class="comment">// parent</span></span><br><span class="line">   &lt;Helloworld msg = <span class="string">'welcome to vue study/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="prop的大小写"><a href="#prop的大小写" class="headerlink" title="prop的大小写"></a>prop的大小写</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">props: [<span class="string">'postTitle'</span>] <span class="comment">//camelCase (驼峰命名法)</span></span><br><span class="line"></span><br><span class="line">&lt;Helloworld post-title=<span class="string">"hello!"</span>&gt;&lt;/Helloworld&gt; <span class="comment">// kebab-case (短横线分隔命名)</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="props的类型"><a href="#props的类型" class="headerlink" title="props的类型"></a>props的类型</h5><ol>
+<li><p>props以字符串形式出现的数组</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">props: [<span class="string">'title'</span>, <span class="string">'likes'</span>, <span class="string">'isPublished'</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对象形式，属性为键值对，key和value分别为prop各自的名称和类型</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">props: &#123;</span><br><span class="line">  title: <span class="built_in">String</span>,</span><br><span class="line">  likes: <span class="built_in">Number</span>,</span><br><span class="line">  isPublished: <span class="built_in">Boolean</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<h5 id="props的校验"><a href="#props的校验" class="headerlink" title="props的校验"></a>props的校验</h5><p>为了定制 prop 的验证方式，你可以为 <code>props</code> 中的值提供一个带有验证需求的对象</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">props: &#123;</span><br><span class="line">    <span class="comment">// 基础的类型检查 (`null` 和 `undefined` 会通过任何类型验证)</span></span><br><span class="line">    propA: <span class="built_in">Number</span>,</span><br><span class="line">    <span class="comment">// 多个可能的类型</span></span><br><span class="line">    propB: [<span class="built_in">String</span>, <span class="built_in">Number</span>],</span><br><span class="line">    <span class="comment">// 必填的字符串</span></span><br><span class="line">    propC: &#123;</span><br><span class="line">      type: <span class="built_in">String</span>,</span><br><span class="line">      required: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 带有默认值的数字</span></span><br><span class="line">    propD: &#123;</span><br><span class="line">      type: <span class="built_in">Number</span>,</span><br><span class="line">      <span class="keyword">default</span>: <span class="number">100</span></span><br><span class="line">    &#125;</span><br><span class="line">      <span class="comment">// 带有默认值的对象</span></span><br><span class="line">    propE: &#123;</span><br><span class="line">      type: <span class="built_in">Object</span>,</span><br><span class="line">      <span class="comment">// 对象或数组默认值必须从一个工厂函数获取</span></span><br><span class="line">      <span class="keyword">default</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> &#123; <span class="attr">message</span>: <span class="string">'hello'</span> &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 自定义验证函数</span></span><br><span class="line">    propF: &#123;</span><br><span class="line">      validator: <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 这个值必须匹配下列字符串中的一个</span></span><br><span class="line">        <span class="keyword">return</span> [<span class="string">'success'</span>, <span class="string">'warning'</span>, <span class="string">'danger'</span>].indexOf(value) !== <span class="number">-1</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="引用refs"><a href="#引用refs" class="headerlink" title="引用refs"></a>引用refs</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// parent</span></span><br><span class="line">&lt;HelloWorld ref = <span class="string">'hw'</span>/&gt;</span><br><span class="line"><span class="comment">// child</span></span><br><span class="line"><span class="keyword">this</span>.$refs.hw</span><br></pre></td></tr></table></figure>
+
+<h3 id="子组件-gt-父组件"><a href="#子组件-gt-父组件" class="headerlink" title="子组件 =&gt; 父组件"></a>子组件 =&gt; 父组件</h3><p>通过自定义事件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// child</span></span><br><span class="line"><span class="keyword">this</span>.$emit(<span class="string">'add'</span>, good)</span><br><span class="line"><span class="comment">// parent</span></span><br><span class="line">&lt;Cart @add=<span class="string">"cartAdd()"</span>&gt;&lt;/Cart&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="兄弟间通讯"><a href="#兄弟间通讯" class="headerlink" title="兄弟间通讯"></a>兄弟间通讯</h3><p>通过通过共同的祖辈组件搭桥，$parent或$root</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// brother1 </span></span><br><span class="line"><span class="keyword">this</span>.$parent.$on(<span class="string">'foo'</span>, handle)</span><br><span class="line"><span class="comment">// brother2</span></span><br><span class="line"><span class="keyword">this</span>.$parent.$emit(<span class="string">'foo'</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="祖先和后代之间"><a href="#祖先和后代之间" class="headerlink" title="祖先和后代之间"></a>祖先和后代之间</h3><h4 id="祖先-gt-后代"><a href="#祖先-gt-后代" class="headerlink" title="祖先 =&gt; 后代"></a>祖先 =&gt; 后代</h4><p>通过provide/inject</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ancestor</span></span><br><span class="line">provide() &#123; <span class="comment">// provide为函数，通过返回对象传值给后代</span></span><br><span class="line">	<span class="keyword">return</span> &#123;</span><br><span class="line">    foo: <span class="string">'foo'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// descendant</span></span><br><span class="line">inject: [<span class="string">'foo'</span>] <span class="comment">// 通过数组取出</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="后代-gt-祖先"><a href="#后代-gt-祖先" class="headerlink" title="后代 =&gt; 祖先"></a>后代 =&gt; 祖先</h4><p>一层一层网上传递，相当于多个子传父</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义一个dispatch方法，指定要派发事件名称和数据 </span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dispatch</span>(<span class="params">eventName, data</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">let</span> parent = <span class="keyword">this</span>.$parent</span><br><span class="line">	<span class="comment">// 只要还存在父元素就继续往上查找</span></span><br><span class="line">  <span class="keyword">while</span> (parent) &#123;</span><br><span class="line">	<span class="comment">// 父元素用$emit触发 </span></span><br><span class="line">    parent.$emit(eventName,data) <span class="comment">// 递归查找父元素</span></span><br><span class="line">		parent = parent.$parent</span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 使用，HelloWorld.vue</span></span><br><span class="line">&lt;h1 @click=<span class="string">"dispatch('hello', 'hello,world')"</span>&gt;&#123;&#123; msg &#125;&#125;&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ App.vue</span></span><br><span class="line"><span class="regexp">this.$on('hello', this.sayHello)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="任意组件通讯"><a href="#任意组件通讯" class="headerlink" title="任意组件通讯"></a>任意组件通讯</h3><p>通过中央事件：创建一个Bus类负责事件派发、监听和回调管理</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Bus:事件派发、监听和回调管理 </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bus</span></span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>()&#123;</span><br><span class="line">    <span class="comment">// &#123;</span></span><br><span class="line">    <span class="comment">//   eventName1:[fn1,fn2],</span></span><br><span class="line">    <span class="comment">//   eventName2:[fn3,fn4],</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line">    <span class="keyword">this</span>.callbacks = &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  $on(name, fn)&#123;</span><br><span class="line">    <span class="keyword">this</span>.callbacks[name] = <span class="keyword">this</span>.callbacks[name] || []</span><br><span class="line">    <span class="keyword">this</span>.callbacks[name].push(fn)</span><br><span class="line">  &#125;</span><br><span class="line">  $emit(name, args)&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>.callbacks[name])&#123;</span><br><span class="line">      <span class="keyword">this</span>.callbacks[name].forEach(<span class="function"><span class="params">cb</span> =&gt;</span> cb(args))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// main.js</span></span><br><span class="line">Vue.prototype.$bus = <span class="keyword">new</span> Bus()</span><br><span class="line"><span class="comment">// child1</span></span><br><span class="line"><span class="keyword">this</span>.$bus.$on(<span class="string">'foo'</span>, handle)</span><br><span class="line"><span class="comment">// child2</span></span><br><span class="line"><span class="keyword">this</span>.$bus.$emit(<span class="string">'foo'</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Vuex"><a href="#Vuex" class="headerlink" title="Vuex"></a>Vuex</h3><p>创建唯一的全局数据管理者store，通过它管理数据并通知组件状态变更</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue/" rel="tag"># vue</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/24/front end/vue/vue的render使用/" rel="next" title="vue的render使用">
+                <i class="fa fa-chevron-left"></i> vue的render使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/24/front end/vue/vue自定义指令、过滤器/" rel="prev" title="vue自定义指令、过滤器">
+                vue自定义指令、过滤器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Will</p>
+              <p class="site-description motion-element" itemprop="description">面对困难更要有迎难而上的勇气和坚韧</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#父组件-gt-子组件"><span class="nav-number">1.</span> <span class="nav-text">父组件 =&gt; 子组件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通过属性props传入"><span class="nav-number">1.1.</span> <span class="nav-text">通过属性props传入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#prop的大小写"><span class="nav-number">1.1.1.</span> <span class="nav-text">prop的大小写</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#props的类型"><span class="nav-number">1.1.2.</span> <span class="nav-text">props的类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#props的校验"><span class="nav-number">1.1.3.</span> <span class="nav-text">props的校验</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#引用refs"><span class="nav-number">1.2.</span> <span class="nav-text">引用refs</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子组件-gt-父组件"><span class="nav-number">2.</span> <span class="nav-text">子组件 =&gt; 父组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#兄弟间通讯"><span class="nav-number">3.</span> <span class="nav-text">兄弟间通讯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#祖先和后代之间"><span class="nav-number">4.</span> <span class="nav-text">祖先和后代之间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#祖先-gt-后代"><span class="nav-number">4.1.</span> <span class="nav-text">祖先 =&gt; 后代</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#后代-gt-祖先"><span class="nav-number">4.2.</span> <span class="nav-text">后代 =&gt; 祖先</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#任意组件通讯"><span class="nav-number">5.</span> <span class="nav-text">任意组件通讯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vuex"><span class="nav-number">6.</span> <span class="nav-text">Vuex</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Will</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
