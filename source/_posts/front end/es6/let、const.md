@@ -1,7 +1,8 @@
 ---
 title: let、const
 tags: es6
-categories: 前端
+categories: 
+- es6
 
 ---
 

@@ -1,7 +1,8 @@
 ---
 title: global对象
 tags: es6
-categories: 前端
+categories: 
+- es6
 
 
 ---

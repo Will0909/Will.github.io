@@ -1,7 +1,9 @@
 ---
 title: vue各版本区别
-tags: vue vue源码系列
-categories: 前端
+tags: vue
+categories: 
+- vue
+- vue源码解析
 ---
 在NPM包的dist/中有很多8各不同的vue.js的构建版本，主要区别如下图：
 

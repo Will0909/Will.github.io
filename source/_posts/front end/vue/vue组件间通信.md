@@ -1,7 +1,9 @@
 ---
 title: vue组件间通信
 tags: vue
-categories: 前端
+categories: 
+- vue
+- 基础知识
 ---
 ### 父组件 => 子组件
 

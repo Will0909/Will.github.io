@@ -1,11 +1,8 @@
 ---
-title: vue表单
+title: vue的递归组件
 tags: vue
 categories: 
 - vue
-- 项目实践
+- 进阶
 ---
-
-
-
 
