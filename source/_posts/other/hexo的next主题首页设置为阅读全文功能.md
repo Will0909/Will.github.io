@@ -1,8 +1,8 @@
 ---
 title: hexo的next主题首页设置为阅读全文功能
-date: 2019-07-18 16:31:45
-tags: Hexo
-categories: 其他
+categories: 
+- 其他
+- hexo
 ---
 
 next主题首页显示的文章列表，每一篇都是全文，不方便概览，所以想要文章列表只显示预览，添加**阅读全文**功能。
@@ -15,3 +15,4 @@ next主题首页显示的文章列表，每一篇都是全文，不方便概览�
 - 把enable改为对应的false改为true
 
 其中，length可以设置预览长度
+
