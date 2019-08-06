@@ -17,6 +17,7 @@
     "hexo-server": "^0.3.3"
   },
   "devDependencies": {
-    "hexo": "^3.9.0"
+    "hexo": "^3.9.0",
+    "hexo-generator-topindex": "^0.3.0"
   }
 }
