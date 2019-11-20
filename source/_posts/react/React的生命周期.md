@@ -1,9 +1,9 @@
 ---
-title: Redux
+title: 生命周期
 tags: react
 categories:
 - react
-- react全家桶
+- react进阶
 ---
 
 #### redux

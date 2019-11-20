@@ -1,9 +1,9 @@
 ---
-title: Redux
+title: React中的表单
 tags: react
 categories:
 - react
-- react全家桶
+- react基础
 ---
 
 #### redux
