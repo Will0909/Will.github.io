@@ -64,6 +64,8 @@ ReactDOM.render(
 
 #### 函数组件中的状态管理
 
+**Hook**是 React 16.8 的新增特性。它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性。详见：[Hook](./Hook.md)
+
 ### 组件间通讯
 
 #### props传递
@@ -74,7 +76,7 @@ Props属性传递可用于父子组件相互通信
 
 #### Context
 
-跨层级组件之间通信，详见：[Context](./Redux.md)
+跨层级组件之间通信，详见：[Context](./Context.md)
 
 #### Redux
 
