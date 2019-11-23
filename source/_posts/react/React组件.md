@@ -60,7 +60,21 @@ ReactDOM.render(
 
 #### 类组件中的状态管理
 
+state和props类似，但是state是私有的，并且完全受控于当前控件。
 
+使用state应该注意：
+
+- 不要直接修改state，直接修改state不会重新渲染组件，应该使用setState()，构造函数中是唯一可以直接给state赋值的地方
+
+- state更新一般是异步的，可以通过传函数给setState方获取最新状态
+
+  ```js
+  this.setState((state, props) => ({  counter: state.counter + 1}));// 1
+  this.setState((state, props) => ({  counter: state.counter + 1}));// 2
+  this.setState((state, props) => ({  counter: state.counter + 1}));// 3
+  ```
+
+- state的更新会被合并
 
 #### 函数组件中的状态管理
 
