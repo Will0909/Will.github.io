@@ -1,5 +1,5 @@
 ---
-title: JSX
+title: React基础
 tags: react
 categories:
 - react
@@ -126,7 +126,7 @@ import style from "./index.module.css";
 <img className={style.img} />
 ```
 
-#### 元素的渲染
+### 元素的渲染
 
 通过**ReactDOM.render**渲染
 

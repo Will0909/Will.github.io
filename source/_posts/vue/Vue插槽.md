@@ -7,6 +7,7 @@ categories:
 - 基础知识
 ---
 
+
 Slot(插槽)实现了内容的分发， Vue 2.6.0之后采用全新的v-slot语法取代了之前的slot、slot-scope
 
 #### 匿名插槽
