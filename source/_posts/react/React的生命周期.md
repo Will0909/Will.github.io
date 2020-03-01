@@ -1,9 +1,9 @@
 ---
-title: 生命周期
+title: React的生命周期
 tags: react
 categories:
 - react
-- react进阶
+- react基础
 ---
 
 #### redux

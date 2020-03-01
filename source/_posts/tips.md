@@ -68,13 +68,3 @@ vuex的使用
 项目测试
 
 项目部署
-
-
-
-
-
-ACI global ACI Worldwide, Inc.(NASDAQ:ACIW) was founded in 1993 and headquartered in Naples, Florida, USA.Is a leading global provider of electronic payment and banking solutions .
-
-PAX and ACI reached the intention of cooperation in 2017. Propelled by Mohammad, the Shenzhen research and development department officially introduced the ACI project in March 2018.
-
-The existing solution runs on Prolin System, now we need to use Android technology to develop ACI project.
