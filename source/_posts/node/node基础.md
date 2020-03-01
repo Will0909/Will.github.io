@@ -1,5 +1,5 @@
 ---
-title:node基础
+title: node基础
 tags: node
 categories:
 - node

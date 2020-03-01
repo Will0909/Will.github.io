@@ -1,7 +1,8 @@
 ---
 title: 右键菜单VSCode打开文件夹
 tags: vscode
-categories: 其他
+categories: 
+- 其他
 - vscode使用
 ---
 VSCode在安装时会有右键快捷打开的选项，但是默认是不勾选的，所有很多人会因此无法使用右键快捷打开菜单，下面提供在安装完成后如何手动添加右键快捷打开的方法：
