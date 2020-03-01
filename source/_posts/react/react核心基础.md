@@ -1,8 +1,9 @@
 ---
-title: react核心基础
+title: React核心基础
 tags: react
 categories: 
 - react
+- react基础
 ---
 
 ## create-react-app的使用
@@ -106,6 +107,40 @@ const greet = <p>hello JSX</p>
 const jsx = <h2>{ greet }</h2>
 ```
 
+#### JSX表示对象
+
+Babel 会把 JSX 转译成一个名为 **`React.createElement()`** 函数调用。
+
+以下两种示例代码完全等效：
+
+```js
+const element = (
+  <h1 className="greeting">
+    Hello, world!
+  </h1>
+);
+const element = React.createElement(
+  'h1',
+  {className: 'greeting'},
+  'Hello, world!'
+);
+```
+
+`React.createElement()` 会预先执行一些检查，以帮助你编写无错代码，但实际上它创建了一个这样的对象：
+
+```js
+// 注意：这是简化过的结构
+const element = {
+  type: 'h1',
+  props: {
+    className: 'greeting',
+    children: 'Hello, world!'
+  }
+};
+```
+
+这些对象被称为 “React 元素”。它们描述了你希望在屏幕上看到的内容。React 通过读取这些对象，然后使用它们来构建 DOM 以及保持随时更新。
+
 #### 条件语句的使用
 
 ```jsx
@@ -124,7 +159,9 @@ const jsx = <div><ul>{ fruits }</ul></div>
 
 #### 属性的使用
 
-静态值用双引号，动态值用花括号，`class`等特殊属性要特别处理
+静态值用双引号，动态值用花括号
+
+JSX 实际上是JS，对象语法上更接近 **JavaScript** 而不是 HTML，所以 React DOM 使用 `camelCase`（小驼峰命名）来定义属性的名称，而不使用 HTML 属性名称的命名约定, 如: class要变成className。(class为保留字)
 
 ```jsx
 const jsx = <div style={{ width: 100px }} className="title"></div>
@@ -139,13 +176,28 @@ import style from 'index.module.css'
 const jsx = <div className={ style.img }></div>
 ```
 
+## 元素的渲染
+
+通过**ReactDOM.render**渲染
+
+```js
+const element = <h1>Hello, world</h1>;
+ReactDOM.render(element, document.getElementById('root'));
+```
+
+###更新已渲染元素
+
+React 元素是**不可变对象**。一旦被创建，你就无法更改它的子元素或者属性,更新 UI **唯一**的方式是创建一个全新的元素，并将其传入 `ReactDOM.render()`。
+
+**React只更新它需要更新的部分**，React DOM 会将元素和它的子元素与它们之前的状态进行比较，并只会进行必要的更新来使 DOM 达到预期的状态。
+
 ## React组件
 
-React组件分成类组件和函数组件
+React组件分成类组件和函数组件，**注意：组件名称必须以大写字母开头**
 
 ### 类组件
 
-类组件必须继承于`Component`，实现`render`函数, 类组件拥有**状态**，有**生命周期**
+同时还可以使用 ES6 的**class**来定义组件，类组件必须继承于`Component`，实现`render`函数, 类组件拥有**状态**，有**生命周期**
 
 ```jsx
 export default class test extends Component {
@@ -158,10 +210,12 @@ export default class test extends Component {
 
 ### 函数组件
 
+函数组件接收唯一带有数据的 “props”（代表属性）对象与并返回一个 React 元素。
+
 函数组件**无状态无生命周期，注重内容的展示**，直接返回渲染结果即可
 
 ```jsx
-export default function test() {
+export default function test(props) {
 	const name = 'Will'
   return <h2> { name } </h2>
 }
@@ -172,6 +226,8 @@ export default function test() {
 #### 类组件状态管理
 
 使用`state`属性维护，可以在构造函数中初始化状态，使用`setState`方法更新状态
+
+`state`和`props`类似，但是`state`是私有的，并且完全受控于当前控件。
 
 ```jsx
 import React, { Component } from "react"
@@ -204,7 +260,7 @@ class Clock extends Component {
 
 ##### setState特性
 
-- state状态不能直接更改，要通过setState更改
+- state状态不能直接更改，要通过setState更改，构造函数中是唯一可以直接给state赋值的地方
 
 - setState是批量执行的，连续对同一个状态执行状态更新，只会生效一次
 
@@ -299,7 +355,11 @@ export default class EventHandle extends Component {
 
 #### 通过`props`属性传值
 
-props属性可以用于父子组件间的通信，props属性是父组件的属性集合
+props属性可以用于父子组件间的通信，父组件会将 JSX 所接收的**属性**（attributes）转换为单个对象传递给子组件，这个对象被称之为 “props”。
+
+无论是函数组件还是Class组件都不可以修改自身的props，**所有 React 组件都必须像纯函数一样保护它们的 props 不被更改**。
+
+**纯函数**：不会尝试更改入参，且多次调用下相同的入参始终返回相同的结果。
 
 #### 父 => 子
 
