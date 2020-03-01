@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="vdom一. vnode vnode是用来描述原生dom结构的js对象。  可以减少DOM的操作，提升性能。   1. vnode的节点类型vnode的节点类型包括以下几种：  文本节点 普通标签 组件节点 类组件  123456const VNodeTypes = &amp;#123;    HTML: &apos;HTML&apos;,    TEXT: &apos;TEXT&apos;,    COMPONENT: &apos;COMPONENT&apos;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Will&#39;s Blog">
+<meta property="og:url" content="https://jobten.github.io/2020/01/22/vdom/vdom/index.html">
+<meta property="og:site_name" content="Will&#39;s Blog">
+<meta property="og:description" content="vdom一. vnode vnode是用来描述原生dom结构的js对象。  可以减少DOM的操作，提升性能。   1. vnode的节点类型vnode的节点类型包括以下几种：  文本节点 普通标签 组件节点 类组件  123456const VNodeTypes = &amp;#123;    HTML: &apos;HTML&apos;,    TEXT: &apos;TEXT&apos;,    COMPONENT: &apos;COMPONENT&apos;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-02-03T01:44:01.641Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Will&#39;s Blog">
+<meta name="twitter:description" content="vdom一. vnode vnode是用来描述原生dom结构的js对象。  可以减少DOM的操作，提升性能。   1. vnode的节点类型vnode的节点类型包括以下几种：  文本节点 普通标签 组件节点 类组件  123456const VNodeTypes = &amp;#123;    HTML: &apos;HTML&apos;,    TEXT: &apos;TEXT&apos;,    COMPONENT: &apos;COMPONENT&apos;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jobten.github.io/2020/01/22/vdom/vdom/">
+
+
+
+
+
+  <title> | Will's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Will's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jobten.github.io/2020/01/22/vdom/vdom/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Will">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Will's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-22T10:10:51+08:00">
+                2020-01-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="vdom"><a href="#vdom" class="headerlink" title="vdom"></a>vdom</h1><h2 id="一-vnode"><a href="#一-vnode" class="headerlink" title="一. vnode"></a>一. vnode</h2><ul>
+<li><p>vnode是用来描述原生dom结构的js对象。</p>
+</li>
+<li><p>可以减少DOM的操作，提升性能。</p>
+</li>
+</ul>
+<h3 id="1-vnode的节点类型"><a href="#1-vnode的节点类型" class="headerlink" title="1. vnode的节点类型"></a>1. vnode的节点类型</h3><p>vnode的节点类型包括以下几种：</p>
+<ol>
+<li>文本节点</li>
+<li>普通标签</li>
+<li>组件节点</li>
+<li>类组件</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> VNodeTypes = &#123;</span><br><span class="line">    HTML: <span class="string">'HTML'</span>,</span><br><span class="line">    TEXT: <span class="string">'TEXT'</span>,</span><br><span class="line">    COMPONENT: <span class="string">'COMPONENT'</span>,</span><br><span class="line">  	CLASS_COMPONENT: <span class="string">'CLASS_COMPONENT'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-子节点类型"><a href="#2-子节点类型" class="headerlink" title="2. 子节点类型"></a>2. 子节点类型</h3><p>子节点类型包括以下几种：</p>
+<ol>
+<li>空子节点</li>
+<li>单子节点</li>
+<li>多子节点</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ChildTypes = &#123;</span><br><span class="line">    EMPTY: <span class="string">'EMPTY'</span>,</span><br><span class="line">    SINGLE: <span class="string">'SINGLE'</span>,</span><br><span class="line">    MULTIPLE: <span class="string">'MULTIPLE'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-新建虚拟DOM"><a href="#3-新建虚拟DOM" class="headerlink" title="3. 新建虚拟DOM"></a>3. 新建虚拟DOM</h3><ol>
+<li>传入tag(名字), data(属性), children(子元素)</li>
+<li>根据tag判断节点类型(HTML, TEXT, COMPONENT)，并赋值给flags</li>
+<li>返回VNode对象，包含:<ul>
+<li>flags, 用于标记节点类型</li>
+<li>tag，标签，如createElment时可用</li>
+<li>data，如：style, class, @, 其他attribute</li>
+<li>key</li>
+<li>children</li>
+<li>childrenFlags</li>
+<li>el, 当前挂载的元素节点</li>
+</ul>
+</li>
+</ol>
+<p><strong>注意：</strong>纯文本类型的VNode，其children属性存储的是与之相符的文本内容</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createElement</span>(<span class="params">tag, data = null, children = null</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> flags</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span>(tag) === <span class="string">'string'</span>) &#123;</span><br><span class="line">        flags = VNodeTypes.HTML</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span>(tag) === <span class="string">'function'</span>) &#123;</span><br><span class="line">        flags = VNodeTypes.COMPONENT <span class="comment">// 暂时未实现</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 创建文本节点时，不需要tag和data</span></span><br><span class="line">        flags = VNodeTypes.TEXT</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> childFlags</span><br><span class="line">    <span class="keyword">if</span> (children) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(children)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (children.length !== <span class="number">0</span>) &#123;</span><br><span class="line">                childFlags = ChildTypes.MULTIPLE</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                childFlags = ChildTypes.EMPTY</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 当做文本节点处理, 即单个子节点, 需要调用createTextVNode创建纯文本类型VNode</span></span><br><span class="line">            childFlags = ChildTypes.SINGLE</span><br><span class="line">            children = createTextVNode(children + <span class="string">''</span>) <span class="comment">//转成字符串</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 没有子节点</span></span><br><span class="line">        childFlags = ChildTypes.EMPTY</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        flags,</span><br><span class="line">        tag,</span><br><span class="line">        data,</span><br><span class="line">        key: data &amp;&amp; data.key,</span><br><span class="line">        children,</span><br><span class="line">        childFlags,</span><br><span class="line">        el: <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 新建文本类型vnode</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createTextVNode</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        flags: VNodeTypes.TEXT,</span><br><span class="line">        tag: <span class="literal">null</span>,</span><br><span class="line">        data: <span class="literal">null</span>,</span><br><span class="line">        children: text, <span class="comment">// 纯文本类型的VNode，其children属性存储的是与之相符的文本内容</span></span><br><span class="line">        childFlags: ChildTypes.EMPTY</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 举例</span></span><br><span class="line">createElement(<span class="string">'div'</span>, <span class="literal">null</span>, [</span><br><span class="line">  createElement(<span class="string">'p'</span>, &#123; <span class="attr">key</span>: <span class="string">'a'</span> ,<span class="attr">style</span>:&#123;<span class="attr">color</span>:<span class="string">'blue'</span>&#125;&#125;, <span class="string">'节点1'</span>),</span><br><span class="line">  createElement(<span class="string">'p'</span>, &#123; <span class="attr">key</span>: <span class="string">'b'</span> ,<span class="string">'@click'</span>:<span class="function"><span class="params">()</span>=&gt;</span>&#123;alert(<span class="string">'呵呵'</span>)&#125;&#125;, <span class="string">'节点2'</span>),</span><br><span class="line">  createElement(<span class="string">'p'</span>, &#123; <span class="attr">key</span>: <span class="string">'c'</span> &#125;, <span class="string">'节点3'</span>),</span><br><span class="line">  createElement(<span class="string">'p'</span>, &#123; <span class="attr">key</span>: <span class="string">'d'</span>&#125;, <span class="string">'节点4'</span>),</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<h2 id="二-渲染真实dom"><a href="#二-渲染真实dom" class="headerlink" title="二. 渲染真实dom"></a>二. 渲染真实dom</h2><ol>
+<li><p>传入vnode(需要渲染的vnode)，container(父节点)</p>
+</li>
+<li><p>如果没有旧的vnode时，使用mount函数挂载全新的vnode，否则调用patch函数打补丁</p>
+</li>
+<li><p>将新的vnode添加到container的vnode属性上，在下次render则会走patch流程</p>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span>(<span class="params">vnode, container</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> preVNode = container.vnode</span><br><span class="line">  <span class="keyword">if</span> (preVNode == <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="comment">// 没有旧的 VNode，使用 `mount` 函数挂载全新的 VNode</span></span><br><span class="line">      mount(vnode, container)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// 有旧的 VNode，则调用 `patch` 函数打补丁</span></span><br><span class="line">      patch(preVNode, vnode, container)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 更新 container.vnode</span></span><br><span class="line">  container.vnode = vnode</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-mount"><a href="#1-mount" class="headerlink" title="1. mount"></a>1. mount</h3><p>调用mount函数用于挂载全新的vnode(首次挂载元素)</p>
+<ol>
+<li>传入需要渲染的vnode和需要挂载到哪个节点(container)</li>
+<li>通过判断flags(即VNodeType)分别进行不同的挂载(mountText或者mountElement)</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mount</span>(<span class="params">vnode, container, refNode</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; flags &#125; = vnode</span><br><span class="line">  <span class="keyword">if</span> (flags == VNodeType.HTML) &#123;</span><br><span class="line">    <span class="comment">// 挂载普通标签</span></span><br><span class="line">    mountElement(vnode, container, refNode)</span><br><span class="line">  &#125;<span class="keyword">else</span> <span class="keyword">if</span> (flags == VNodeType.TEXT) &#123;</span><br><span class="line">    <span class="comment">// 挂载纯文本</span></span><br><span class="line">    mountText(vnode, container)</span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="mountText-挂载纯文本"><a href="#mountText-挂载纯文本" class="headerlink" title="mountText, 挂载纯文本"></a>mountText, 挂载纯文本</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mountText</span>(<span class="params">vnode, container</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> el = <span class="built_in">document</span>.createTextNode(vnode.children)</span><br><span class="line">  vnode.el = el</span><br><span class="line">  container.appendChild(el)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="mountElement-挂载普通标签"><a href="#mountElement-挂载普通标签" class="headerlink" title="mountElement, 挂载普通标签"></a>mountElement, 挂载普通标签</h4><ol>
+<li><p>传入vnode，container和refNode</p>
+</li>
+<li><p>通过createElement(vnode.tag)创建vnode.el</p>
+</li>
+<li><p>挂载data数据</p>
+</li>
+<li><p>挂载子节点</p>
+</li>
+<li><p>挂载refNode</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 传入vnode, container, refNode</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mountElement</span>(<span class="params">vnode, container, refNode</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 2. 创建vnode.el</span></span><br><span class="line">  <span class="keyword">const</span> el = <span class="built_in">document</span>.createElement(vnode.tag)</span><br><span class="line">  vnode.el = el</span><br><span class="line">  <span class="keyword">const</span> data = vnode.data</span><br><span class="line">  <span class="comment">// 3. 遍历data更新data数据至el中</span></span><br><span class="line">  <span class="keyword">if</span> (data) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> data) &#123;</span><br><span class="line">      patchData(el, key, <span class="literal">null</span>, data[key])</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">	<span class="comment">// 4. 挂载子节点，需要区分子节点类型为EMPTY，SINGLE，MUTIPLE的情况</span></span><br><span class="line">  <span class="keyword">const</span> childFlags = vnode.childFlags</span><br><span class="line">  <span class="keyword">const</span> children = vnode.children</span><br><span class="line">  <span class="keyword">if</span> (childFlags !== ChildTypes.EMPTY) &#123;</span><br><span class="line">    <span class="keyword">if</span> (childFlags == ChildTypes.SINGLE) &#123;</span><br><span class="line">      mount(children, el)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (childFlags  == ChildTypes.MULTIPLE) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; children.length; i++) &#123;</span><br><span class="line">        mount(children[i], el)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 5. 挂载refNode</span></span><br><span class="line"> 	<span class="comment">// 存在ref则refNode插入到el前面，不存在则直接追加el</span></span><br><span class="line">  refNode ? container.insertBefore(el, refNode) : container.appendChild(el)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 挂载data属性</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">patchData</span>(<span class="params">el, key, preValue, nextValue</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (key) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'style'</span>:</span><br><span class="line">      <span class="comment">// 遍历nextValue并赋给el的style对象</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> k <span class="keyword">in</span> nextValue) &#123;</span><br><span class="line">        el.style[k] = nextValue[k]</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// 遍历preValue并判断是否存在于nextValue，不存在则删除</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> k <span class="keyword">in</span> preValue) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!nextValue.hasOwnProperty(k)) &#123;</span><br><span class="line">          el.style[k] = <span class="string">''</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">case</span> <span class="string">'class'</span>:</span><br><span class="line">      <span class="comment">// 这里只考虑一个class</span></span><br><span class="line">      el.className = nextValue</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      <span class="comment">// 事件</span></span><br><span class="line">      <span class="keyword">if</span> (key[<span class="number">0</span>] === <span class="string">'@'</span>) &#123;</span><br><span class="line">        <span class="comment">// 移除旧事件</span></span><br><span class="line">        <span class="keyword">if</span> (preValue) &#123;</span><br><span class="line">          el.removeEventListener(key.slice(<span class="number">1</span>), preValue)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 添加新事件</span></span><br><span class="line">        <span class="keyword">if</span> (nextValue) &#123;</span><br><span class="line">          el.addEventListener(key.slice(<span class="number">1</span>), nextValue)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 当做 Attr 处理</span></span><br><span class="line">        el.setAttribute(key, nextValue)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="2-patch"><a href="#2-patch" class="headerlink" title="2. patch"></a>2. patch</h3><p>已存在vnode情况下，调用patch函数用于打补丁</p>
+<ol>
+<li><p>若preFlags不等于nextFlags则直接替换旧的节点</p>
+</li>
+<li><p>若nextFlags文本节点，则patchText</p>
+</li>
+<li><p>若nextFlags普通标签，则patchElement</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">patch</span>(<span class="params">preVNode, nextVNode, container</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> nextFlags = nextVNode.flags</span><br><span class="line">  <span class="keyword">const</span> preFlags = preVNode.flags</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (preFlags !== nextFlags) &#123;</span><br><span class="line">    replaceVNode(preVNode, nextVNode, container)</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nextFlags == VNodeType.HTML) &#123;</span><br><span class="line">    patchElement(preVNode, nextVNode, container)</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nextFlags == VNodeType.TEXT) &#123;</span><br><span class="line">    patchText(preVNode, nextVNode)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h4 id="replaceVNode"><a href="#replaceVNode" class="headerlink" title="replaceVNode"></a>replaceVNode</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">replaceVNode</span>(<span class="params">preVNode, nextVNode, container</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 1. 移除旧节点</span></span><br><span class="line">  container.removeChild(preVNode.el)</span><br><span class="line">  <span class="comment">// 2. 重新挂载新节点</span></span><br><span class="line">  <span class="comment">// 注意不可以直接container.appendChild(nextVNode.el),此时还没有nextVNode.el</span></span><br><span class="line">  mount(nextVNode, container)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="patchText"><a href="#patchText" class="headerlink" title="patchText"></a>patchText</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">patchText</span>(<span class="params">preVNode, nextVNode</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 1. 拿到文本节点el，同时让nextVNode.el指向preVNode.el</span></span><br><span class="line">  <span class="keyword">const</span> el = (nextVNode.el = preVNode.el)</span><br><span class="line">  <span class="comment">// 2. 将el.nodeValue赋值为nextVNode.children</span></span><br><span class="line">  <span class="keyword">if</span> (nextVNode.children !== preVNode.children) &#123;</span><br><span class="line">    el.nodeValue = nextVNode.children</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>####patchElement</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">patchElement</span>(<span class="params">preVNode, nextVNode, container</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 1. 若preVNode的tag和nextVNode的tag值不一样则直接调用replaceVNode</span></span><br><span class="line">  <span class="keyword">if</span> (preVNode.tag !== nextVNode.tag) &#123;</span><br><span class="line">    replaceVNode(preVNode, nextVNode, container)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 2. 拿到文本节点el，同时让nextVNode.el指向preVNode.el</span></span><br><span class="line">  <span class="keyword">const</span> el = (nextVNode.el = preVNode.el)</span><br><span class="line">  <span class="comment">// 3. 更新新节点的data数据</span></span><br><span class="line">  <span class="keyword">const</span> preData = preVNode.data</span><br><span class="line">  <span class="keyword">const</span> nextData = nextVNode.data</span><br><span class="line">  <span class="keyword">if</span> (nextData) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> nextData) &#123;</span><br><span class="line">      <span class="keyword">const</span> preValue = preData[key]</span><br><span class="line">      <span class="keyword">const</span> nextValue = nextData[key]</span><br><span class="line">      patchData(el, key, preValue, nextValue)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 4. 删除旧节点中不存在于新节点的数据</span></span><br><span class="line">  <span class="keyword">if</span> (preData) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> preData) &#123;</span><br><span class="line">      <span class="keyword">const</span> preValue = preData[key]</span><br><span class="line">      <span class="keyword">if</span> (preValue &amp;&amp; !nextData.hasOwnProperty(key)) &#123;</span><br><span class="line">        patchData(el, key, preValue, <span class="literal">null</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 5. 调用 patchChildren 函数递归的更新子节点</span></span><br><span class="line">  patchChildren(</span><br><span class="line">    preVNode.childFlags, <span class="comment">// 旧的 VNode 子节点的类型</span></span><br><span class="line">    nextVNode.childFlags, <span class="comment">// 新的 VNode 子节点的类型</span></span><br><span class="line">    preVNode.children, <span class="comment">// 旧的 VNode 子节点</span></span><br><span class="line">    nextVNode.children, <span class="comment">// 新的 VNode 子节点</span></span><br><span class="line">    el <span class="comment">// 当前标签元素，即这些子节点的父节点</span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="patchChildren"><a href="#patchChildren" class="headerlink" title="patchChildren"></a>patchChildren</h5>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/18/node/跨域/" rel="next" title="跨域">
+                <i class="fa fa-chevron-left"></i> 跨域
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/02/03/react/Context/" rel="prev" title="Context">
+                Context <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Will</p>
+              <p class="site-description motion-element" itemprop="description">面对困难更要有迎难而上的勇气和坚韧</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vdom"><span class="nav-number">1.</span> <span class="nav-text">vdom</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-vnode"><span class="nav-number">1.1.</span> <span class="nav-text">一. vnode</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-vnode的节点类型"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. vnode的节点类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-子节点类型"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. 子节点类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-新建虚拟DOM"><span class="nav-number">1.1.3.</span> <span class="nav-text">3. 新建虚拟DOM</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-渲染真实dom"><span class="nav-number">1.2.</span> <span class="nav-text">二. 渲染真实dom</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-mount"><span class="nav-number">1.2.1.</span> <span class="nav-text">1. mount</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mountText-挂载纯文本"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">mountText, 挂载纯文本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mountElement-挂载普通标签"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">mountElement, 挂载普通标签</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-patch"><span class="nav-number">1.2.2.</span> <span class="nav-text">2. patch</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#replaceVNode"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">replaceVNode</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#patchText"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">patchText</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#patchChildren"><span class="nav-number">1.2.2.2.1.</span> <span class="nav-text">patchChildren</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Will</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

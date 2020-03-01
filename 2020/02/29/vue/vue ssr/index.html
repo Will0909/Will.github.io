@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="vue,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="CSR vs SSR传统的web开发大致流程如下图：  浏览器拿到的就是全部的DOM结构 缺点 是每次切换页面都会发起http请求，切换速度较慢 SPA到了vue，react时代，单页应用逐渐成为了主流，页面整体是JS渲染出来的，称为CSR，client side render(客户端渲染)。   第一次请求返回的html是不带dom结构的，但会返回很多js文件，比如vuejs。  vuejs会把">
+<meta name="keywords" content="vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue ssr">
+<meta property="og:url" content="https://jobten.github.io/2020/02/29/vue/vue ssr/index.html">
+<meta property="og:site_name" content="Will&#39;s Blog">
+<meta property="og:description" content="CSR vs SSR传统的web开发大致流程如下图：  浏览器拿到的就是全部的DOM结构 缺点 是每次切换页面都会发起http请求，切换速度较慢 SPA到了vue，react时代，单页应用逐渐成为了主流，页面整体是JS渲染出来的，称为CSR，client side render(客户端渲染)。   第一次请求返回的html是不带dom结构的，但会返回很多js文件，比如vuejs。  vuejs会把">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://jobten.github.io/2020/02/29/vue/vue%20ssr/images/image-20200219211109424.png">
+<meta property="og:image" content="https://jobten.github.io/2020/02/29/vue/vue%20ssr/images/image-20200219211448785.png">
+<meta property="og:image" content="https://jobten.github.io/2020/02/29/vue/vue%20ssr/images/image-20200219212453710.png">
+<meta property="og:image" content="https://jobten.github.io/2020/02/29/vue/vue%20ssr/images/image-20200219214514417.png">
+<meta property="og:image" content="https://jobten.github.io/2020/02/29/vue/vue%20ssr/images/image-20200223165432177.png">
+<meta property="og:updated_time" content="2020-02-29T03:47:49.075Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue ssr">
+<meta name="twitter:description" content="CSR vs SSR传统的web开发大致流程如下图：  浏览器拿到的就是全部的DOM结构 缺点 是每次切换页面都会发起http请求，切换速度较慢 SPA到了vue，react时代，单页应用逐渐成为了主流，页面整体是JS渲染出来的，称为CSR，client side render(客户端渲染)。   第一次请求返回的html是不带dom结构的，但会返回很多js文件，比如vuejs。  vuejs会把">
+<meta name="twitter:image" content="https://jobten.github.io/2020/02/29/vue/vue%20ssr/images/image-20200219211109424.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jobten.github.io/2020/02/29/vue/vue ssr/">
+
+
+
+
+
+  <title>vue ssr | Will's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Will's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jobten.github.io/2020/02/29/vue/vue ssr/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Will">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Will's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vue ssr</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-29T10:52:14+08:00">
+                2020-02-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue/" itemprop="url" rel="index">
+                    <span itemprop="name">vue</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue/进阶/" itemprop="url" rel="index">
+                    <span itemprop="name">进阶</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="CSR-vs-SSR"><a href="#CSR-vs-SSR" class="headerlink" title="CSR vs SSR"></a>CSR vs SSR</h2><h3 id="传统的web开发"><a href="#传统的web开发" class="headerlink" title="传统的web开发"></a>传统的web开发</h3><p>大致流程如下图：</p>
+<p><img src="./images/image-20200219211109424.png" alt="image-20200219211109424"></p>
+<p>浏览器拿到的就是全部的DOM结构</p>
+<p><strong>缺点</strong> 是每次切换页面都会发起http请求，切换速度较慢</p>
+<h3 id="SPA"><a href="#SPA" class="headerlink" title="SPA"></a>SPA</h3><p>到了vue，react时代，单页应用逐渐成为了主流，页面整体是<strong>JS渲染</strong>出来的，称为CSR，client side render(客户端渲染)。</p>
+<p><img src="./images/image-20200219211448785.png" alt="image-20200219211448785"></p>
+<ol>
+<li><p>第一次请求返回的html是不带dom结构的，但会返回很多js文件，比如vuejs。</p>
+</li>
+<li><p>vuejs会把模板在前端渲染出来，此时渲染出来后并没有数据，需要再发起一次请求获取数据</p>
+</li>
+<li><p>发起第二次请求以获取数据，再填充页面</p>
+</li>
+</ol>
+<p>单页应用有两个问题：</p>
+<ol>
+<li><strong>首屏渲染等待时间过长</strong> ：必须等待js加载和执行完毕才能渲染出首屏（注意此时需要两次http请求，第一次请求html，第二次请求json数据）</li>
+<li><strong>seo不友好</strong> ：爬虫只能拿到一个空的div，不利于网站seo</li>
+</ol>
+<h3 id="SSR"><a href="#SSR" class="headerlink" title="SSR"></a>SSR</h3><p>为了解决单页应用的两个问题，出现了SSR解决方案，后端渲染出完整的首屏dom结构后再返回，前端拿到的内容已经带上首屏，后续的页面操作则用单页的路由跳转和渲染，称为SSR，server side render(服务端渲染)</p>
+<p><img src="./images/image-20200219212453710.png" alt="image-20200219212453710"></p>
+<ol>
+<li><p>webpack打包生成<strong>Server Bundle</strong>和<strong>Client Bundle</strong></p>
+</li>
+<li><p>第一次请求时，通过renderToString将Server Bundle转换成html结构，并将html返回</p>
+</li>
+<li><p>服务器在返回html的同时会返回<strong>特殊的script标签</strong> (标签中是client Bundle)，首屏打开后会开始下载这些script标签</p>
+</li>
+<li><p>下载后的会与前端之前返回的静态内容融合<strong>激活</strong> 生成SPA应用</p>
+</li>
+</ol>
+<p>所以SSR其实是结合传统web开发结合SPA的这种优化方案。</p>
+<p><strong>SSR也有缺点</strong> ： </p>
+<ol>
+<li>学习难度比较高</li>
+<li>服务器渲染应用程序，需要处于 Node.js server 运行环境</li>
+<li>开发条件所限。浏览器特定的代码，只能在某些生命周期钩子函数 (lifecycle hook) 中使用；一些外部扩展库 (external library) 可能需要特殊处理，才能在服务器渲染应用程序中运行</li>
+<li>更多的服务器端负载。</li>
+</ol>
+<h2 id="SSR的实现：Nuxt-js"><a href="#SSR的实现：Nuxt-js" class="headerlink" title="SSR的实现：Nuxt.js"></a>SSR的实现：Nuxt.js</h2><h3 id="什么是nuxt-js"><a href="#什么是nuxt-js" class="headerlink" title="什么是nuxt.js"></a>什么是nuxt.js</h3><p>nuxt.js是一个基于vue.js的通用应用框架。</p>
+<p>通过对客户端/服务端基础架构的抽象注重，nuxt.js主要关注的是<strong>应用的UI渲染</strong> 。</p>
+<ol>
+<li>nuxt不仅仅用于服务端渲染也可以用于SPA应用的开发</li>
+<li>利用nuxt提供的基础项目结构，路由自动生成，中间件，插件等特性可以大幅度的提供开发效率</li>
+<li>nuxt可以用于网站静态化</li>
+</ol>
+<h3 id="nuxt渲染流程"><a href="#nuxt渲染流程" class="headerlink" title="nuxt渲染流程"></a>nuxt渲染流程</h3><p><img src="./images/image-20200219214514417.png" alt="image-20200219214514417"></p>
+<p><strong>注意</strong>： asyncData是异步请求得到数据后和data融合，fetch一般是获取数据后存入在vuex中</p>
+<h3 id="nuxt安装"><a href="#nuxt安装" class="headerlink" title="nuxt安装"></a>nuxt安装</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx create-nuxt-app projectName</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong><code>npx</code>相当于<code>npm -g create-nuxt-app</code> 和 <code>create-nuxt-app projectName</code>两个指令，这样做的好处是可以保证每次<code>create-nuxt-app</code>都是最新的。</p>
+<h3 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h3><h4 id="路由自动生成"><a href="#路由自动生成" class="headerlink" title="路由自动生成"></a>路由自动生成</h4><p>pages目录中的所有.vue文件都会自动生成应用的路由配置</p>
+<h4 id="导航"><a href="#导航" class="headerlink" title="导航"></a>导航</h4><p>路由导航用nuxt-link，作用和router-link等效, 他有多个别名：<code>n-link</code>,<code>NLink</code>，<code>NuxtLink</code></p>
+<p><strong>注意：</strong> nuxt-link默认会有预加载行为，如果需要禁止的话可以加上<code>no-prefetch</code>，大致如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">nuxt-link</span> <span class="attr">no-prefetch</span>&gt;</span>page not pre-fetched<span class="tag">&lt;/<span class="name">nuxt-link</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="动态路由"><a href="#动态路由" class="headerlink" title="动态路由"></a>动态路由</h4><p>以下划线作为前缀的.vue文件或目录会定义为动态路由，大致如下面结构</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pages/</span><br><span class="line">--| detail/</span><br><span class="line">----| _id.vue</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong> 如果detail/里面不存在index.vue，:id将作为可选参数</p>
+<h4 id="嵌套路由"><a href="#嵌套路由" class="headerlink" title="嵌套路由"></a>嵌套路由</h4><p>添加一个与.vue文件同名的目录用来存储子视图组件，大致如下面结构</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">page/</span><br><span class="line">--| index/</span><br><span class="line">----|_id.vue</span><br><span class="line">--| index.vue</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;nuxt-link :to=&quot;&#123;name: &apos;index-id&apos;, params: &#123;id: good.id&#125;&#125;&quot;&gt;&lt;/nuxt-link&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h3><h4 id="页面"><a href="#页面" class="headerlink" title="页面"></a>页面</h4><p>页面组件就是vue组件，只是nuxt未这些组件添加了一些特殊的配置项如在head()中添加标题，meta等</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    head() &#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            title: <span class="string">"课程列表"</span>,</span><br><span class="line">            meta: [&#123; </span><br><span class="line">                name: <span class="string">"description"</span>, </span><br><span class="line">                hid: <span class="string">"description"</span>, </span><br><span class="line">                content: <span class="string">"set page meta"</span></span><br><span class="line">            &#125;],</span><br><span class="line">            link: [&#123; <span class="attr">rel</span>: <span class="string">"favicon"</span>, <span class="attr">href</span>: <span class="string">"favicon.ico"</span> &#125;],</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="默认布局页"><a href="#默认布局页" class="headerlink" title="默认布局页"></a>默认布局页</h4><p>nuxt的默认布局页在<code>layouts/default.vue</code></p>
+<h4 id="自定义布局页"><a href="#自定义布局页" class="headerlink" title="自定义布局页"></a>自定义布局页</h4><p>可以在layouts下新建页面，并在想要使用自定义布局中添加，如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    layout: <span class="string">'blank'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="自定义错误布局页面"><a href="#自定义错误布局页面" class="headerlink" title="自定义错误布局页面"></a>自定义错误布局页面</h4><p>如果为定义错误布局页的话，会有默认的Nuxt布局页面，可以在<code>layouts</code>目录下新建<code>error.vue</code>页面来自定义。</p>
+<h3 id="异步数据获取"><a href="#异步数据获取" class="headerlink" title="异步数据获取"></a>异步数据获取</h3><p><code>asyncData</code>方法可以使我们可以在设置组件之前异步获取或处理数据，<strong>注意：</strong></p>
+<ol>
+<li>只限于页面组件，比如：component`下的组件是没有此方法的</li>
+<li>此时不可以用this</li>
+<li>nuxt会传递上下文进来</li>
+<li>nuxt会将组件的asyncData和data方法返回的数据做融合</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> asyncData(&#123; $axios, params, error &#125;) &#123;<span class="comment">// 使用结构</span></span><br><span class="line">    <span class="keyword">if</span> (params.id) &#123;</span><br><span class="line">        <span class="keyword">const</span> &#123; <span class="attr">data</span>: goodInfo &#125; = <span class="keyword">await</span> $axios.$<span class="keyword">get</span>("/api/detail", &#123; params &#125;);</span><br><span class="line">        <span class="keyword">if</span> (goodInfo) &#123;</span><br><span class="line">            <span class="keyword">return</span> &#123; goodInfo &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">        error(&#123; <span class="attr">statusCode</span>: <span class="number">400</span>, <span class="attr">message</span>: <span class="string">"商品详情查询失败"</span> &#125;);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    	<span class="keyword">return</span> &#123; <span class="attr">goodInfo</span>: <span class="literal">null</span> &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h3><p>中间件会在一个页面或一组页面渲染之前运行我们定义的函数，常用于权限控制、校验等任务。</p>
+<p>范例代码：管理员页面保护，创建middleware/auth.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span>(<span class="params">&#123; route, redirect, store &#125;</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 上下文中通过store访问vuex中的全局状态</span></span><br><span class="line">    <span class="comment">// 通过vuex中令牌存在与否判断是否登录</span></span><br><span class="line">    <span class="keyword">if</span> (!store.state.user.token) &#123;</span><br><span class="line">    	redirect(<span class="string">"/login?redirect="</span>+route.path);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注册中间件，admin.vue</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">middleware: [<span class="string">'auth'</span>]</span><br><span class="line">&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>全局注册</strong> ，可以通过在nuxt.config.js中全局注册中间件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">router: &#123;</span><br><span class="line">    middleware: [auth]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="状态管理Vuex"><a href="#状态管理Vuex" class="headerlink" title="状态管理Vuex"></a>状态管理Vuex</h3><p>应用根目录下如果存在 store 目录，Nuxt.js将启用vuex状态树。定义各状态树时<strong>具名</strong>导出<code>state, mutations,
+getters, actions</code>即可,如：用户登录及登录状态保存，创建store/user.js，此时模块名为user</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> state = <span class="function"><span class="params">()</span> =&gt;</span> (&#123;</span><br><span class="line">	token: <span class="string">''</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> mutations = &#123;</span><br><span class="line">    init(state, token) &#123;</span><br><span class="line">    state.token = token;</span><br><span class="line">&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> getters = &#123;</span><br><span class="line">    isLogin(state) &#123;</span><br><span class="line">    <span class="keyword">return</span> !!state.token;</span><br><span class="line">&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> actions = &#123;</span><br><span class="line">    login(&#123; commit, getters &#125;, u) &#123;</span><br><span class="line">    	<span class="keyword">return</span> <span class="keyword">this</span>.$login(u).then(<span class="function">(<span class="params">&#123; token &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (token) &#123;</span><br><span class="line">                commit(<span class="string">"SET_TOKEN"</span>, token);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> getters.isLogin;</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h3><p>Nuxt.js会在运行应用之前执行插件函数(<strong>只执行一次</strong>)，需要引入或设置Vue插件、自定义模块和第三方模块时特别有用。例如：</p>
+<p>范例代码：接口注入，利用插件机制将服务接口注入组件实例、store实例中，创建plugins/api-inject.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//参数一为上下文，参数二为nuxt提供的inject函数,</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> (&#123; $axios &#125;, inject) =&gt; &#123;</span><br><span class="line">    inject(<span class="string">"login"</span>, user =&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> $axios.$post(<span class="string">"/api/login"</span>, user);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>nuxt.config.js</code>中注册插件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">plugins: [</span><br><span class="line">	<span class="string">"@/plugins/api-inject"</span></span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>this.$login(user)</code>调用，注意添加$</p>
+<h3 id="nuxtServerInit"><a href="#nuxtServerInit" class="headerlink" title="nuxtServerInit"></a>nuxtServerInit</h3><p>通过在store的<strong>根目录的actions</strong>中定义<code>nuxtServerInit</code>方法，将<strong>服务端的一些数据传给客户端</strong> ，Nuxt调用它的时候会将页面的上下文对象作为第二个参数传递给它。</p>
+<p>nuxtServerInit是在服务端运行的，只运行一次。</p>
+<p>例如：登录状态的初始化，store/index.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> actions = &#123;</span><br><span class="line">    <span class="comment">// 第一个参数是action的上下文，第二个参数是页面的上下文</span></span><br><span class="line">    nuxtServerInit(&#123; commit &#125;, &#123; app &#125;) &#123;</span><br><span class="line">        <span class="keyword">const</span> token = app.$cookies.get(<span class="string">"token"</span>);</span><br><span class="line">        <span class="keyword">if</span> (token) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">"nuxtServerInit: token:"</span>+token);</span><br><span class="line">            commit(<span class="string">"user/SET_TOKEN"</span>, token);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>安装依赖模块：<code>npm i -S cookie-universal-nuxt</code></p>
+<p>cookie-universal-nuxt可以<strong>无差别(前端，后端)</strong>调用cookies，前端的vue实例中可以拿到后端koa实例中的cookies</p>
+<p>注册, nuxt.config.js中<code>modules: [&quot;cookie-universal-nuxt&quot;],</code></p>
+<h3 id="发布部署"><a href="#发布部署" class="headerlink" title="发布部署"></a>发布部署</h3><p>Nuxt.js 提供了两种发布部署应用的方式：服务端渲染应用部署 和 静态应用部署</p>
+<h4 id="服务端渲染应用部署"><a href="#服务端渲染应用部署" class="headerlink" title="服务端渲染应用部署"></a>服务端渲染应用部署</h4><p>部署 Nuxt.js 服务端渲染的应用不能直接使用 <code>nuxt</code> 命令，而应该先进行编译构建，然后再启动 Nuxt 服务，可通过以下两个命令来完成：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nuxt build</span><br><span class="line">nuxt start</span><br></pre></td></tr></table></figure>
+
+<h4 id="静态应用部署"><a href="#静态应用部署" class="headerlink" title="静态应用部署"></a>静态应用部署</h4><p>Nuxt.js 可依据路由配置将应用静态化，使得我们可以将应用部署至任何一个静态站点主机服务商。</p>
+<p>可利用下面的命令生成应用的静态目录和文件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run generate</span><br></pre></td></tr></table></figure>
+
+<p>这个命令会创建一个 <code>dist</code> 文件夹，所有静态化后的资源文件均在其中。</p>
+<p>如果你的项目需要用到<a href="https://zh.nuxtjs.org/guide/routing#动态路由" target="_blank" rel="noopener">动态路由</a>，请移步 <a href="https://zh.nuxtjs.org/api/configuration-generate" target="_blank" rel="noopener">generate配置API</a> 了解如何让 Nuxt.js 生成此类动态路由的静态文件。</p>
+<p>注意：使用 <code>nuxt generate</code> 静态化应用的时候, 传给 <a href="https://zh.nuxtjs.org/guide/async-data#asyncdata-方法" target="_blank" rel="noopener">asyncData()</a> 和 <a href="https://zh.nuxtjs.org/guide/vuex-store#fetch-方法" target="_blank" rel="noopener">fetch()</a> 方法的<a href="https://zh.nuxtjs.org/api#上下文对象" target="_blank" rel="noopener">上下文对象</a> 不会包含 <code>req</code> 和 <code>res</code> 两个属性。</p>
+<h3 id="Vue-SSR"><a href="#Vue-SSR" class="headerlink" title="Vue SSR"></a>Vue SSR</h3><p>服务器渲染的 Vue.js 应用程序也可以被认为是”同构”或”通用”，因为应用程序的大部分代码都可以在<strong>服务器</strong>和<strong>客户端</strong>上运行。</p>
+<h4 id="vue-server-renderer"><a href="#vue-server-renderer" class="headerlink" title="vue-server-renderer"></a>vue-server-renderer</h4><p>后台服务可以通过<code>vue-server-renderer</code>的renderToString方法将vue实例转换成html字符串</p>
+<p>一个简单的后台服务返回如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"><span class="keyword">const</span> Vue = <span class="built_in">require</span>(<span class="string">'vue'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// express实例</span></span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建vue实例</span></span><br><span class="line"><span class="keyword">const</span> vm = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">    data: &#123;</span><br><span class="line">        count: <span class="number">1</span></span><br><span class="line">    &#125;,</span><br><span class="line">    template: <span class="string">`</span></span><br><span class="line"><span class="string">        &lt;div&gt;&#123;&#123; count &#125;&#125;&lt;/div&gt;</span></span><br><span class="line"><span class="string">    `</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> renderer = <span class="built_in">require</span>(<span class="string">'vue-server-renderer'</span>).createRenderer()</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/'</span>, <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> html = <span class="keyword">await</span> renderer.renderToString(vm)</span><br><span class="line">        <span class="built_in">console</span>.log(html)</span><br><span class="line">        res.send(html)</span><br><span class="line">    &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">        res.status(<span class="number">500</span>).send(<span class="string">"interal server error"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">3000</span>, () =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'服务器启动成功'</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="添加vue-router"><a href="#添加vue-router" class="headerlink" title="添加vue-router"></a>添加vue-router</h4><p>SPA的页面路由都是通过前端控制的，后端只提供数据，为了方便前后端公用路由数据，我们可以新建router.js对外暴露createRouter<strong>实例工厂</strong>方法，注意每一次url请求应该都返回一个新的路由实例以防止数据互相串改</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// router/index.js</span></span><br><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> Router <span class="keyword">from</span> <span class="string">'vue-router'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> Index <span class="keyword">from</span> <span class="string">'@/components/Index'</span></span><br><span class="line"><span class="keyword">import</span> Detail <span class="keyword">from</span> <span class="string">'@/components/Detail'</span></span><br><span class="line"></span><br><span class="line">Vue.use(Router)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 导出的是Router的实例工厂函数，这也是会加大后台的负载能力</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">createRouter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Router(&#123;</span><br><span class="line">        mode: <span class="string">'history'</span>,</span><br><span class="line">        routes: [</span><br><span class="line">            &#123;</span><br><span class="line">                path: <span class="string">''</span>,</span><br><span class="line">                component: Index</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                path: <span class="string">'/detail'</span>,</span><br><span class="line">                component: Detail</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// components/Index.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        Index Page</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">    export default &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&apos;scss&apos; scoped&gt;</span><br><span class="line"></span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// components/Detail.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        Detail Page</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">    export default &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&apos;scss&apos; scoped&gt;</span><br><span class="line"></span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">// app.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">    &lt;nav&gt;</span><br><span class="line">      &lt;router-link to=&apos;/&apos;&gt;首页&lt;/router-link&gt;</span><br><span class="line">      &lt;router-link to=&apos;/detail&apos;&gt;详情&lt;/router-link&gt;</span><br><span class="line">    &lt;/nav&gt;</span><br><span class="line">    &lt;router-view&gt;&lt;/router-view&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">  name: &apos;App&apos;,</span><br><span class="line">  components: &#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">#app &#123;</span><br><span class="line">  font-family: Avenir, Helvetica, Arial, sans-serif;</span><br><span class="line">  -webkit-font-smoothing: antialiased;</span><br><span class="line">  -moz-osx-font-smoothing: grayscale;</span><br><span class="line">  text-align: center;</span><br><span class="line">  color: #2c3e50;</span><br><span class="line">  margin-top: 60px;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="构建步骤"><a href="#构建步骤" class="headerlink" title="构建步骤"></a>构建步骤</h4><p>webpack根据执行环境生成<code>server bundle</code>和<code>client bundle</code>，对于客户端应用程序和服务器应用程序，我们都要使用webpack打包。</p>
+<ul>
+<li>通常vue应用程序是由webpack和vue-loader构建，并且许多webpack特定功能不能直接在Node.js中运行。</li>
+<li>尽管Node.js最新版本能够完全支持ES2015, 我们还是需要转译客户端代码以适应老版的浏览器，这样也会涉及到构建步骤。</li>
+</ul>
+<p>所以服务器需要<code>server bundle</code>然后用于服务器端渲染(SSR)，而<code>client bundle</code>会发送给浏览器，用于混合静态标记。</p>
+<p><img src="./images/image-20200223165432177.png" alt="image-20200223165432177"></p>
+<h5 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">src</span><br><span class="line">├── components</span><br><span class="line">│   ├── Index.vue</span><br><span class="line">│   └── Detail.vue</span><br><span class="line">├── App.vue</span><br><span class="line">├── app.js # 通用 entry(universal entry)</span><br><span class="line">├── entry-client.js # 仅运行于浏览器</span><br><span class="line">└── entry-server.js # 仅运行于服务器</span><br></pre></td></tr></table></figure>
+
+<h5 id="app-js"><a href="#app-js" class="headerlink" title="app.js"></a>app.js</h5><p><code>app.js</code> 是我们应用程序的「通用 entry」。在纯客户端应用程序中，我们将在此文件中创建根 Vue 实例，并直接挂载到 DOM。但是，对于服务器端渲染(SSR)，责任转移到纯客户端 entry 文件。<code>app.js</code> 简单地使用 export 导出一个 <code>createApp</code> 函数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通用 entry</span></span><br><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">'./App.vue'</span></span><br><span class="line"><span class="keyword">import</span> &#123; createRouter &#125; <span class="keyword">from</span> <span class="string">'./router'</span></span><br><span class="line"><span class="keyword">import</span> &#123; createStore &#125; <span class="keyword">from</span> <span class="string">'./store'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 导出一个工厂函数，用于创建新的</span></span><br><span class="line"><span class="comment">// 应用程序、router 和 store 实例</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">createApp</span>(<span class="params">context</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> router = createRouter()</span><br><span class="line">    <span class="keyword">const</span> store = createStore()</span><br><span class="line">    <span class="keyword">const</span> app = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">        router,</span><br><span class="line">        store,</span><br><span class="line">        context,</span><br><span class="line">        <span class="comment">// 根实例简单的渲染应用程序组件。</span></span><br><span class="line">        render: <span class="function"><span class="params">h</span> =&gt;</span> h(App)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123; app, router &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="entry-client-js"><a href="#entry-client-js" class="headerlink" title="entry-client.js"></a>entry-client.js</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">'./app'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123; app, router &#125; = createApp()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这里假定 App.vue 模板中根元素具有id="app"</span></span><br><span class="line">router.onReady(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 挂载</span></span><br><span class="line">    app.$mount(<span class="string">'#app'</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h5 id="entry-server-js"><a href="#entry-server-js" class="headerlink" title="entry-server.js"></a>entry-server.js</h5><p>服务器 entry 使用 default export 导出函数，并在每次渲染中重复调用此函数。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">'./app'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> context =&gt; &#123;</span><br><span class="line">    <span class="comment">// 返回Promise， 确保路由或组件准备就绪</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> &#123; app, router &#125; = createApp()</span><br><span class="line">        <span class="comment">// 跳转首屏地址</span></span><br><span class="line">        router.push(context.url)</span><br><span class="line">        <span class="comment">// 路由就绪完成Promise</span></span><br><span class="line">        router.onReady(<span class="function"><span class="params">()</span> =&gt;</span> resolve(app), reject)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="构建配置"><a href="#构建配置" class="headerlink" title="构建配置"></a>构建配置</h5><h6 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h6><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install webpack-node-externals lodash.merge -D</span><br></pre></td></tr></table></figure>
+
+<h6 id="具体配置-添加vue-config-js"><a href="#具体配置-添加vue-config-js" class="headerlink" title="具体配置, 添加vue.config.js"></a>具体配置, 添加vue.config.js</h6><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> VueSSRServerPlugin = <span class="built_in">require</span>(<span class="string">"vue-server-renderer/server-plugin"</span>);</span><br><span class="line"><span class="keyword">const</span> VueSSRClientPlugin = <span class="built_in">require</span>(<span class="string">"vue-server-renderer/client-plugin"</span>);</span><br><span class="line"><span class="keyword">const</span> nodeExternals = <span class="built_in">require</span>(<span class="string">"webpack-node-externals"</span>);</span><br><span class="line"><span class="keyword">const</span> merge = <span class="built_in">require</span>(<span class="string">"lodash.merge"</span>);</span><br><span class="line"><span class="keyword">const</span> TARGET_NODE = process.env.WEBPACK_TARGET === <span class="string">"node"</span>;</span><br><span class="line"><span class="keyword">const</span> target = TARGET_NODE ? <span class="string">"server"</span> : <span class="string">"client"</span>;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    css: &#123;</span><br><span class="line">        extract: <span class="literal">false</span></span><br><span class="line">    &#125;,</span><br><span class="line">    configureWebpack: <span class="function"><span class="params">()</span> =&gt;</span> (&#123;</span><br><span class="line">        <span class="comment">// 将 entry 指向应用程序的 server / client 文件</span></span><br><span class="line">        entry: <span class="string">`./src/entry-<span class="subst">$&#123;target&#125;</span>.js`</span>,</span><br><span class="line">        <span class="comment">// 对 bundle renderer 提供 source map 支持</span></span><br><span class="line">        devtool: <span class="string">'source-map'</span>,</span><br><span class="line">        target: TARGET_NODE ? <span class="string">"node"</span> : <span class="string">"web"</span>,</span><br><span class="line">        node: TARGET_NODE ? <span class="literal">undefined</span> : <span class="literal">false</span>,</span><br><span class="line">        output: &#123;</span><br><span class="line">            libraryTarget: TARGET_NODE ? <span class="string">"commonjs2"</span> : <span class="literal">undefined</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="comment">// https://webpack.js.org/configuration/externals/#function</span></span><br><span class="line">        <span class="comment">// https://github.com/liady/webpack-node-externals</span></span><br><span class="line">        <span class="comment">// 外置化应用程序依赖模块。可以使服务器构建速度更快，</span></span><br><span class="line">        <span class="comment">// 并生成较小的 bundle 文件。</span></span><br><span class="line">        externals: TARGET_NODE</span><br><span class="line">        ? nodeExternals(&#123;</span><br><span class="line">            <span class="comment">// 不要外置化 webpack 需要处理的依赖模块。</span></span><br><span class="line">            <span class="comment">// 你可以在这里添加更多的文件类型。例如，未处理 *.vue 原始文件，</span></span><br><span class="line">            <span class="comment">// 你还应该将修改 `global`（例如 polyfill）的依赖模块列入白名单</span></span><br><span class="line">            whitelist: [<span class="regexp">/\.css$/</span>]</span><br><span class="line">        &#125;)</span><br><span class="line">        : <span class="literal">undefined</span>,</span><br><span class="line">        optimization: &#123;</span><br><span class="line">            splitChunks: <span class="literal">false</span> <span class="comment">//这里要设置成false而不是undefined</span></span><br><span class="line">        &#125;,</span><br><span class="line">        plugins: [TARGET_NODE ? <span class="keyword">new</span> VueSSRServerPlugin() : <span class="keyword">new</span> VueSSRClientPlugin()]</span><br><span class="line">    &#125;),</span><br><span class="line">    chainWebpack: <span class="function"><span class="params">config</span> =&gt;</span> &#123;</span><br><span class="line">        config.module</span><br><span class="line">        .rule(<span class="string">"vue"</span>)</span><br><span class="line">        .use(<span class="string">"vue-loader"</span>)</span><br><span class="line">        .tap(<span class="function"><span class="params">options</span> =&gt;</span> &#123;</span><br><span class="line">            merge(options, &#123;</span><br><span class="line">                optimizeSSR: <span class="literal">false</span></span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h6 id="修改package-json的启动脚本"><a href="#修改package-json的启动脚本" class="headerlink" title="修改package.json的启动脚本"></a>修改package.json的启动脚本</h6><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"scripts"</span>: &#123;</span><br><span class="line">  <span class="string">"build:client"</span>: <span class="string">"vue-cli-service build"</span>,</span><br><span class="line">  <span class="string">"build:server"</span>: <span class="string">"cross-env WEBPACK_TARGET=node vue-cli-service build --mode server"</span>,</span><br><span class="line">  <span class="string">"build"</span>: <span class="string">"npm run build:server &amp;&amp; npm run build:client"</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>注意<code>build:server</code>需要做一些改造</p>
+<ol>
+<li>指定模式为server，默认为dev</li>
+<li>指定<code>WEBPACK_TARGET=node</code></li>
+<li>安装<code>cross-env</code>，跨平台设置环境变量</li>
+</ol>
+<h6 id="准备宿主文件"><a href="#准备宿主文件" class="headerlink" title="准备宿主文件"></a>准备宿主文件</h6><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"IE=edge"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width,initial-scale=1.0"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--vue-ssr-outlet--&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="修改启动文件"><a href="#修改启动文件" class="headerlink" title="修改启动文件"></a>修改启动文件</h6><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"><span class="comment">// const Vue = require('vue')</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</span><br><span class="line"><span class="comment">// express实例</span></span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建vue实例</span></span><br><span class="line"><span class="comment">// const vm = new Vue(&#123;</span></span><br><span class="line"><span class="comment">//     data: &#123;</span></span><br><span class="line"><span class="comment">//         count: 1</span></span><br><span class="line"><span class="comment">//     &#125;,</span></span><br><span class="line"><span class="comment">//     template: `</span></span><br><span class="line"><span class="comment">//         &lt;div&gt;&#123;&#123; count &#125;&#125;&lt;/div&gt;</span></span><br><span class="line"><span class="comment">//     `</span></span><br><span class="line"><span class="comment">// &#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// const renderer = require('vue-server-renderer').createRenderer()</span></span><br><span class="line"><span class="keyword">const</span> &#123; createBundleRenderer &#125; = <span class="built_in">require</span>(<span class="string">'vue-server-renderer'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 服务器bundle文件</span></span><br><span class="line"><span class="keyword">const</span> bundle = <span class="built_in">require</span>(<span class="string">'../dist/server/vue-ssr-server-bundle.json'</span>)</span><br><span class="line"><span class="comment">// 客户端清单文件</span></span><br><span class="line"><span class="keyword">const</span> clientManifest = <span class="built_in">require</span>(<span class="string">'../dist/client/vue-ssr-client-manifest.json'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> renderer = createBundleRenderer(bundle, &#123;</span><br><span class="line">    runInNewContext: <span class="literal">false</span>,</span><br><span class="line">    template: fs.readFileSync(<span class="string">'../src/index.temp.html'</span>, <span class="string">'utf-8'</span>),</span><br><span class="line">    clientManifest</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">renderToString</span>(<span class="params">context</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        renderer.renderToString(context, (error, html) =&gt; &#123;</span><br><span class="line">            <span class="keyword">if</span> (error) &#123;</span><br><span class="line">                <span class="keyword">return</span> reject(error)</span><br><span class="line">            &#125;</span><br><span class="line">            resolve(html)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line">app.use(express.static(<span class="string">'../dist/client'</span>))</span><br><span class="line">app.get(<span class="string">'*'</span>, <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// const html = await renderer.renderToString(vm)</span></span><br><span class="line">        <span class="keyword">const</span> context = &#123;</span><br><span class="line">            title: <span class="string">'ssr test'</span>,</span><br><span class="line">            url: req.url</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">const</span> html = <span class="keyword">await</span> renderToString(context)</span><br><span class="line">        <span class="built_in">console</span>.log(html)</span><br><span class="line">        res.send(html)</span><br><span class="line">    &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">        res.status(<span class="number">500</span>).send(<span class="string">"interal server error"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">3000</span>, () =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'服务器启动成功'</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue/" rel="tag"># vue</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/26/react/React核心基础/" rel="next" title="React核心基础">
+                <i class="fa fa-chevron-left"></i> React核心基础
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/01/react/React组件间通信/" rel="prev" title="React组件间通信">
+                React组件间通信 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Will</p>
+              <p class="site-description motion-element" itemprop="description">面对困难更要有迎难而上的勇气和坚韧</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CSR-vs-SSR"><span class="nav-number">1.</span> <span class="nav-text">CSR vs SSR</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#传统的web开发"><span class="nav-number">1.1.</span> <span class="nav-text">传统的web开发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SPA"><span class="nav-number">1.2.</span> <span class="nav-text">SPA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSR"><span class="nav-number">1.3.</span> <span class="nav-text">SSR</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSR的实现：Nuxt-js"><span class="nav-number">2.</span> <span class="nav-text">SSR的实现：Nuxt.js</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是nuxt-js"><span class="nav-number">2.1.</span> <span class="nav-text">什么是nuxt.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nuxt渲染流程"><span class="nav-number">2.2.</span> <span class="nav-text">nuxt渲染流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nuxt安装"><span class="nav-number">2.3.</span> <span class="nav-text">nuxt安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路由"><span class="nav-number">2.4.</span> <span class="nav-text">路由</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#路由自动生成"><span class="nav-number">2.4.1.</span> <span class="nav-text">路由自动生成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导航"><span class="nav-number">2.4.2.</span> <span class="nav-text">导航</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态路由"><span class="nav-number">2.4.3.</span> <span class="nav-text">动态路由</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#嵌套路由"><span class="nav-number">2.4.4.</span> <span class="nav-text">嵌套路由</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视图"><span class="nav-number">2.5.</span> <span class="nav-text">视图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#页面"><span class="nav-number">2.5.1.</span> <span class="nav-text">页面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#默认布局页"><span class="nav-number">2.5.2.</span> <span class="nav-text">默认布局页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义布局页"><span class="nav-number">2.5.3.</span> <span class="nav-text">自定义布局页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义错误布局页面"><span class="nav-number">2.5.4.</span> <span class="nav-text">自定义错误布局页面</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步数据获取"><span class="nav-number">2.6.</span> <span class="nav-text">异步数据获取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中间件"><span class="nav-number">2.7.</span> <span class="nav-text">中间件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#状态管理Vuex"><span class="nav-number">2.8.</span> <span class="nav-text">状态管理Vuex</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件"><span class="nav-number">2.9.</span> <span class="nav-text">插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nuxtServerInit"><span class="nav-number">2.10.</span> <span class="nav-text">nuxtServerInit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布部署"><span class="nav-number">2.11.</span> <span class="nav-text">发布部署</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#服务端渲染应用部署"><span class="nav-number">2.11.1.</span> <span class="nav-text">服务端渲染应用部署</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态应用部署"><span class="nav-number">2.11.2.</span> <span class="nav-text">静态应用部署</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vue-SSR"><span class="nav-number">2.12.</span> <span class="nav-text">Vue SSR</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#vue-server-renderer"><span class="nav-number">2.12.1.</span> <span class="nav-text">vue-server-renderer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加vue-router"><span class="nav-number">2.12.2.</span> <span class="nav-text">添加vue-router</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#构建步骤"><span class="nav-number">2.12.3.</span> <span class="nav-text">构建步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#代码结构"><span class="nav-number">2.12.3.1.</span> <span class="nav-text">代码结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#app-js"><span class="nav-number">2.12.3.2.</span> <span class="nav-text">app.js</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#entry-client-js"><span class="nav-number">2.12.3.3.</span> <span class="nav-text">entry-client.js</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#entry-server-js"><span class="nav-number">2.12.3.4.</span> <span class="nav-text">entry-server.js</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#构建配置"><span class="nav-number">2.12.3.5.</span> <span class="nav-text">构建配置</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#安装依赖"><span class="nav-number">2.12.3.5.1.</span> <span class="nav-text">安装依赖</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#具体配置-添加vue-config-js"><span class="nav-number">2.12.3.5.2.</span> <span class="nav-text">具体配置, 添加vue.config.js</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#修改package-json的启动脚本"><span class="nav-number">2.12.3.5.3.</span> <span class="nav-text">修改package.json的启动脚本</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#准备宿主文件"><span class="nav-number">2.12.3.5.4.</span> <span class="nav-text">准备宿主文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#修改启动文件"><span class="nav-number">2.12.3.5.5.</span> <span class="nav-text">修改启动文件</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Will</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

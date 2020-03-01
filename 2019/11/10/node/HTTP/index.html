@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="node,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="什么是HTTP？有什么特点？HTTP是一个应用层的面向对象的协议，通常运行在TCP之上，它主要有以下特点：  支持客户端和服务端模式。 简单快速：向服务端请求服务时，只需要传送请求方法和路径。由于HTTP协议简单，使得HTTP服务器的程序规模小，所以通信速度很快。 灵活：HTTP运行传输任意类型的数据对象。通过Content-Type。 无连接：限制每次连接只处理一个请求，服务器处理完客户的请求并">
+<meta name="keywords" content="node">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP">
+<meta property="og:url" content="https://jobten.github.io/2019/11/10/node/HTTP/index.html">
+<meta property="og:site_name" content="Will&#39;s Blog">
+<meta property="og:description" content="什么是HTTP？有什么特点？HTTP是一个应用层的面向对象的协议，通常运行在TCP之上，它主要有以下特点：  支持客户端和服务端模式。 简单快速：向服务端请求服务时，只需要传送请求方法和路径。由于HTTP协议简单，使得HTTP服务器的程序规模小，所以通信速度很快。 灵活：HTTP运行传输任意类型的数据对象。通过Content-Type。 无连接：限制每次连接只处理一个请求，服务器处理完客户的请求并">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-11-14T14:29:09.602Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTTP">
+<meta name="twitter:description" content="什么是HTTP？有什么特点？HTTP是一个应用层的面向对象的协议，通常运行在TCP之上，它主要有以下特点：  支持客户端和服务端模式。 简单快速：向服务端请求服务时，只需要传送请求方法和路径。由于HTTP协议简单，使得HTTP服务器的程序规模小，所以通信速度很快。 灵活：HTTP运行传输任意类型的数据对象。通过Content-Type。 无连接：限制每次连接只处理一个请求，服务器处理完客户的请求并">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jobten.github.io/2019/11/10/node/HTTP/">
+
+
+
+
+
+  <title>HTTP | Will's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Will's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jobten.github.io/2019/11/10/node/HTTP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Will">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Will's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">HTTP</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-10T10:22:34+08:00">
+                2019-11-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/node/" itemprop="url" rel="index">
+                    <span itemprop="name">node</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/node/网络编程/" itemprop="url" rel="index">
+                    <span itemprop="name">网络编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="什么是HTTP？有什么特点？"><a href="#什么是HTTP？有什么特点？" class="headerlink" title="什么是HTTP？有什么特点？"></a>什么是HTTP？有什么特点？</h3><p>HTTP是一个应用层的面向对象的协议，通常运行在TCP之上，它主要有以下特点：</p>
+<ol>
+<li><strong>支持客户端和服务端模式</strong>。</li>
+<li><strong>简单快速</strong>：向服务端请求服务时，只需要传送请求方法和路径。由于HTTP协议简单，使得HTTP服务器的程序规模小，所以通信速度很快。</li>
+<li><strong>灵活</strong>：HTTP运行传输任意类型的数据对象。通过Content-Type。</li>
+<li><strong>无连接</strong>：限制每次连接只处理一个请求，服务器处理完客户的请求并收到客户应答后就断开连接，这样可以节省传输时间。</li>
+<li><strong>无状态</strong>：协议对应事务处理没有记忆能力。</li>
+</ol>
+<h3 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h3><h4 id="URI、URL和URN"><a href="#URI、URL和URN" class="headerlink" title="URI、URL和URN"></a>URI、URL和URN</h4><p>URI = Universal Resource Identifier 统一资源标志符，用来标识抽象或物理资源的一个紧凑字符串。<br>URL = Universal Resource Locator 统一资源定位符，一种定位资源的主要访问机制的字符串，一个标准的URL必须包括：protocol、host、port、path、parameter、anchor。</p>
+<p>URN = Universal Resource Name 统一资源名称，通过特定命名空间中的唯一名称或ID来标识资源。</p>
+<p><strong>URI包括URL和URN两个类别，URL是URI的子集，所以URL一定是URI，而URI不一定是URL</strong></p>
+<h4 id="URL格式"><a href="#URL格式" class="headerlink" title="URL格式"></a>URL格式</h4><p> <a href="http://host:port/abs_path" target="_blank" rel="noopener">http://host:port/abs_path</a></p>
+<ul>
+<li>http表示要通过HTTP协议来定位网络资源；</li>
+<li>host表示合法的Internet主机域名或者IP地址；</li>
+<li>port指定一个端口号，为空则使用缺省端口80；</li>
+<li>abs_path指定请求资源的路径</li>
+</ul>
+<h3 id="Request"><a href="#Request" class="headerlink" title="Request"></a>Request</h3><p>HTTP请求由三部分组成：请求行，消息报头，请求正文。</p>
+<p><strong>请求行</strong>：</p>
+<p>格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Method Request-URI HTTP-Version CRLF</span><br></pre></td></tr></table></figure>
+
+<hr>
+<ul>
+<li><strong>Method</strong>表示请求方法，主要有以下方法：<ul>
+<li>GET 请求获取Request-URI所标识的资源</li>
+<li>POST 在Request-URI所标识的资源后附加新的数据</li>
+<li>HEAD 请求获取由Request-URI所标识的资源的响应消息报头</li>
+<li>PUT 请求服务器存储一个资源，并用Request-URI作为其标识</li>
+<li>DELETE 请求服务器删除Request-URI所标识的资源</li>
+<li>TRACE 请求服务器回送收到的请求信息，主要用于测试或诊断</li>
+<li>CONNECT 保留将来使用</li>
+<li>OPTIONS 请求查询服务器的性能，或者查询与资源相关的选项和需求</li>
+</ul>
+</li>
+<li><strong>Request-URI</strong>是一个统一资源标识符</li>
+<li><strong>HTTP-Version</strong>表示请求的HTTP协议版本</li>
+<li><strong>CRLF</strong>表示回车和换行（除了作为结尾的CRLF外，不允许出现单独的CR或LF字符）</li>
+</ul>
+<p>应用举例：</p>
+<p>GET方法：在浏览器的地址栏中输入网址的方式访问网页时，浏览器采用GET方法向服务器获取资源</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /form.html HTTP/1.1</span><br></pre></td></tr></table></figure>
+
+<p>POST方法：要求被请求服务器接受附在请求后面的数据，常用于提交表单</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">POST /reg HTTP/ (CRLF)</span><br><span class="line">Accept:image/gif,image/x-xbit,... (CRLF)</span><br><span class="line">HOST:www.guet.edu.cn (CRLF)</span><br><span class="line">Content-Length:22 (CRLF)</span><br><span class="line">Connection:Keep-Alive (CRLF)</span><br><span class="line">Cache-Control:no-cache (CRLF)</span><br><span class="line">(CRLF) //该CRLF表示消息报头已经结束，在此之前为消息报头</span><br><span class="line">user=jeffrey&amp;pwd=1234 //此行以下为提交的数据</span><br></pre></td></tr></table></figure>
+
+<h3 id="Response"><a href="#Response" class="headerlink" title="Response"></a>Response</h3><p>HTTP响应由三部分组成，状态行、消息报头、响应正文</p>
+<p><strong>状态行</strong>：</p>
+<p>格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HTTP-Version Status-Code Reason-Phrase CRLF</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>HTTP-Version</strong>表示服务器HTTP协议的版本</p>
+</li>
+<li><p><strong>Status-Code</strong>表示服务器发回的响应状态代码，常见的状态码有如下类别：</p>
+<ul>
+<li>1xx：指示信息–表示请求已接收，继续处理</li>
+<li>2xx：成功–表示请求已被成功接收、理解、接受</li>
+<li>3xx：重定向–要完成请求必须进行更进一步的操作</li>
+<li>4xx：客户端错误–请求有语法错误或请求无法实现</li>
+<li>5xx：服务器端错误–服务器未能实现合法的请求</li>
+</ul>
+<p>常见的状态码如下：</p>
+<ul>
+<li>200 OK //客户端请求成功</li>
+<li>304 Not Modified 自从上次请求后，请求的网页未修改过。 服务器返回此响应时，不会返回网页内容。</li>
+<li>400 Bad Request //客户端请求有语法错误，不能被服务器所理解</li>
+<li>401 Unauthorized //请求未经授权，这个状态代码必须和WWW-Authenticate报头域一起使用</li>
+<li>403 Forbidden //服务器收到请求，但是拒绝提供服务</li>
+<li>404 Not Found //请求资源不存在，eg：输入了错误的URL</li>
+<li>500 Internal Server Error //服务器发生不可预期的错误</li>
+<li>503 Server Unavailable //服务器当前不能处理客户端的请求，一段时间后可能恢复正常</li>
+</ul>
+</li>
+<li><p><strong>Reason-Phrase</strong>表示状态代码的文本描述</p>
+</li>
+<li><p><strong>CRLF</strong>表示回车和换行（除了作为结尾的CRLF外，不允许出现单独的CR或LF字符）</p>
+</li>
+</ul>
+<h3 id="消息报头"><a href="#消息报头" class="headerlink" title="消息报头"></a>消息报头</h3><ul>
+<li><p>HTTP的消息报头包括普通报头，请求报头，响应报头，实体报头。</p>
+</li>
+<li><p>每一个报头域都由 <strong>名字+“:”+空格+值</strong>组成，消息报头域名字大小写无关</p>
+</li>
+</ul>
+<h4 id="普通报头"><a href="#普通报头" class="headerlink" title="普通报头"></a>普通报头</h4><p>既可以用于请求报头也可以出现在响应消息，但不用于被传输的实体，只用于传输的消息。</p>
+<p>如：</p>
+<ul>
+<li>Cache-Control 用于指定缓存指令，缓存指令是单向的(响应中出现的缓存指令在请求中未必会出现)，且是独立<br>的(一个消息的缓存指令不会影响另一个消息处理的缓存机制)</li>
+<li>Date普通报头域表示消息产生的日期和时间</li>
+<li>Connection普通报头域允许发送指定连接的选项。例如指定连接是连续，或者指定“close”选项，通知服务器，在<br>响应完成后，关闭连接</li>
+</ul>
+<h4 id="请求报头"><a href="#请求报头" class="headerlink" title="请求报头"></a>请求报头</h4><p>请求报头允许客户端向服务器传递请求的附加信息以及客户端自身信息。</p>
+<ul>
+<li><p>Accept</p>
+<p>用于指定客户端接受哪些类型的信息, 如：Accept:image/gif表明客户端希望接受GIF图象格<br>式的资源; Accept:text/html表明客户端希望接受html文本。</p>
+</li>
+<li><p>Accept-Charset</p>
+<p>用于指定客户端接受的字符集。如：Accept-Charset:iso-8859-1,gb2312.如果在请求消<br>息中没有设置这个域，缺省是任何字符集都可以接受。</p>
+</li>
+<li><p>Accept-Encoding</p>
+<p>用于指定可接受的内容编码.如：Accept-Encoding:gzip.deflate.如果请求消息中没有设置这个域服务器假定客户端对各种内容编码都可以接受。 </p>
+</li>
+<li><p>Accept-Language</p>
+<p>用于指定一种自然语言。如：Accept-Language:zh-cn.如果请求消息中没有设置这个报头域，服务器假定客户端对各种语言都可以接受。</p>
+</li>
+<li><p>Authorization</p>
+<p>用于证明客户端有权查看某个资源。当浏览器访问一个页面时，如果收到服务器的响应代码为401(未授权)，可以发送一个包含Authorization请求报头域的请求，要求服务器对其进行验证。 </p>
+</li>
+<li><p>Host</p>
+<p>用于指定被请求资源的Internet主机和端口号，它通常从HTTP URL中提取出来的，发送请求时，该报头域是必需的</p>
+</li>
+<li><p>User-Agent</p>
+<p>允许客户端将它的操作系统、浏览器和其它属性告诉服务器。这个报头域不是必需的</p>
+</li>
+</ul>
+<h4 id="响应报头"><a href="#响应报头" class="headerlink" title="响应报头"></a>响应报头</h4><p>响应报头允许服务器传递不能放在状态行中的附加响应信息，以及关于服务器的信息和对Request-URI所标识的资<br>源进行下一步访问的信息。</p>
+<ul>
+<li><p>Location </p>
+<p>用于重定向接受者到一个新的位置。Location响应报头域常用在更换域名的时候。 </p>
+</li>
+<li><p>Server </p>
+<p>包含了服务器用来处理请求的软件信息。与User-Agent请求报头域是相对应的。</p>
+</li>
+<li><p>WWW-Authenticate </p>
+<p>必须被包含在401(未授权的)响应消息中，客户端收到401响应消息时候，并发送Authorization报头域请求服务器对其进行验证时，服务端响应报头就包含该报头域。 </p>
+</li>
+</ul>
+<h4 id="实体报头"><a href="#实体报头" class="headerlink" title="实体报头"></a>实体报头</h4><p>请求和响应消息都可以传送一个实体。一个实体由实体报头域和实体正文组成，但并不是说实体报头域和实体正文<br>要在一起发送，可以只发送实体报头域。实体报头定义了关于实体正文(eg:有无实体正文)和请求所标识的资源<br>的元信息。</p>
+<ul>
+<li><p>Content-Encoding </p>
+<p>被用作媒体类型的修饰符，它的值指示了已经被应用到实体正文的附加内容的编 码，因而要获得Content-Type报头域中所引用的媒体类型，必须采用相应的解码机制。Content-Encoding这样用于记录文档的压缩方法，如：Content-Encoding:gzip </p>
+</li>
+<li><p>Content-Language </p>
+<p>描述了资源所用的自然语言。没有设置该域则认为实体内容将提供给所有的语言阅读者。如：Content-Language:da</p>
+</li>
+<li><p>Content-Length</p>
+<p>用于指明实体正文的长度，以字节方式存储的十进制数字来表示。 </p>
+</li>
+<li><p>Content-Type</p>
+<p>用于指明发送给接收者的实体正文的媒体类型。如： Content-Type:text/html;charset=UTF-8<br> Content-Type:application/json;charset=UTF-8</p>
+</li>
+<li><p>Last-Modified<br> 用于指示资源的最后修改日期和时间。</p>
+</li>
+<li><p>Expires</p>
+<p> 给出响应过期的日期和时间。为了让代理服务器或浏览器在一段时间以后更新缓存中的页面，我们可以使用Expires实体报头域指定页面过期的时间。eg:Expires:Thu，15 Sep 2006 16:23:12 GMT </p>
+<p> HTTP1.1的客户端和缓存必须将其他非法的日期格式(包括0)看作已经过期。如：为了让浏览器不要缓存页面， 我们也可以利用Expires实体报头域，设置为0，jsp中程序如下:response.setDateHeader(“Expires”,”0”); </p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/node/" rel="tag"># node</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/10/node/node基础/" rel="next" title="node基础">
+                <i class="fa fa-chevron-left"></i> node基础
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/10/node/网络基础/" rel="prev" title="网络基础">
+                网络基础 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Will</p>
+              <p class="site-description motion-element" itemprop="description">面对困难更要有迎难而上的勇气和坚韧</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是HTTP？有什么特点？"><span class="nav-number">1.</span> <span class="nav-text">什么是HTTP？有什么特点？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#URL"><span class="nav-number">2.</span> <span class="nav-text">URL</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#URI、URL和URN"><span class="nav-number">2.1.</span> <span class="nav-text">URI、URL和URN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#URL格式"><span class="nav-number">2.2.</span> <span class="nav-text">URL格式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Request"><span class="nav-number">3.</span> <span class="nav-text">Request</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Response"><span class="nav-number">4.</span> <span class="nav-text">Response</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息报头"><span class="nav-number">5.</span> <span class="nav-text">消息报头</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#普通报头"><span class="nav-number">5.1.</span> <span class="nav-text">普通报头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#请求报头"><span class="nav-number">5.2.</span> <span class="nav-text">请求报头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#响应报头"><span class="nav-number">5.3.</span> <span class="nav-text">响应报头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实体报头"><span class="nav-number">5.4.</span> <span class="nav-text">实体报头</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Will</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

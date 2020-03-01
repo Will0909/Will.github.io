@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="vue,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="vue-cli 3.x项目配置vue-cli 3.0项目是基于webpack3.0构建，并带有合理的默认配置，和webpack2.0的主要区别是隐藏了详细配置。 1. 在根目录新建vue.config.js配置可以通过在项目根目录新建vue.config进行配置 12345678910111213// vue.config.jsconst port = 7070;const title = &quot;vu">
+<meta name="keywords" content="vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue最佳实践">
+<meta property="og:url" content="https://jobten.github.io/2020/02/24/vue/vue最佳实践/index.html">
+<meta property="og:site_name" content="Will&#39;s Blog">
+<meta property="og:description" content="vue-cli 3.x项目配置vue-cli 3.0项目是基于webpack3.0构建，并带有合理的默认配置，和webpack2.0的主要区别是隐藏了详细配置。 1. 在根目录新建vue.config.js配置可以通过在项目根目录新建vue.config进行配置 12345678910111213// vue.config.jsconst port = 7070;const title = &quot;vu">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-02-29T03:48:02.332Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue最佳实践">
+<meta name="twitter:description" content="vue-cli 3.x项目配置vue-cli 3.0项目是基于webpack3.0构建，并带有合理的默认配置，和webpack2.0的主要区别是隐藏了详细配置。 1. 在根目录新建vue.config.js配置可以通过在项目根目录新建vue.config进行配置 12345678910111213// vue.config.jsconst port = 7070;const title = &quot;vu">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jobten.github.io/2020/02/24/vue/vue最佳实践/">
+
+
+
+
+
+  <title>vue最佳实践 | Will's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Will's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jobten.github.io/2020/02/24/vue/vue最佳实践/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Will">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Will's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vue最佳实践</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-24T22:13:53+08:00">
+                2020-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue/" itemprop="url" rel="index">
+                    <span itemprop="name">vue</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue/项目实战/" itemprop="url" rel="index">
+                    <span itemprop="name">项目实战</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="vue-cli-3-x项目配置"><a href="#vue-cli-3-x项目配置" class="headerlink" title="vue-cli 3.x项目配置"></a>vue-cli 3.x项目配置</h2><p><a href="https://cli.vuejs.org/zh/guide/webpack.html" target="_blank" rel="noopener">vue-cli 3.0</a>项目是基于webpack3.0构建，并<strong>带有合理的默认配置</strong>，和webpack2.0的主要区别是<strong>隐藏了详细配置</strong>。</p>
+<h3 id="1-在根目录新建vue-config-js配置"><a href="#1-在根目录新建vue-config-js配置" class="headerlink" title="1. 在根目录新建vue.config.js配置"></a>1. 在根目录新建vue.config.js配置</h3><p>可以通过在项目根目录新建vue.config进行配置</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vue.config.js</span></span><br><span class="line"><span class="keyword">const</span> port = <span class="number">7070</span>;</span><br><span class="line"><span class="keyword">const</span> title = <span class="string">"vue项目最佳实践"</span>;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    publicPath: <span class="string">'/best-practice'</span>, <span class="comment">// 部署应用包时的基本 URL</span></span><br><span class="line">    devServer: &#123;</span><br><span class="line">    	port: port,</span><br><span class="line">    &#125;,</span><br><span class="line">    configureWebpack: &#123;</span><br><span class="line">    <span class="comment">// 向index.html注入标题</span></span><br><span class="line">    name: title</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.html--&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;<span class="name">%=</span> <span class="attr">webpackConfig.name</span> %&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span> <span class="comment">&lt;!--webpack占位符--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：需要vue-cli-service版本大于等于3.5</strong></p>
+<h3 id="2-查看配置结果"><a href="#2-查看配置结果" class="headerlink" title="2. 查看配置结果"></a>2. 查看配置结果</h3><h4 id="1-可以通过命令查看配置结果"><a href="#1-可以通过命令查看配置结果" class="headerlink" title="(1). 可以通过命令查看配置结果"></a>(1). 可以通过命令查看配置结果</h4><ul>
+<li>vue inspect 全部配置</li>
+<li>vue inspect –rules 查看全部规则</li>
+<li>vue inspect –rule vue 查看指定规则</li>
+<li>vue inspect –plugins 查看全部插件</li>
+<li>vue inspect –plugin vue-plugin 查看指定插件</li>
+<li>vue inspect –mode development 指定模式</li>
+</ul>
+<h4 id="2-通过命令vue-ui可视化查看"><a href="#2-通过命令vue-ui可视化查看" class="headerlink" title="(2). 通过命令vue ui可视化查看"></a>(2). 通过命令<code>vue ui</code>可视化查看</h4><h3 id="3-高级链式操作"><a href="#3-高级链式操作" class="headerlink" title="3. 高级链式操作"></a>3. 高级链式操作</h3><p>Vue CLI内部的webpack配置是通过-<a href="https://github.com/mozilla-neutrino/webpack-chain" target="_blank" rel="noopener"><strong>webpack-chain</strong></a>来维护的，这个库提供了webpack原始配置的上层抽象，这样可以使用户更好的进行配置(可以使用具名loader规则和具名插件)</p>
+<p>这里主要通过svg-sprit-loader的使用来演示webpack的高级链式操作配置，svg-sprite-loader可以以雪碧图的方式使用icon</p>
+<ul>
+<li><p>安装svg-sprite-loader</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i svg-sprite-loader -D</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>下载图标存入src/icons/svg中，可以在<a href="https://www.iconfont.cn/" target="_blank" rel="noopener">iconfont</a>中下载</p>
+</li>
+<li><p>在vue.config.js中修改规则，通过链式调用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// resolve定义一个绝对路径获取函数</span></span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>)</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">resolve</span>(<span class="params">dir</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> path.join(__dirname, dir)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    chainWebpack(config) &#123;</span><br><span class="line">         <span class="comment">// 1. 将src/icons目录中的svg从原来的svg rule中剔除</span></span><br><span class="line">        config.module</span><br><span class="line">            .rule(<span class="string">"svg"</span>)</span><br><span class="line">            .exclude.add(resolve(<span class="string">"src/icons"</span>))</span><br><span class="line">            .end();</span><br><span class="line">        <span class="comment">// 2. 新增icons规则，配置loader，设置svg-sprite-loader处理icons目录中的svg</span></span><br><span class="line">        config.module</span><br><span class="line">            .rule(<span class="string">"icons"</span>)</span><br><span class="line">            .test(<span class="regexp">/\.svg$/</span>)</span><br><span class="line">            .include.add(resolve(<span class="string">"src/icons"</span>))</span><br><span class="line">            .end()</span><br><span class="line">            .use(<span class="string">"svg-sprite-loader"</span>)</span><br><span class="line">            .loader(<span class="string">"svg-sprite-loader"</span>)</span><br><span class="line">            .options(&#123; <span class="attr">symbolId</span>: <span class="string">"icon-[name]"</span>&#125;)<span class="comment">// 使用时直接通过icon-[name]</span></span><br><span class="line">            .end();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>icons自动引入</p>
+<p>通过<code>require.context</code>进行全局引入，<code>require.context</code>生成一个上下文模块，包含目录下 的所有引用，此方法有三个参数</p>
+<p>参数一: 要查询的目录<br>参数二:  是否要查询子孙目录,方法默认的值为false<br>参数三: 要匹配的文件的后缀,是一个正则表达式</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// icons/index.js</span></span><br><span class="line"><span class="keyword">const</span> req = <span class="built_in">require</span>.context(<span class="string">'./svg'</span>, <span class="literal">false</span>, /\.svg$/)</span><br><span class="line">req.keys().map(req)</span><br><span class="line"><span class="comment">// main.js</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">'./icons'</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>封装图标组件，控制样式，添加链接等</p>
+<p>自定义一个SvgIcon.vue组件</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">	&lt;svg :class=&quot;svgClass&quot; aria-hidden=&quot;true&quot; v-on=&quot;$listeners&quot;&gt;</span><br><span class="line">    	&lt;use :xlink:href=&quot;iconName&quot;&gt;</span><br><span class="line">    &lt;/svg&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">	export default &#123;</span><br><span class="line">        name: &apos;SvgIcon&apos;,</span><br><span class="line">        props: &#123;</span><br><span class="line">            iconClass: &#123;</span><br><span class="line">                type: String,</span><br><span class="line">                required: true</span><br><span class="line">            &#125;,</span><br><span class="line">            className: &#123;</span><br><span class="line">                type: String,</span><br><span class="line">                default: &apos;&apos;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        computed: &#123;</span><br><span class="line">            iconName() &#123;</span><br><span class="line">                return `#icon-$&#123;this.iconClass&#125;`</span><br><span class="line">            &#125;,</span><br><span class="line">            svgClass() &#123;</span><br><span class="line">                if (this.className) &#123;</span><br><span class="line">                    return `svg-icon $&#123;this.className&#125;`</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    return &apos;svg-icon&apos;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style scoped&gt;</span><br><span class="line">    .svg-icon &#123;</span><br><span class="line">        width: 1em;</span><br><span class="line">        height: 1em;</span><br><span class="line">        vertical-align: -0.15em;</span><br><span class="line">        fill: currentColor;</span><br><span class="line">        overflow: hidden;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​    注册组件，icons/index.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> SvgIcon <span class="keyword">from</span> <span class="string">'@/components/SvgIcon.vue'</span></span><br><span class="line"></span><br><span class="line">vue.component(<span class="string">'svg-icon'</span>, SvgIcon)</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg-icon icon-class=&quot;qq&quot;&gt;&lt;/svg-icon&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="权限控制-动态路由"><a href="#权限控制-动态路由" class="headerlink" title="权限控制 + 动态路由"></a>权限控制 + 动态路由</h2><h3 id="1-路由定义"><a href="#1-路由定义" class="headerlink" title="1. 路由定义"></a>1. 路由定义</h3><p>路由一般分为两种：constantRoutes和asyncRoutes</p>
+<ul>
+<li><strong>constantRoutes</strong>:代表那些不需要动态判断权限的路由，如：登录页、404等通用页面。</li>
+<li><strong>asyncRoutes</strong>:代表那些需要判断权限并通过<code>addRoutes</code>动态添加的页面。</li>
+</ul>
+<h3 id="vuex相关模块实现"><a href="#vuex相关模块实现" class="headerlink" title="vuex相关模块实现"></a>vuex相关模块实现</h3><h3 id="2-大致过程"><a href="#2-大致过程" class="headerlink" title="2. 大致过程"></a>2. 大致过程</h3><ol>
+<li>客户端登录请求，从服务端获取token，可以存入cookie中(通过js-cookie)</li>
+<li>客户端发起获取用户信息的请求(请求中包含token)，从服务器中获取到用户角色(存入vuex)</li>
+<li>根据用户角色做路由表过滤，将当前角色允许访问的特殊页面通过addRoutes添加到accessRoutes(权限路由表)<ul>
+<li>过滤思路：递归遍历完整路由表看当前角色是否存在各个路由的meta.roles(存取了当前路径所允许的角色数组)中，存在则添加至此角色的accessRoutes中.</li>
+</ul>
+</li>
+<li>通过<strong><code>router.beforeEach</code></strong>添加全局路由守卫，根据是否登录(根据token)、无需token的白名单已经是否已添加accessRoutes等判断后续动作<ul>
+<li>未登陆(是否有token)则登陆(步骤1)</li>
+<li>已登陆没角色, 则获取用户信息(如步骤2)，并添加至路由</li>
+<li>已登陆有角色，直接next()</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-导航菜单的生成"><a href="#3-导航菜单的生成" class="headerlink" title="3. 导航菜单的生成"></a>3. 导航菜单的生成</h3><p>导航菜单是根据路由信息并结合权限判断而动态生成的，它需要支持路由的多级嵌套，需要用到递归组件。</p>
+<ul>
+<li>仅有一个可实现子路由并且该子路由没有子路由则直接显示父项</li>
+<li>菜单样式可以用element的sidebar-item组件</li>
+</ul>
+<h3 id="4-按钮权限"><a href="#4-按钮权限" class="headerlink" title="4. 按钮权限"></a>4. 按钮权限</h3><p>封装一个<strong><a href="https://cn.vuejs.org/v2/guide/custom-directive.html" target="_blank" rel="noopener">自定义指令</a></strong>v-permission，从而实现按钮级别权限控制。</p>
+<p>指令传入当前按钮允许的角色数组，内部会判断当前角色如果不在此角色数组中则会删除按钮</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">"@/store"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    inserted(el, binding) &#123;</span><br><span class="line">        <span class="comment">// 获取指令的值：按钮要求的角色数组</span></span><br><span class="line">        <span class="keyword">const</span> &#123; <span class="attr">value</span>: pRoles &#125; = binding</span><br><span class="line">        <span class="comment">// 获取用户角色</span></span><br><span class="line">        <span class="keyword">const</span> roles = store.getters &amp;&amp; store.getters.roles</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (pRoles &amp;&amp; pRoles instanceOf <span class="built_in">Array</span> &amp;&amp; pRoles.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">// 判断用户角色中是否有按钮要求的角色</span></span><br><span class="line">            <span class="keyword">const</span> hasPermission = roles.some(<span class="function"><span class="params">role</span> =&gt;</span> pRoles.inculdes(role))</span><br><span class="line">            <span class="comment">// 如果没有权限则删除当前dom</span></span><br><span class="line">            <span class="keyword">if</span> (!hasPermission) &#123;</span><br><span class="line">                el.parentNode &amp;&amp; el.parentNode.removeChild(el)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">`需要指定按钮要求角色数组，如v-permission="['admin', 'editor']"`</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注册指令， main.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> vPermission <span class="keyword">from</span> <span class="string">"./directive/permission"</span></span><br><span class="line"></span><br><span class="line">Vue.directive(<span class="string">'permission'</span>, vPermission)</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 添加权限按钮</span><br><span class="line">&lt;button v-permisson=&quot;[&apos;admin&apos;, &apos;editor&apos;]&quot;&gt;&lt;/button&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：该指令只能删除挂载指令的元素，对于额外生成的和指令无关的元素无能为力</strong>，比如以下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">el-tabs</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">el-tab-pane</span> <span class="attr">label</span>=<span class="string">"用户管理"</span> <span class="attr">name</span>=<span class="string">"first"</span> <span class="attr">v-permission</span>=<span class="string">"['admin', 'editor']"</span>&gt;</span>用户管</span><br><span class="line">    理<span class="tag">&lt;/<span class="name">el-tab-pane</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">el-tabs</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>此种情况下只能删除<code>el-tab-pane</code>，但无法删除<code>el-tabs</code>，此时可以通过<code>v-if</code>来实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">	&lt;el-tab-pane v-if=&quot;checkPermission(&apos;admin&apos;)&quot;&gt;&lt;/el-tab-pane&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">methods: &#123;</span><br><span class="line">    checkPermission(permissionRoles) &#123;</span><br><span class="line">        return roles.some(role =&gt; &#123;</span><br><span class="line">            	return permissionRoles.includes(role);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="面包屑"><a href="#面包屑" class="headerlink" title="面包屑"></a>面包屑</h2><p>显示当前页面的路径，快速返回之前的任意页面。面包屑导航是通过<code>$route.matched</code>数组动态生成的。</p>
+<p>UI样式可以通过element-ui的<code>el-breadcrumb-item</code> 实现，代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">	&lt;el-breadcrumb class=&quot;app-breadcrumb&quot; separator=&quot;/&quot;&gt;</span><br><span class="line">		&lt;transition-group name=&quot;breadcrumb&quot;&gt;</span><br><span class="line">            &lt;el-breadcrumb-item v-for=&quot;(item,index) in levelList&quot; :key=&quot;item.path&quot;&gt;</span><br><span class="line">                &lt;span</span><br><span class="line">                    v-if=&quot;item.redirect===&apos;noRedirect&apos;||index==levelList.length-1&quot;</span><br><span class="line">                    class=&quot;no-redirect&quot;</span><br><span class="line">                &gt;&#123;&#123; item.meta.title &#125;&#125;&lt;/span&gt;</span><br><span class="line">                &lt;a v-else @click.prevent=&quot;handleLink(item)&quot;&gt;&#123;&#123; item.meta.title &#125;&#125;&lt;/a&gt;</span><br><span class="line">            &lt;/el-breadcrumb-item&gt;</span><br><span class="line">    	&lt;/transition-group&gt;</span><br><span class="line">	&lt;/el-breadcrumb&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import pathToRegexp from &quot;path-to-regexp&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">    data() &#123;</span><br><span class="line">        return &#123;</span><br><span class="line">        	levelList: null</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;,</span><br><span class="line">    watch: &#123;</span><br><span class="line">        $route: &#123;</span><br><span class="line">            handler(route) &#123;</span><br><span class="line">                this.getBreadcrumb();</span><br><span class="line">            &#125;,</span><br><span class="line">            immediate: true</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">        getBreadcrumb() &#123;</span><br><span class="line">            console.log(this.$route.matched);</span><br><span class="line">            // 面包屑仅显示包含meta.title且item.meta.breadcrumb不为false的路由</span><br><span class="line">            let matched = this.$route.matched.filter(</span><br><span class="line">                item =&gt; item.meta &amp;&amp; item.meta.title &amp;&amp; item.meta.breadcrumb !== false</span><br><span class="line">                );</span><br><span class="line">            // 根路由</span><br><span class="line">            const first = matched[0];</span><br><span class="line">            // 根匹配只要不是home，就作为home下一级</span><br><span class="line">            if (!this.isHome(first)) &#123;</span><br><span class="line">            	matched = [&#123; path: &apos;/&apos;, redirect: &quot;/home&quot;, meta: &#123; title: &quot;首页&quot; &#125;</span><br><span class="line">				&#125;].concat(matched);</span><br><span class="line">            &#125;</span><br><span class="line">            // 处理完指定到levelList</span><br><span class="line">            this.levelList = matched</span><br><span class="line">        &#125;,</span><br><span class="line">        isHome(route) &#123;</span><br><span class="line">            const name = route &amp;&amp; route.name;</span><br><span class="line">            if (!name) &#123;</span><br><span class="line">            	return false;</span><br><span class="line">            &#125;</span><br><span class="line">            return name.trim().toLocaleLowerCase() === &quot;home&quot;.toLocaleLowerCase();</span><br><span class="line">        &#125;,</span><br><span class="line">        pathCompile(path) &#123;</span><br><span class="line">            const &#123; params &#125; = this.$route;</span><br><span class="line">            var toPath = pathToRegexp.compile(path);</span><br><span class="line">                return toPath(params);</span><br><span class="line">        &#125;,</span><br><span class="line">        handleLink(item) &#123;</span><br><span class="line">            const &#123; redirect, path &#125; = item;</span><br><span class="line">            // 若存在重定向，按重定向走</span><br><span class="line">            if (redirect) &#123;</span><br><span class="line">            this.$router.push(redirect);</span><br><span class="line">            return;</span><br><span class="line">        	&#125;</span><br><span class="line">            // 编译path，避免存在路径参数</span><br><span class="line">            this.$router.push(this.pathCompile(path));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;style scoped&gt;</span><br><span class="line">    .app-breadcrumb.el-breadcrumb &#123;</span><br><span class="line">        display: inline-block;</span><br><span class="line">        font-size: 14px;</span><br><span class="line">        line-height: 50px;</span><br><span class="line">        margin-left: 8px;</span><br><span class="line">    &#125;</span><br><span class="line">    .app-breadcrumb.el-breadcrumb .no-redirect &#123;</span><br><span class="line">        color: #97a8be;</span><br><span class="line">        cursor: text;</span><br><span class="line">    &#125;</span><br><span class="line">    /* breadcrumb transition */</span><br><span class="line">    .breadcrumb-enter-active,</span><br><span class="line">    .breadcrumb-leave-active &#123;</span><br><span class="line">    	transition: all .5s;</span><br><span class="line">    &#125;</span><br><span class="line">    .breadcrumb-enter,</span><br><span class="line">    .breadcrumb-leave-active &#123;</span><br><span class="line">        opacity: 0;</span><br><span class="line">        transform: translateX(20px);</span><br><span class="line">    &#125;</span><br><span class="line">    .breadcrumb-move &#123;</span><br><span class="line">    	transition: all .5s;</span><br><span class="line">    &#125;</span><br><span class="line">    .breadcrumb-leave-active &#123;</span><br><span class="line">    	position: absolute;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据交互"><a href="#数据交互" class="headerlink" title="数据交互"></a>数据交互</h2><p>数据交互流程：</p>
+<p>api service =&gt; request =&gt; local mock/easy-mock/server api</p>
+<p>主要问题分析：</p>
+<ol>
+<li>有时需要对请求头、响应进行统一的预处理</li>
+<li>请求不同的数据源时url会变化，需要能根据环境自动修改url</li>
+<li>可能出现跨越的问题</li>
+</ol>
+<h3 id="封装request，response"><a href="#封装request，response" class="headerlink" title="封装request，response"></a>封装request，response</h3><p>通过axios封装</p>
+<p>通过设置baseURL解决不同数据源url变化问题</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> service = axios.create(&#123;</span><br><span class="line">    baseURL: process.env.VUE_APP_BASE_API,</span><br><span class="line">    timeout: <span class="number">5000</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>其中VUE_APP_BASE_API为<a href="[https://cli.vuejs.org/zh/guide/mode-and-env.html#%E6%A8%A1%E5%BC%8F](https://cli.vuejs.org/zh/guide/mode-and-env.html#模式)">环境变量</a>，创建.env.development文件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VUE_APP_BASE_API = <span class="string">'/dev-api'</span></span><br></pre></td></tr></table></figure>
+
+<p>通过拦截器对request和response进行请求和响应的预处理</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 请求拦截</span></span><br><span class="line">service.interceptors.request.use(</span><br><span class="line">    config =&gt; &#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">        <span class="keyword">if</span> (store.getters.token) &#123;</span><br><span class="line">        <span class="comment">// 设置令牌请求头</span></span><br><span class="line">        config.headers[<span class="string">"X-Token"</span>] = getToken();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> config;</span><br><span class="line">    &#125;,</span><br><span class="line">    error =&gt; &#123;</span><br><span class="line">        <span class="comment">// 请求错误预处理</span></span><br><span class="line">        <span class="comment">//console.log(error) // for debug</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(error);</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"><span class="comment">// 响应拦截</span></span><br><span class="line">service.interceptors.response.use(</span><br><span class="line">    <span class="comment">// 通过自定义code判定响应状态，也可以通过HTTP状态码判定</span></span><br><span class="line">    response =&gt; &#123;</span><br><span class="line">        <span class="comment">// 仅返回数据部分</span></span><br><span class="line">        <span class="keyword">const</span> res = response.data;</span><br><span class="line">        <span class="comment">// code不为1则判定为一个错误</span></span><br><span class="line">        <span class="keyword">if</span> (res.code !== <span class="number">1</span>) &#123;</span><br><span class="line">        Message(&#123;</span><br><span class="line">        message: res.message || <span class="string">"Error"</span>,</span><br><span class="line">        type: <span class="string">"error"</span>,</span><br><span class="line">        duration: <span class="number">5</span> * <span class="number">1000</span></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">if</span> (res.code === <span class="number">10008</span> || res.code === <span class="number">10012</span> || res.code === <span class="number">10014</span>) &#123;</span><br><span class="line">        <span class="comment">// 重新登录</span></span><br><span class="line">        MessageBox.confirm(</span><br><span class="line">            <span class="string">"登录状态异常，请重新登录"</span>,</span><br><span class="line">            <span class="string">"确认登录信息"</span>,</span><br><span class="line">            &#123;</span><br><span class="line">            confirmButtonText: <span class="string">"重新登录"</span>,</span><br><span class="line">            cancelButtonText: <span class="string">"取消"</span>,</span><br><span class="line">            type: <span class="string">"warning"</span></span><br><span class="line">            &#125;</span><br><span class="line">        ).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            store.dispatch(<span class="string">"user/resetToken"</span>).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            	location.reload();</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(<span class="keyword">new</span> <span class="built_in">Error</span>(res.message || <span class="string">"Error"</span>));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    	<span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">   &#125;,</span><br><span class="line">   error =&gt; &#123;</span><br><span class="line">        <span class="comment">//console.log("err" + error); // for debug</span></span><br><span class="line">        Message(&#123;</span><br><span class="line">        message: error.message,</span><br><span class="line">        type: <span class="string">"error"</span>,</span><br><span class="line">        duration: <span class="number">5</span> * <span class="number">1000</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(error);</span><br><span class="line">   &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据Mock"><a href="#数据Mock" class="headerlink" title="数据Mock"></a>数据Mock</h3><p>数据模拟有两种常见方式，本地mock和线上easy-mock</p>
+<ul>
+<li>本地mock，修改vue.config.js，给devServer添加相关代码，大致如下：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">"body-parser"</span>);</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    devServer: &#123;</span><br><span class="line">        before: <span class="function"><span class="params">app</span> =&gt;</span> &#123;</span><br><span class="line">            app.use(bodyParser.json());</span><br><span class="line">            app.use(</span><br><span class="line">                bodyParser.urlencoded(&#123;</span><br><span class="line">                extended: <span class="literal">true</span></span><br><span class="line">            &#125;)</span><br><span class="line">    );</span><br><span class="line">    app.post(<span class="string">"/dev-api/user/login"</span>, (req, res) =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> &#123; username &#125; = req.body;</span><br><span class="line">        <span class="keyword">if</span> (username === <span class="string">"admin"</span> || username === <span class="string">"jerry"</span>) &#123;</span><br><span class="line">            res.json(&#123;</span><br><span class="line">            code: <span class="number">1</span>,</span><br><span class="line">            data: username</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            res.json(&#123;</span><br><span class="line">                code: <span class="number">10204</span>,</span><br><span class="line">                message: <span class="string">"用户名或密码错误"</span></span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    app.get(<span class="string">"/dev-api/user/info"</span>, (req, res) =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> roles = req.headers[<span class="string">'x-token'</span>] === <span class="string">"admin"</span> ? [<span class="string">"admin"</span>] : [<span class="string">"editor"</span>];</span><br><span class="line">        res.json(&#123;</span><br><span class="line">            code: <span class="number">1</span>,</span><br><span class="line">            data: roles</span><br><span class="line">        &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>easy-mock</li>
+</ul>
+<p>使用步骤：</p>
+<ol>
+<li>登录easy-mock网站</li>
+<li>创建一个项目</li>
+<li>创建需要的接口，遵从swagger规范</li>
+<li>调用：修改base_url，.env.development</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VUE_APP_BASE_API = <span class="string">'https://easy-mock.com/mock/5cdcc3fdde625c6ccadfd70c/kkbcart'</span><span class="comment">//在网站上拷贝</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="解决跨越"><a href="#解决跨越" class="headerlink" title="解决跨越"></a>解决跨越</h3><p>如果请求的接口在另一台服务器上，开发时可以设置代理避免跨越问题，注意：** 服务器之间是不会有跨域问题的，只存在于浏览器像服务器发起请求时。</p>
+<ul>
+<li>添加代理配置， vue.config.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">devServer: &#123;</span><br><span class="line">    port: port,</span><br><span class="line">    proxy: &#123;</span><br><span class="line">        <span class="comment">// 代理 /dev-api/user/login 到 http://127.0.0.1:3000/user/login</span></span><br><span class="line">        [process.env.VUE_APP_BASE_API]: &#123;</span><br><span class="line">            target: <span class="string">`http://127.0.0.1:3000/`</span>,</span><br><span class="line">            changeOrigin: <span class="literal">true</span>,<span class="comment">//需不需要变更origin头</span></span><br><span class="line">            pathRewrite: &#123;</span><br><span class="line">            	[<span class="string">"^"</span> + process.env.VUE_APP_BASE_API]: <span class="string">""</span></span><br><span class="line">            &#125;</span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建一个独立接口服务器，如： ~/test-server/index.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">"express"</span>);</span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">"body-parser"</span>);</span><br><span class="line">app.use(bodyParser.json());</span><br><span class="line">app.use(</span><br><span class="line">    bodyParser.urlencoded(&#123;</span><br><span class="line">    	extended: <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line">);</span><br><span class="line">app.post(<span class="string">"/user/login"</span>, (req, res) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; username &#125; = req.body;</span><br><span class="line">    <span class="keyword">if</span> (username === <span class="string">"admin"</span> || username === <span class="string">"jerry"</span>) &#123;</span><br><span class="line">        res.json(&#123;</span><br><span class="line">            code: <span class="number">1</span>,</span><br><span class="line">            data: username</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        res.json(&#123;</span><br><span class="line">            code: <span class="number">10204</span>,</span><br><span class="line">            message: <span class="string">"用户名或密码错误"</span></span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">app.get(<span class="string">"/user/info"</span>, (req, res) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> roles = req.headers[<span class="string">'x-token'</span>] === <span class="string">"admin"</span> ? [<span class="string">"admin"</span>] : [<span class="string">"editor"</span>];</span><br><span class="line">    res.json(&#123;</span><br><span class="line">        code: <span class="number">1</span>,</span><br><span class="line">        data: roles</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br><span class="line">app.listen(<span class="number">3000</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="项目测试阶段"><a href="#项目测试阶段" class="headerlink" title="项目测试阶段"></a>项目测试阶段</h2><p>应该了解什么是<strong>黑盒测试，E2E测试，集成测试，白盒测试，单元测试</strong></p>
+<p>编写测试代码的好处</p>
+<p>了解一些测试库，jest，mocha + chai, 什么是<strong>测试框架</strong> ，什么是<strong>断言库</strong></p>
+<p>vue中的组件怎么测试</p>
+<p>怎么测试用户点击</p>
+<p>测试覆盖率</p>
+<p>详细可查看项目测试阶段的章节</p>
+<h2 id="项目部署阶段"><a href="#项目部署阶段" class="headerlink" title="项目部署阶段"></a>项目部署阶段</h2><p>部署只需要将最终生成的静态文件，通常是<code>dist</code>文件夹下的静态文件发布到cdn或者静态服务器即可，常见的是采用nginx作为web服务器</p>
+<p>详细可查看详细的项目部署文章。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue/" rel="tag"># vue</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/24/tips/" rel="next" title>
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/02/26/react/React核心基础/" rel="prev" title="React核心基础">
+                React核心基础 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Will</p>
+              <p class="site-description motion-element" itemprop="description">面对困难更要有迎难而上的勇气和坚韧</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#vue-cli-3-x项目配置"><span class="nav-number">1.</span> <span class="nav-text">vue-cli 3.x项目配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-在根目录新建vue-config-js配置"><span class="nav-number">1.1.</span> <span class="nav-text">1. 在根目录新建vue.config.js配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-查看配置结果"><span class="nav-number">1.2.</span> <span class="nav-text">2. 查看配置结果</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-可以通过命令查看配置结果"><span class="nav-number">1.2.1.</span> <span class="nav-text">(1). 可以通过命令查看配置结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-通过命令vue-ui可视化查看"><span class="nav-number">1.2.2.</span> <span class="nav-text">(2). 通过命令vue ui可视化查看</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-高级链式操作"><span class="nav-number">1.3.</span> <span class="nav-text">3. 高级链式操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#权限控制-动态路由"><span class="nav-number">2.</span> <span class="nav-text">权限控制 + 动态路由</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-路由定义"><span class="nav-number">2.1.</span> <span class="nav-text">1. 路由定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vuex相关模块实现"><span class="nav-number">2.2.</span> <span class="nav-text">vuex相关模块实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-大致过程"><span class="nav-number">2.3.</span> <span class="nav-text">2. 大致过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-导航菜单的生成"><span class="nav-number">2.4.</span> <span class="nav-text">3. 导航菜单的生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-按钮权限"><span class="nav-number">2.5.</span> <span class="nav-text">4. 按钮权限</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#面包屑"><span class="nav-number">3.</span> <span class="nav-text">面包屑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据交互"><span class="nav-number">4.</span> <span class="nav-text">数据交互</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#封装request，response"><span class="nav-number">4.1.</span> <span class="nav-text">封装request，response</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据Mock"><span class="nav-number">4.2.</span> <span class="nav-text">数据Mock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决跨越"><span class="nav-number">4.3.</span> <span class="nav-text">解决跨越</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目测试阶段"><span class="nav-number">5.</span> <span class="nav-text">项目测试阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目部署阶段"><span class="nav-number">6.</span> <span class="nav-text">项目部署阶段</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Will</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
