@@ -367,10 +367,10 @@
 <p>无论是函数组件还是Class组件都不可以修改自身的props，<strong>所有 React 组件都必须像纯函数一样保护它们的 props 不被更改</strong>。</p>
 <p><strong>纯函数</strong>：不会尝试更改入参，且多次调用下相同的入参始终返回相同的结果。</p>
 <h4 id="父-gt-子"><a href="#父-gt-子" class="headerlink" title="父 =&gt; 子"></a>父 =&gt; 子</h4><p>直接在父组件中通过属性传递</p>
-<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Test2.jsx</span></span><br><span class="line">&lt;Test1 title= <span class="string">'props组件通讯'</span>&gt;&lt;/Test1&gt;</span><br><span class="line"><span class="comment">// Test1.jsx</span></span><br><span class="line">&lt;h2&gt;&#123; <span class="keyword">this</span>.props.title&gt;&lt;/h2&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Test2.jsx</span></span><br><span class="line">&lt;Test1 title= <span class="string">'props组件通讯'</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">Test1</span>&gt;</span></span></span><br><span class="line"><span class="comment">// Test1.jsx</span></span><br><span class="line">&lt;h2&gt;&#123; <span class="keyword">this</span>.props.title&gt;<span class="xml"><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
 <h4 id="子-gt-父"><a href="#子-gt-父" class="headerlink" title="子 =&gt; 父"></a>子 =&gt; 父</h4><p>父组件传入函数组件，子组件通过此函数属性将信息传入父组件中，这也称为<strong>状态提升</strong></p>
-<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// stateManager.jsx</span></span><br><span class="line">&lt;Clock change=&#123; <span class="keyword">this</span>.change &#125;&gt;&lt;/Clock&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Clock.jsx</span></span><br><span class="line"><span class="keyword">this</span>.timerID = setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">        date: <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">    &#125;, ()=&gt;&#123;</span><br><span class="line"><span class="comment">// 每次状态更新就通知父组件</span></span><br><span class="line">        <span class="keyword">this</span>.props.change(<span class="keyword">this</span>.state.date);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// stateManager.jsx</span></span><br><span class="line">&lt;Clock change=&#123; <span class="keyword">this</span>.change &#125;&gt;<span class="xml"><span class="tag">&lt;/<span class="name">Clock</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Clock.jsx</span></span><br><span class="line"><span class="keyword">this</span>.timerID = setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">        date: <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">    &#125;, ()=&gt;&#123;</span><br><span class="line"><span class="comment">// 每次状态更新就通知父组件</span></span><br><span class="line">        <span class="keyword">this</span>.props.change(<span class="keyword">this</span>.state.date);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
 
 <h2 id="context"><a href="#context" class="headerlink" title="context"></a>context</h2><p>跨层级间通讯</p>
 <h2 id="Redux"><a href="#Redux" class="headerlink" title="Redux"></a>Redux</h2><p>无明显关系的组件间通讯</p>
@@ -500,7 +500,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -511,7 +511,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
