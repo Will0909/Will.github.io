@@ -278,7 +278,7 @@ class Clock extends Component {
 
 - useState可以用来创建一个状态和一个修改状态的函数
 
-- useEffect可以用于编写副作用, 副作用代码执行完后才会返回，可以在返回清理函数，释放资源等
+- useEffect可以用于编写副作用, 第一个参数传递函数，可以用来做一些副作用比如异步请求等行为，而第二个参数是个数组，如果数组中的值才会触发 useEffect 第一个参数中的函数。如果有返回值则在组件销毁或者调用函数前调用，可做一些类似清除定时器等操作。
 
 ```jsx
 import { useState, useEffect } from "react"
