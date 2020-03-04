@@ -45,7 +45,7 @@ TypeScript是JavaScript的超集，它可编译为纯JavaScript，是一种给 J
 
 - null
 
-  表示对象值缺少,表示空对象的引用，typeof返回的是object
+  表示对象值缺少, 表示空对象的引用，typeof返回的是object
 
 - undefined
 
@@ -53,7 +53,7 @@ TypeScript是JavaScript的超集，它可编译为纯JavaScript，是一种给 J
 
 - never
 
-  never是其他类型的子类型，代表从不会出现的值，在函数中它通常表现为抛出异常或无法执行到终止点（例如无限循环）
+  never是其他类型的子类型，代表从不会出现的值，在函数中它通常表现为**抛出异常**或**无法执行到终止点**（例如无限循环）
 
   ```typescript
   // 返回值为 never 的函数可以是抛出异常的情况
@@ -67,7 +67,6 @@ TypeScript是JavaScript的超集，它可编译为纯JavaScript，是一种给 J
   }
   ```
 
-  
 
 #### 类型推论
 
@@ -77,6 +76,8 @@ a = 2 //错误
 ```
 
 #### 数组
+
+需要指定是什么类型的数组
 
 ```typescript
 let names: string[]
@@ -128,7 +129,7 @@ sayHello('tom')
 
 #### 重载
 
-通过参数或者返回值的类型或个数不同区别同名函数，注意：先声明，再实现
+通过参数或者返回值的类型或个数不同区别同名函数，**注意**：先声明，再实现
 
 ```typescript
 // 声明1

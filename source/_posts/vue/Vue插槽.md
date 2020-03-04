@@ -1,5 +1,5 @@
 ---
-title: Vue插槽
+title: vue插槽
 tags: vue
 top: 1
 categories: 
