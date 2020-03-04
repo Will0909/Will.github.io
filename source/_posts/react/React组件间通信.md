@@ -114,4 +114,4 @@ MyClass.contextType = MyContext;
 
 ## Redux
 
-无明显关系的组件间通讯
+无明显关系的组件间通讯，具体见Redux的使用
