@@ -81,6 +81,9 @@ react的使用比较繁琐：
 
 ### 基本使用
 
+- Provider为后代组件提供store
+- connect为组件提供数据和变更方法
+
 #### 1. 全局提供store
 
 ```jsx
@@ -103,17 +106,28 @@ ReactDOM.render(
 
 #### 2. 获取状态数据
 
+- connect可以自动渲染
+- 第一个参数是一个函数，传入一个state，返回对象，实际上是将state属性合入props的属性
+- 第二个参数是一个对象，对象的属性是一个函数返回action对象，实践上是把dispatch的action合入props属性
+- 第二个参数如果未传入，则直接把dispatch合入props属性
+
 ```jsx
 // ReactReduxTest.js
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-
+// 参数1: mapStateToProps = state => return { num: state }
+// 参数2: mapDispatchToProps = dispatch => { return {add: () => dispatch({ type: 'add'})}}
 @connect(
     state => ({ num: state }), // 状态映射
     {
-        add: () => ({ type: 'add' }), // 相当于dispatch({ type: plus }), 必须是一个函数
+        add: () => ({ type: 'add' }), 
         minus: () => ({ type: 'minus' })
-    }
+    },
+    // 完整的写法如下：
+    // dispatch => ({
+  	// 	add: () => dispatch({ type: 'add'}), // action creator
+  	// 	minus: () => dispatch({ type: 'minus'}), // action creator
+    // })
 )
 class ReactReduxTest extends Component {
     render() {
@@ -152,6 +166,7 @@ const store = createStore(counterReducer, applyMiddleware(logger, thunk))
 @connect(
     state => ({ num: state }), // 状态映射
     {
+      	// 返回的是函数
         asyncAdd: () => dispatch => {
             setTimeout(() => {
                 // 异步结束后,手动执行dispatch
@@ -268,6 +283,11 @@ const store = createStore(combineReducers({ counter: counterReducer }), applyMid
 
 ### 核心功能实现
 
+- 存储状态state
+- 获取状态getState
+- 更新状态dispatch
+- 变更订阅subscribe
+
 ```javascript
 // my-redux/index.js
 export function createStore (reducer, enhancer ) {
@@ -293,7 +313,7 @@ export function createStore (reducer, enhancer ) {
     function subscribe(listener) {
         listeners.push(listener)
     }
-    // 初始化store
+    // 初始化currentState
     dispatch({ type: '@my-redux init' })
 
     return { getState, dispatch, subscribe }
@@ -347,7 +367,180 @@ export default class MyReduxTest extends Component {
 
 ### 中间件实现
 
+dispatch调用时会先按一定顺序执行一系列的中间件再真正执行dispatch, 其实就是加强dispatch功能
+
+#### 自定义中间件的编写
+
+中间件入参可接收`getState`和`dispatch`
+
+中间件返回中间件任务执行函数：`dispatch => action => dispatch(action)`
+
+```javascript
+// logger.js
+export default function(() => {
+	return dispatch => action => {
+		console.log(action.type + ' 执行了！！！')
+		return dispatch(action)
+	}
+})
+```
+
+#### 实现原理
+
+利用高阶函数的特性、
+
+##### compose的实现
+
+利用数组的聚合函数reduce，将多个函数聚合成一个函数后返回
+
+```javascript
+function compose(...funcs) {
+  if (funcs.length === 0) {
+    // 返回一个无意义函数
+    return arg => arg
+  }
+  if (funcs.length === 1) {
+    return funcs[0]
+  }
+  // [func1, func2] => func2(func1(args))
+  return funcs.reduce((left, right) => (...args) => right(left(...args)))
+}
+```
+
+##### applyMiddleware的实现
+
+应该返回一个高阶函数，起强化dispatch作用
+
+```javascript
+export function applyMiddleware(...middlewares) {
+  return createStore => (...args) => {
+    // 原本的createStore功能
+    const store = createStore(...args)
+    // middleware的入参，有些中间件可能需要状态state
+    const midArgs = {
+      dispatch = (...args) => store.dispatch,
+      getState = store.getState
+    }
+  	// middleware的执行链(数组), [fn1, fn2] => [fn1(midApi), fn2(midApi)]
+  	const middlewareChain = middlewares.map(middleware => middleware(midArgs))
+    // 聚合操作,强化dispatch，让它可以按按顺序执行中间件函数
+  	const dispatch = compose(...middlewareChain)(store.dispatch)
+    // 返回原本的store和增强后的dispatch
+    return {
+      ...store,
+      dispatch
+    }
+  }
+}
+```
+
 ### redux-thunk原理
 
+判断action是否是函数，如果是函数则执行函数否则跳过
+
+```javascript
+export function thunk({ getState }) {
+    return dispatch => action => {
+        if (typeof(action) === 'function') {
+            return action(dispatch, getState)
+        }
+        return dispatch(action)
+    }
+}
+```
+
+```jsx
+// store.js
+const store = createStore(counterReducer, applyMiddleware(logger,thunk));
+// MyReduxTest.js
+<button onClick={() => store.dispatch(() => {
+    setTimeout(() => {
+        store.dispatch({ type: "add" })
+    }, 1000);
+})}>+</button>
+```
+
 ## react-redux原理
+
+### 核心任务
+
+- 实现一个高阶函数工厂connect，可以根据传入的状态映射规则函数和派发器映射规则函数映射需要的属性
+- 可以处理变更检查和刷新任务
+- 实现一个Provider组件可以传递store
+
+### Provider组件的实现
+
+```javascript
+export class Provider extends Component {
+    static childContextTypes = {
+        store: PropTypes.object
+    }
+
+    getChildContext() {
+        return {
+            store: this.store
+        }
+    }
+
+    constructor(props, context) {
+        super(props, context)
+        this.store = props.state
+    }
+    render() {
+        return this.props.children
+    }
+}
+```
+
+### connect装饰器的实现
+
+```javascript
+function bindActionCreator(creator, dispatch) {
+    return (...args) => dispatch(creator(...args))
+}
+
+function bindActionCreators(creators, dispatch) {
+    return Object.keys(creators).reduce((ret, item) => {
+        ret[item] = bindActionCreator(creators[item],dispatch)
+        return ret
+    }, {})
+}
+
+export function connect(mapStateToProps = state => state, mapDispatchToProps = {}) {
+    return WrapComponent => class ConnectComponent extends Component {
+        static contextTypes = {
+            store: PropTypes.object
+        }
+
+        constructor(props, context) {
+            super(props, context)
+            this.state = {
+                props: {}
+            }
+        }
+        componentDidMount() {
+            const { store } = this.context
+            store.subscribe(() => this.update())
+            this.update()
+        }
+
+        update() {
+            const { store } = this.context
+            const stateProps = mapStateToProps(store.getState())
+            const dispatchProps = bindActionCreators(mapDispatchToProps, store.dispatch)
+
+            this.setState({
+                props: {
+                    ...this.state.props,
+                    ...stateProps,
+                    ...dispatchProps
+                }
+            })
+        }
+        render() {
+            return <WrapComponent {...this.props.state}></WrapComponent>
+        }
+    }
+}
+```
 
