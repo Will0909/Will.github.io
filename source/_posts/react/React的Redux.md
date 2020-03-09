@@ -472,10 +472,12 @@ const store = createStore(counterReducer, applyMiddleware(logger,thunk));
 
 ```javascript
 export class Provider extends Component {
+    // 是为context中的字段设置类型检查，必须设置
     static childContextTypes = {
         store: PropTypes.object
     }
 
+    // 用来设置组件的context
     getChildContext() {
         return {
             store: this.store
@@ -484,8 +486,9 @@ export class Provider extends Component {
 
     constructor(props, context) {
         super(props, context)
-        this.store = props.state
+        this.store = props.store
     }
+
     render() {
         return this.props.children
     }
@@ -538,7 +541,7 @@ export function connect(mapStateToProps = state => state, mapDispatchToProps = {
             })
         }
         render() {
-            return <WrapComponent {...this.props.state}></WrapComponent>
+            return <WrapComponent {...this.state.props}></WrapComponent>
         }
     }
 }

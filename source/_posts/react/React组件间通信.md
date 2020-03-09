@@ -82,6 +82,55 @@ this.timerID = setInterval(() => {
 
    这个函数接收当前的 context 值，返回一个 React 节点。传递给函数的 `value` 值等同于往上组件树离这个 context 最近的 Provider 提供的 `value` 值。如果没有对应的 Provider，`value` 参数等同于传递给 `createContext()` 的 `defaultValue`。
 
+### 案例
+
+```jsx
+import React, { Component } from 'react'
+
+const Context = React.createContext()
+const Provider = Context.Provider
+const Consumer = Context.Consumer
+
+function Child(props) {
+return <div onClick={ () => props.add() }>{ props.counter }</div>
+}
+
+export default class ContextTest extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            counter: 0
+        }
+    }
+
+    add = () => {
+        this.setState(state => ({
+            counter: state.counter + 1
+        }))
+    }
+
+    render() {
+        return (
+            <div>
+                <Provider value={ 
+                    {
+                        add: this.add,
+                        counter: this.state.counter
+                    }
+                }>
+                    {/* Consumer中内嵌函数，其参数是传递的数据，返回要渲染的组件 */}
+                    {/* 把value展开传递给Child */}
+                    <Consumer>{value => <Child { ...value }></Child>}</Consumer>
+                    <Consumer>{value => <Child { ...value }></Child>}</Consumer>
+                </Provider>
+            </div>
+        )
+    }
+}
+```
+
+
+
 **Class.contextType**
 
  挂载在 class 上的 `contextType` 属性会被重赋值为一个由 `React.createContext()` 创建的 Context 对象。这能让你使用 `this.context` 来消费最近 Context 上的那个值。你可以在任何生命周期中访问到它，包括 render 函数中。 
