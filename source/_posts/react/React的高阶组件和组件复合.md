@@ -97,9 +97,11 @@ export default function HocTest() {
 
 ## 组件复合 - Compositon
 
-复合组件给你足够的敏捷去定义自定义的组件外观和行为, 类似于Vue的插槽
+复合组件给你足够的敏捷去定义自定义的组件外观和行为
 
-下面案例Dialog组件负责展示，内容从外部传入
+### 普通插槽
+
+下面案例Dialog组件负责展示，内容从外部传入，类似于Vue的**普通插槽**
 
 ```jsx
 import React from 'react'
@@ -121,6 +123,38 @@ export default function CompositionTest() {
     )
 }
 ```
+
+### 具名插槽
+
+传入对象，key则表示**具名插槽**
+
+```jsx
+// 获取相应部分内容展示在指定位置
+function Dialog2(props) {
+    return (<div style={{ border: '1px solid blue'}}>
+            { props.children.default }
+            <div> { props.children.footer }</div>
+        </div>)
+}
+export default function CompositionTest() {
+    return (
+        <div>
+            <h2>具名插槽：</h2>
+            <Dialog2>
+                {{ default: (
+                    <div>
+                        <p>default内容</p>
+                    </div>
+                ),
+                footer: <button onClick={() => alert("这是footer")}>确定</button>
+                }}
+            </Dialog2>
+        </div>
+    )
+}
+```
+
+### 作用域插槽
 
 
 
