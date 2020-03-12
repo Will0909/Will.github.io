@@ -156,6 +156,88 @@ export default function CompositionTest() {
 
 ### 作用域插槽
 
+父组件中可以直接使用子组件的数据，父组件调用子组件时组件的`children`写成函数，函数的参数在子组件中传入
+
+```jsx
+function Dialog3(props) {
+    const messages = {
+        'foo': { title: 'foo', content: 'foo~~'},
+        'bar': { title: 'bar', content: 'bar~~'}
+    }
+    const { body, footer } = props.children(messages[props.msg])
+
+    return (<div style={{ border: '1px solid blue'}}>
+            { body }
+            <div> { footer }</div>
+        </div>)
+}
+
+export default function CompositionTest() {
+    return (
+        <div>
+            <h2>作用域插槽：</h2>
+            <Dialog3 msg='foo'>
+                {
+                    // 函数形式，根据传入值生成最终内容。title和content是由子组件中决定
+                    ({ title, content }) => ({
+                        body:(
+                            <div>
+                                <h1>{ title }</h1>
+                                <p>{ content }</p>
+                            </div>
+                        ),
+                        footer: <button onClick={ () => alert('footer')}>确定</button>
+                    })
+                }
+            </Dialog3>
+        </div>
+    )
+}
+```
+
+### 如果`props.children`是`jsx`，此时它是不能修改的
+
+```jsx
+function RadioGroup(props) {
+    // 不可行,
+    // React.Children.forEach(props.children, child => {
+    // child.props.name = props.name;
+    // });
+    return (
+        <div>
+            {React.Children.map(props.children, child => {
+                // 要修改child属性必须先克隆它
+                return React.cloneElement(child, { name: props.name });
+            })}
+        </div>
+    );
+}
+
+// Radio传入value,name和children，注意区分
+function Radio({ children, ...rest }) {
+    return (
+        <label>
+            <input type="radio" {...rest} />
+            {children}
+        </label>
+    );
+}
+
+export default function CompositionTest() {
+    return (
+            <div>
+                {/* 执行显示消息的key */}
+                <RadioGroup name="mvvm">
+                    <Radio value="vue">vue</Radio>
+                    <Radio value="react">react</Radio>
+                    <Radio value="ng">angular</Radio>
+                </RadioGroup>
+            </div>
+        </div>
+    )
+}
+```
+
 
 
 ## 高阶组件和组件复合的区别
