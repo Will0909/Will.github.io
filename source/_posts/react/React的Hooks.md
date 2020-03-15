@@ -6,6 +6,14 @@ categories:
 - react进阶
 ---
 
+Hook是React16.8一个新增项，它可以让你在不编写class的情况下使用state以及其他React特性。
+
+特点：
+
+- 是你无需修改组件结构的情况下附庸状态逻辑
+- 可将组件中相互关联的部分拆成更小的函数，复杂组件将便的更容易理解。
+- 更简洁、更易理解的代码
+
 ## state Hook
 
 ```jsx
@@ -65,7 +73,7 @@ function FruitAdd(props) {
 ## Effect Hook
 
 `useEffect `给函数组件增加了执行副作用操作的能力。
-副作用`（Side Effect）`是指一个 function 做了和本身运算返回值无关的事，比如：修改了全局变量、修改了传入的参数、甚至是 `console.log()`，所以 `ajax` 操作，修改 `dom `都是算作副作用。
+副作用`（Side Effect）`是指一个 function 做了和本身运算返回值无关的事，比如：修改了全局变量、修改了传入的参数、甚至是 `console.log()`，所以 `ajax` 操作、修改 `dom `都是算作副作用。
 
 ```jsx
 import { useEffect } from "react";
@@ -78,7 +86,7 @@ useEffect(()=>{
 
 ```
 
-如果副作用操作对某状态有依赖，务必添加依赖选项
+**注意**：第二个参数为依赖性，如果它改变则会再执行一次函数，依赖为空表示只执行一次。如果副作用操作对某状态有依赖，务必添加依赖选项
 
 ```javascript
 useEffect(() => {
@@ -107,6 +115,7 @@ useEffect(() => {
 export default function HooksTest() {
     // const [fruits, setFruits] = useState(['apple', 'banana'])
     const [fruits, dispatch ] = useReducer(fruitReducer, [])
+    
     useEffect(() => {
         setTimeout(() => {
             // setFruits(["香蕉", "西瓜"]);
@@ -123,7 +132,6 @@ export default function HooksTest() {
             {/* <FruitAdd onAddFruit={pname => setFruits([...fruits, pname])} /> */}
             <FruitAdd onAddFruit={ pname => dispatch({type: 'add', payload: pname}) } />
         </div>
-
     )
 }
 
@@ -172,4 +180,6 @@ function FruitAdd(props) {
     // ...
 }
 ```
+
+## 自定义Hooks
 

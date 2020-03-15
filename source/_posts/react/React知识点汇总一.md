@@ -225,7 +225,7 @@ componentDidMount() {
 
 组件挂载、更新时：
 
-- 通过 `lastProps`、 `nextProps`判断是否新增、删除事件分别调用事件注册、卸载方法。
+- 通过 `lastProps`、 `nextProps`判断是否新增和删除事件，分别调用事件注册、卸载方法。
 - 调用 `EventPluginHub`的 `enqueuePutListener`进行事件存储
 - 获取 `document`对象。
 - 根据事件名称（如 `onClick`、 `onCaptureClick`）判断是进行冒泡还是捕获。
@@ -261,8 +261,16 @@ componentDidMount() {
 
 在 `React`源码中，当具体到某一事件处理函数将要调用时，将调用 `invokeGuardedCallback`方法。
 
-```
-function invokeGuardedCallback(name, func, a) {  try {    func(a);  } catch (x) {    if (caughtError === null) {      caughtError = x;    }  }}
+```js
+function invokeGuardedCallback(name, func, a) {  
+  try {    
+    func(a);  
+  } catch (x) {    
+    if (caughtError === null) {      
+      caughtError = x;    
+    }  
+  }
+}
 ```
 
 可见，事件处理函数是直接调用的，并没有指定调用的组件，所以不进行手动绑定的情况下直接获取到的 `this`是不准确的，所以我们需要手动将当前组件绑定到 `this`上。
@@ -349,23 +357,9 @@ ReactElement.isValidElement = function (object) {  return typeof object === 'obj
 
 ## React组件的渲染流程是什么？
 
-- 
-
-  使用 `React.createElement`或 `JSX`编写 `React`组件，实际上所有的 `JSX`代码最后都会转换成 `React.createElement(...)`， `Babel`帮助我们完成了这个转换的过程。
-
-  
-
-- 
-
-  `createElement`函数对 `key`和 `ref`等特殊的 `props`进行处理，并获取 `defaultProps`对默认 `props`进行赋值，并且对传入的孩子节点进行处理，最终构造成一个 `ReactElement`对象（所谓的虚拟 `DOM`）。
-
-  
-
-- 
-
-  `ReactDOM.render`将生成好的虚拟 `DOM`渲染到指定容器上，其中采用了批处理、事务等机制并且对特定浏览器进行了性能优化，最终转换为真实 `DOM`。
-
-  
+- 使用 `React.createElement`或 `JSX`编写 `React`组件，实际上所有的 `JSX`代码最后都会转换成 `React.createElement(...)`， `Babel`帮助我们完成了这个转换的过程。
+- `createElement`函数对 `key`和 `ref`等特殊的 `props`进行处理，并获取 `defaultProps`对默认 `props`进行赋值，并且对传入的孩子节点进行处理，最终构造成一个 `ReactElement`对象（所谓的虚拟 `DOM`）。
+- `ReactDOM.render`将生成好的虚拟 `DOM`渲染到指定容器上，其中采用了批处理、事务等机制并且对特定浏览器进行了性能优化，最终转换为真实 `DOM`。
 
 ## 为什么代码中一定要引入React？
 
@@ -493,17 +487,3 @@ function inheritHOC(WrappedComponent) {  return class extends WrappedComponent {
 - 使用函数代替class
 
 相比函数，编写一个 `class`可能需要掌握更多的知识，需要注意的点也越多，比如 `this`指向、绑定事件等等。另外，计算机理解一个 `class`比理解一个函数更快。`Hooks`让你可以在 `classes`之外使用更多 `React`的新特性。
-
-下篇预告：
-
-- `ReactDiff`算法的策略是什么？
-- `React`中 `key`的作用是什么？
-- `ReactFiber`是什么？为什么要引入？
-- 为什么推荐在 `componentDidMount`中发起网络请求？
-- `React`代码优化？
-- `React`组件设计要掌握哪些原则？
-- `Redux`的核心原理是什么？
-- 什么是 `Redux`中间件？
-- `Reduxconnect`函数的实现策略？
-- `Mox`的核心原理是什么？
-- `Redux`和 `Mobx`的异同点，如何选择？
