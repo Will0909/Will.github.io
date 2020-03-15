@@ -1,4 +1,5 @@
 ---
+
 title: Cookie、Session、Token、JWT
 tags: 实战内容
 categories: 
@@ -198,7 +199,7 @@ jwt.io/www.jsonwebtoken.io/
 
 ## 常见的加密算法
 
-![img](.\images\5.png)image.png
+![img](.\images\5.png)
 
 - 哈希算法(Hash Algorithm)又称散列算法、散列函数、哈希函数，是一种从任何一种数据中创建小的数字“指纹”的方法。哈希算法将数据重新打乱混合，重新创建一个哈希值。
 - 哈希算法主要用来保障数据真实性(即完整性)，即发信人将原始消息和哈希值一起发送，收信人通过相同的哈希函数来校验原始数据是否真实。
