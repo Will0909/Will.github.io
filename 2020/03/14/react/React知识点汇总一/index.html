@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="react,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="主要讨论以下问题？ React生命周期有哪些，16版本生命周期发生了哪些变化？ setState是同步的还是异步的？ 为什么有时连续多次 setState只有一次生效？ React如何实现自己的事件机制？ 为何 React事件要自己绑定 this？ 原生事件和 React事件的区别？ React的合成事件是什么？ React和原生事件的执行顺序是什么？可以混用吗？ 虚拟Dom是什么？ 虚拟Dom比">
+<meta name="keywords" content="react">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React的知识点汇总一">
+<meta property="og:url" content="https://jobten.github.io/2020/03/14/react/React知识点汇总一/index.html">
+<meta property="og:site_name" content="Will&#39;s Blog">
+<meta property="og:description" content="主要讨论以下问题？ React生命周期有哪些，16版本生命周期发生了哪些变化？ setState是同步的还是异步的？ 为什么有时连续多次 setState只有一次生效？ React如何实现自己的事件机制？ 为何 React事件要自己绑定 this？ 原生事件和 React事件的区别？ React的合成事件是什么？ React和原生事件的执行顺序是什么？可以混用吗？ 虚拟Dom是什么？ 虚拟Dom比">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://jobten.github.io/2020/03/14/react/React知识点汇总一/images/1.png">
+<meta property="og:image" content="https://jobten.github.io/2020/03/14/react/React知识点汇总一/images/2.png">
+<meta property="og:image" content="https://jobten.github.io/2020/03/14/react/React知识点汇总一/images/3.png">
+<meta property="og:image" content="https://jobten.github.io/2020/03/14/react/React知识点汇总一/images/4.png">
+<meta property="og:image" content="https://jobten.github.io/2020/03/14/react/React知识点汇总一/images/5.png">
+<meta property="og:image" content="https://jobten.github.io/2020/03/14/react/React知识点汇总一/images/6.png">
+<meta property="og:updated_time" content="2020-03-15T06:43:44.362Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React的知识点汇总一">
+<meta name="twitter:description" content="主要讨论以下问题？ React生命周期有哪些，16版本生命周期发生了哪些变化？ setState是同步的还是异步的？ 为什么有时连续多次 setState只有一次生效？ React如何实现自己的事件机制？ 为何 React事件要自己绑定 this？ 原生事件和 React事件的区别？ React的合成事件是什么？ React和原生事件的执行顺序是什么？可以混用吗？ 虚拟Dom是什么？ 虚拟Dom比">
+<meta name="twitter:image" content="https://jobten.github.io/2020/03/14/react/React知识点汇总一/images/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jobten.github.io/2020/03/14/react/React知识点汇总一/">
+
+
+
+
+
+  <title>React的知识点汇总一 | Will's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Will's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jobten.github.io/2020/03/14/react/React知识点汇总一/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Will">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Will's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">React的知识点汇总一</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-14T22:33:16+08:00">
+                2020-03-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/react/" itemprop="url" rel="index">
+                    <span itemprop="name">react</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/react/react知识点/" itemprop="url" rel="index">
+                    <span itemprop="name">react知识点</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>主要讨论以下问题？</p>
+<p><code>React</code>生命周期有哪些，16版本生命周期发生了哪些变化？</p>
+<p><code>setState</code>是同步的还是异步的？</p>
+<p>为什么有时连续多次 <code>setState</code>只有一次生效？</p>
+<p><code>React</code>如何实现自己的事件机制？</p>
+<p>为何 <code>React</code>事件要自己绑定 <code>this</code>？</p>
+<p>原生事件和 <code>React</code>事件的区别？</p>
+<p><code>React</code>的合成事件是什么？</p>
+<p><code>React</code>和原生事件的执行顺序是什么？可以混用吗？</p>
+<p><code>虚拟Dom</code>是什么？</p>
+<p><code>虚拟Dom</code>比 <code>普通Dom</code>更快吗？</p>
+<p><code>虚拟Dom</code>中的 <code>$$typeof</code>属性的作用是什么？</p>
+<p><code>React</code>组件的渲染流程是什么？</p>
+<p>为什么代码中一定要引入 <code>React</code>？</p>
+<p>为什么 <code>React</code>组件首字母必须大写？</p>
+<p><code>React</code>在渲染 <code>真实Dom</code>时做了哪些性能优化？</p>
+<p>什么是高阶组件？如何实现？</p>
+<p><code>HOC</code>在业务场景中有哪些实际应用场景？</p>
+<p>高阶组件( <code>HOC</code>)和 <code>Mixin</code>的异同点是什么？</p>
+<p><code>Hook</code>有哪些优势？</p>
+<h2 id="React生命周期有哪些，16版本生命周期发生了哪些变化？"><a href="#React生命周期有哪些，16版本生命周期发生了哪些变化？" class="headerlink" title="React生命周期有哪些，16版本生命周期发生了哪些变化？"></a>React生命周期有哪些，16版本生命周期发生了哪些变化？</h2><h3 id="15生命周期"><a href="#15生命周期" class="headerlink" title="15生命周期"></a>15生命周期</h3><p><img src="./images/1.png" alt="img"></p>
+<ul>
+<li><p>初始化阶段</p>
+</li>
+<li><ul>
+<li><code>constructor</code> 构造函数</li>
+<li><code>getDefaultProps</code> <code>props</code>默认值</li>
+<li><code>getInitialState</code> <code>state</code>默认值</li>
+</ul>
+</li>
+<li><p>挂载阶段</p>
+</li>
+<li><ul>
+<li><code>componentWillMount</code> 组件初始化渲染前调用</li>
+<li><code>render</code> 组件渲染</li>
+<li><code>componentDidMount</code>组件挂载到 <code>DOM</code>后调用</li>
+</ul>
+</li>
+<li><p>更新阶段</p>
+</li>
+<li><ul>
+<li><code>componentWillReceiveProps</code> 组件将要接收新 <code>props</code>前调用</li>
+<li><code>shouldComponentUpdate</code> 组件是否需要更新</li>
+<li><code>componentWillUpdate</code> 组件更新前调用</li>
+<li><code>render</code> 组件渲染</li>
+<li><code>componentDidUpdate</code> 组件更新后调用</li>
+</ul>
+</li>
+<li><p>卸载阶段</p>
+</li>
+<li><ul>
+<li><code>componentWillUnmount</code> 组件卸载前调用</li>
+</ul>
+</li>
+</ul>
+<h3 id="16生命周期"><a href="#16生命周期" class="headerlink" title="16生命周期"></a>16生命周期</h3><p><img src="./images/2.png" alt="img"></p>
+<ul>
+<li><p>初始化阶段</p>
+</li>
+<li><ul>
+<li><code>constructor</code> 构造函数</li>
+<li><code>getDefaultProps</code> <code>props</code>默认值</li>
+<li><code>getInitialState</code> <code>state</code>默认值</li>
+</ul>
+</li>
+<li><p>挂载阶段</p>
+</li>
+<li><ul>
+<li><code>static getDerivedStateFromProps(props,state)</code></li>
+<li><code>render</code></li>
+<li><code>componentDidMount</code></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><code>getDerivedStateFromProps</code>：组件每次被 <code>rerender</code>的时候，包括在组件构建之后(虚拟 <code>dom</code>之后，实际 <code>dom</code>挂载之前)，每次获取新的 <code>props</code>或 <code>state</code>之后；每次接收新的props之后都会返回一个对象作为新的 <code>state</code>，返回null则说明不需要更新 <code>state</code>；配合 <code>componentDidUpdate</code>，可以覆盖 <code>componentWillReceiveProps</code>的所有用法</p>
+</blockquote>
+<ul>
+<li><p>更新阶段</p>
+</li>
+<li><ul>
+<li><code>static getDerivedStateFromProps(props,state)</code></li>
+<li><code>shouldComponentUpdate</code></li>
+<li><code>render</code></li>
+<li><code>getSnapshotBeforeUpdate(prevProps,prevState)</code></li>
+<li><code>componentDidUpdate</code></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><code>getSnapshotBeforeUpdate</code>：触发时间: <code>update</code>发生的时候，在 <code>render</code>之后，在组件 <code>dom</code>渲染之前；返回一个值，作为 <code>componentDidUpdate</code>的第三个参数；配合 <code>componentDidUpdate</code>, 可以覆盖 <code>componentWillUpdate</code>的所有用法</p>
+</blockquote>
+<ul>
+<li><p>卸载阶段</p>
+</li>
+<li><ul>
+<li><code>componentWillUnmount</code></li>
+</ul>
+</li>
+<li><p>错误处理</p>
+</li>
+<li><ul>
+<li><code>componentDidCatch</code></li>
+</ul>
+</li>
+</ul>
+<p><code>React16</code>新的生命周期弃用了 <code>componentWillMount、componentWillReceivePorps，componentWillUpdate</code>新增了 <code>getDerivedStateFromProps、getSnapshotBeforeUpdate</code>来代替弃用的三个钩子函数。</p>
+<blockquote>
+<p><code>React16</code>并没有删除这三个钩子函数，但是不能和新增的钩子函数混用， <code>React17</code>将会删除这三个钩子函数，新增了对错误的处理（ <code>componentDidCatch</code>）</p>
+</blockquote>
+<h2 id="setState是同步的还是异步的？"><a href="#setState是同步的还是异步的？" class="headerlink" title="setState是同步的还是异步的？"></a>setState是同步的还是异步的？</h2><ul>
+<li><strong>生命周期和合成事件中</strong></li>
+</ul>
+<p>在 <code>React</code>的生命周期和合成事件中， <code>React</code>仍然处于他的更新机制中，这时无论调用多少次 <code>setState</code>，都会不会立即执行更新，而是将要更新的·存入 <code>_pendingStateQueue</code>，将要更新的组件存入 <code>dirtyComponent</code>。</p>
+<p>当上一次更新机制执行完毕，以生命周期为例，所有组件，即最顶层组件 <code>didmount</code>后会将批处理标志设置为 <code>false</code>。这时将取出 <code>dirtyComponent</code>中的组件以及 <code>_pendingStateQueue</code>中的 <code>state</code>进行更新。这样就可以确保组件不会被重新渲染多次。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">componentDidMount() &#123;    </span><br><span class="line">  <span class="keyword">this</span>.setState(&#123;      </span><br><span class="line">    index: <span class="keyword">this</span>.state.index + <span class="number">1</span></span><br><span class="line">  &#125;)    </span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'state'</span>, <span class="keyword">this</span>.state.index);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以，如上面的代码，当我们在执行 <code>setState</code>后立即去获取 <code>state</code>，这时是获取不到更新后的 <code>state</code>的，因为处于 <code>React</code>的批处理机制中， <code>state</code>被暂存起来，待批处理机制完成之后，统一进行更新。</p>
+<p>所以。<code>setState</code>本身并不是异步的，而是 <code>React</code>的批处理机制给人一种异步的假象。</p>
+<ul>
+<li><strong>异步代码中</strong></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">componentDidMount() &#123;    </span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;      </span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'调用setState'</span>);      </span><br><span class="line">    <span class="keyword">this</span>.setState(&#123;        </span><br><span class="line">      index: <span class="keyword">this</span>.state.index + <span class="number">1</span>      </span><br><span class="line">    &#125;)      </span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'state'</span>, <span class="keyword">this</span>.state.index);    </span><br><span class="line">  &#125;, <span class="number">0</span>);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如上面的代码，当我们在异步代码中调用 <code>setState</code>时，根据 <code>JavaScript</code>的异步机制，会将异步代码先暂存，等所有同步代码执行完毕后在执行，这时 <code>React</code>的批处理机制已经走完，处理标志设被设置为 <code>false</code>，这时再调用 <code>setState</code>即可立即执行更新，拿到更新后的结果。</p>
+<ul>
+<li><strong>原生事件中</strong></li>
+</ul>
+<p>在原生事件中调用 <code>setState</code>并不会触发 <code>React</code>的批处理机制，所以立即能拿到最新结果。</p>
+<ul>
+<li><strong>最佳实践</strong></li>
+</ul>
+<p><code>setState</code>的第二个参数接收一个函数，该函数会在 <code>React</code>的批处理机制完成之后调用，所以你想在调用 <code>setState</code>后立即获取更新后的值，请在该回调函数中获取。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.setState(&#123; <span class="attr">index</span>: <span class="keyword">this</span>.state.index + <span class="number">1</span> &#125;, () =&gt; &#123;      </span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.state.index);    </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>推荐阅读：<a href="http://mp.weixin.qq.com/s?__biz=Mzg2NDAzMjE5NQ==&mid=2247483989&idx=1&sn=d78f889c6e1d7d57058c9c232b1a620e&chksm=ce6ec6f9f9194fef681c79ee869bf58d5413132c73496710b2eb32c859a2249a895c2ce8a7cd&scene=21#wechat_redirect" target="_blank" rel="noopener">由实际问题探究setState的执行机制</a></p>
+<p>为什么有时连续多次setState只有一次生效？</p>
+<p>例如下面的代码，两次打印出的结果是相同的：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">componentDidMount() &#123;   </span><br><span class="line">  <span class="keyword">this</span>.setState(&#123; <span class="attr">index</span>: <span class="keyword">this</span>.state.index + <span class="number">1</span> &#125;, () =&gt; &#123;   </span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.state.index);    </span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">this</span>.setState(&#123; <span class="attr">index</span>: <span class="keyword">this</span>.state.index + <span class="number">1</span> &#125;, () =&gt; &#123; </span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.state.index);    </span><br><span class="line">  &#125;)  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原因就是 <code>React</code>会批处理机制中存储的多个 <code>setState</code>进行合并，来看下 <code>React</code>源码中的 <code>_assign</code>函数，类似于 <code>Object</code>的 <code>assign</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_assign(nextState, <span class="keyword">typeof</span> partial === <span class="string">'function'</span> ? partial.call(inst, nextState, props, context) : partial);</span><br></pre></td></tr></table></figure>
+
+<p>如果传入的是对象，很明显会被合并成一次，所以上面的代码两次打印的结果是相同的：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.assign(  nextState,  &#123;<span class="attr">index</span>: state.index+ <span class="number">1</span>&#125;,  &#123;<span class="attr">index</span>: state.index+ <span class="number">1</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>注意， <code>assign</code>函数中对函数做了特殊处理，处理第一个参数传入的是函数，函数的参数 <code>preState</code>是前一次合并后的结果，所以计算结果是准确的：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">componentDidMount() &#123;    </span><br><span class="line">  <span class="keyword">this</span>.setState(<span class="function">(<span class="params">state, props</span>) =&gt;</span> (&#123;        </span><br><span class="line">    index: state.index + <span class="number">1</span>    </span><br><span class="line">  &#125;), () =&gt; &#123;      </span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.state.index);    </span><br><span class="line">  &#125;)    </span><br><span class="line">  <span class="keyword">this</span>.setState(<span class="function">(<span class="params">state, props</span>) =&gt;</span> (&#123;        </span><br><span class="line">    index: state.index + <span class="number">1</span>    </span><br><span class="line">  &#125;), () =&gt; &#123;      </span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.state.index);    </span><br><span class="line">  &#125;)  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以上面的代码两次打印的结果是不同的。</p>
+<p><code>React</code>会对多次连续的 <code>setState</code>进行合并，如果你想立即使用上次 <code>setState</code>后的结果进行下一次 <code>setState</code>，可以让 <code>setState</code> 接收一个函数而不是一个对象。这个函数用上一个 <code>state</code> 作为第一个参数，将此次更新被应用时的 <code>props</code> 做为第二个参数。</p>
+<h2 id="React如何实现自己的事件机制？"><a href="#React如何实现自己的事件机制？" class="headerlink" title="React如何实现自己的事件机制？"></a>React如何实现自己的事件机制？</h2><p><code>React</code>事件并没有绑定在真实的 <code>Dom</code>节点上，而是通过事件代理，在最外层的 <code>document</code>上对事件进行统一分发。</p>
+<p><img src="./images/3.png" alt="img"></p>
+<p>组件挂载、更新时：</p>
+<ul>
+<li>通过 <code>lastProps</code>、 <code>nextProps</code>判断是否新增、删除事件分别调用事件注册、卸载方法。</li>
+<li>调用 <code>EventPluginHub</code>的 <code>enqueuePutListener</code>进行事件存储</li>
+<li>获取 <code>document</code>对象。</li>
+<li>根据事件名称（如 <code>onClick</code>、 <code>onCaptureClick</code>）判断是进行冒泡还是捕获。</li>
+<li>判断是否存在 <code>addEventListener</code>方法，否则使用 <code>attachEvent</code>（兼容IE）。</li>
+<li>给 <code>document</code>注册原生事件回调为 <code>dispatchEvent</code>(统一的事件分发机制）。</li>
+</ul>
+<p>事件初始化：</p>
+<ul>
+<li><code>EventPluginHub</code>负责管理 <code>React</code>合成事件的 <code>callback</code>，它将 <code>callback</code>存储在 <code>listenerBank</code>中，另外还存储了负责合成事件的 <code>Plugin</code>。</li>
+<li>获取绑定事件的元素的唯一标识 <code>key</code>。</li>
+<li>将 <code>callback</code>根据事件类型，元素的唯一标识 <code>key</code>存储在 <code>listenerBank</code>中。</li>
+<li><code>listenerBank</code>的结构是： <code>listenerBank[registrationName][key]</code>。</li>
+</ul>
+<p>触发事件时：</p>
+<ul>
+<li>触发 <code>document</code>注册原生事件的回调 <code>dispatchEvent</code></li>
+<li>获取到触发这个事件最深一级的元素</li>
+<li>遍历这个元素的所有父元素，依次对每一级元素进行处理。</li>
+<li>构造合成事件。</li>
+<li>将每一级的合成事件存储在 <code>eventQueue</code>事件队列中。</li>
+<li>遍历 <code>eventQueue</code>。</li>
+<li>通过 <code>isPropagationStopped</code>判断当前事件是否执行了阻止冒泡方法。</li>
+<li>如果阻止了冒泡，停止遍历，否则通过 <code>executeDispatch</code>执行合成事件。</li>
+<li>释放处理完成的事件。</li>
+</ul>
+<blockquote>
+<p><code>React</code>在自己的合成事件中重写了 <code>stopPropagation</code>方法，将 <code>isPropagationStopped</code>设置为 <code>true</code>，然后在遍历每一级事件的过程中根据此遍历判断是否继续执行。这就是 <code>React</code>自己实现的冒泡机制。</p>
+</blockquote>
+<p>推荐阅读：<a href="http://mp.weixin.qq.com/s?__biz=Mzg2NDAzMjE5NQ==&mid=2247484039&idx=1&sn=1f657356676d4809633f30668acb50d2&chksm=ce6ec62bf9194f3d8a4eb382bd01c56231908a1b08fb9c2c9783f96df6650ee808fe18343032&scene=21#wechat_redirect" target="_blank" rel="noopener">【React深入】React事件机制</a></p>
+<h2 id="为何React事件要自己绑定this？"><a href="#为何React事件要自己绑定this？" class="headerlink" title="为何React事件要自己绑定this？"></a>为何React事件要自己绑定this？</h2><p>在上面提到的事件处理流程中， <code>React</code>在 <code>document</code>上进行统一的事件分发， <code>dispatchEvent</code>通过循环调用所有层级的事件来模拟事件冒泡和捕获。</p>
+<p>在 <code>React</code>源码中，当具体到某一事件处理函数将要调用时，将调用 <code>invokeGuardedCallback</code>方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function invokeGuardedCallback(name, func, a) &#123;  try &#123;    func(a);  &#125; catch (x) &#123;    if (caughtError === null) &#123;      caughtError = x;    &#125;  &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可见，事件处理函数是直接调用的，并没有指定调用的组件，所以不进行手动绑定的情况下直接获取到的 <code>this</code>是不准确的，所以我们需要手动将当前组件绑定到 <code>this</code>上。</p>
+<h2 id="原生事件和React事件的区别？"><a href="#原生事件和React事件的区别？" class="headerlink" title="原生事件和React事件的区别？"></a>原生事件和React事件的区别？</h2><ul>
+<li><code>React</code> 事件使用驼峰命名，而不是全部小写。</li>
+<li>通过 <code>JSX</code> , 你传递一个函数作为事件处理程序，而不是一个字符串。</li>
+<li>在 <code>React</code> 中你不能通过返回 <code>false</code> 来阻止默认行为。必须明确调用 <code>preventDefault</code>。</li>
+</ul>
+<h2 id="React的合成事件是什么？"><a href="#React的合成事件是什么？" class="headerlink" title="React的合成事件是什么？"></a>React的合成事件是什么？</h2><p><code>React</code> 根据 <code>W3C</code> 规范定义了每个事件处理函数的参数，即合成事件。</p>
+<p>事件处理程序将传递 <code>SyntheticEvent</code> 的实例，这是一个跨浏览器原生事件包装器。它具有与浏览器原生事件相同的接口，包括 <code>stopPropagation()</code> 和 <code>preventDefault()</code>，在所有浏览器中他们工作方式都相同。</p>
+<p><code>React</code>合成的 <code>SyntheticEvent</code>采用了事件池，这样做可以大大节省内存，而不会频繁的创建和销毁事件对象。</p>
+<p>另外，不管在什么浏览器环境下，浏览器会将该事件类型统一创建为合成事件，从而达到了浏览器兼容的目的。</p>
+<h2 id="React和原生事件的执行顺序是什么？可以混用吗？"><a href="#React和原生事件的执行顺序是什么？可以混用吗？" class="headerlink" title="React和原生事件的执行顺序是什么？可以混用吗？"></a>React和原生事件的执行顺序是什么？可以混用吗？</h2><p><code>React</code>的所有事件都通过 <code>document</code>进行统一分发。当真实 <code>Dom</code>触发事件后冒泡到 <code>document</code>后才会对 <code>React</code>事件进行处理。</p>
+<p>所以原生的事件会先执行，然后执行 <code>React</code>合成事件，最后执行真正在 <code>document</code>上挂载的事件</p>
+<p><code>React</code>事件和原生事件最好不要混用。原生事件中如果执行了 <code>stopPropagation</code>方法，则会导致其他 <code>React</code>事件失效。因为所有元素的事件将无法冒泡到 <code>document</code>上，导致所有的 <code>React</code>事件都将无法被触发。。</p>
+<h2 id="虚拟Dom是什么？"><a href="#虚拟Dom是什么？" class="headerlink" title="虚拟Dom是什么？"></a>虚拟Dom是什么？</h2><p><img src="./images/4.png" alt="img"></p>
+<p>在原生的 <code>JavaScript</code>程序中，我们直接对 <code>DOM</code>进行创建和更改，而 <code>DOM</code>元素通过我们监听的事件和我们的应用程序进行通讯。</p>
+<p>而 <code>React</code>会先将你的代码转换成一个 <code>JavaScript</code>对象，然后这个 <code>JavaScript</code>对象再转换成真实 <code>DOM</code>。这个 <code>JavaScript</code>对象就是所谓的虚拟 <code>DOM</code>。</p>
+<p>当我们需要创建或更新元素时， <code>React</code>首先会让这个 <code>VitrualDom</code>对象进行创建和更改，然后再将 <code>VitrualDom</code>对象渲染成真实DOM。</p>
+<p>当我们需要对 <code>DOM</code>进行事件监听时，首先对 <code>VitrualDom</code>进行事件监听， <code>VitrualDom</code>会代理原生的 <code>DOM</code>事件从而做出响应。</p>
+<p>推荐阅读：<a href="http://mp.weixin.qq.com/s?__biz=Mzg2NDAzMjE5NQ==&mid=2247484212&idx=1&sn=e4cf00c0c087c34ae2f181e7b2f2b257&chksm=ce6ec798f9194e8e0ef0327e9a4cbb8d1454218609a20663a5ea5fed9e31f4a39b7fb114e117&scene=21#wechat_redirect" target="_blank" rel="noopener">【React深入】深入分析虚拟DOM的渲染过程和特性</a></p>
+<h2 id="虚拟Dom比普通Dom更快吗？"><a href="#虚拟Dom比普通Dom更快吗？" class="headerlink" title="虚拟Dom比普通Dom更快吗？"></a>虚拟Dom比普通Dom更快吗？</h2><p>很多文章说 <code>VitrualDom</code>可以提升性能，这一说法实际上是很片面的。</p>
+<p>直接操作 <code>DOM</code>是非常耗费性能的，这一点毋庸置疑。但是 <code>React</code>使用 <code>VitrualDom</code>也是无法避免操作 <code>DOM</code>的。</p>
+<p>如果是首次渲染， <code>VitrualDom</code>不具有任何优势，甚至它要进行更多的计算，消耗更多的内存。</p>
+<p><code>VitrualDom</code>的优势在于 <code>React</code>的 <code>Diff</code>算法和批处理策略， <code>React</code>在页面更新之前，提前计算好了如何进行更新和渲染 <code>DOM</code>。实际上，这个计算过程我们在直接操作 <code>DOM</code>时，也是可以自己判断和实现的，但是一定会耗费非常多的精力和时间，而且往往我们自己做的是不如 <code>React</code>好的。所以，在这个过程中 <code>React</code>帮助我们”提升了性能”。</p>
+<p>所以，我更倾向于说， <code>VitrualDom</code>帮助我们提高了开发效率，在重复渲染时它帮助我们计算如何更高效的更新，而不是它比 <code>DOM</code>操作更快。</p>
+<h2 id="虚拟Dom中的-typeof属性的作用是什么？"><a href="#虚拟Dom中的-typeof属性的作用是什么？" class="headerlink" title="虚拟Dom中的$$typeof属性的作用是什么？"></a>虚拟Dom中的$$typeof属性的作用是什么？</h2><p><code>ReactElement</code>中有一个 <code>$$typeof</code>属性，它被赋值为 <code>REACT_ELEMENT_TYPE</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var REACT_ELEMENT_TYPE =  (typeof Symbol === &apos;function&apos; &amp;&amp; Symbol.for &amp;&amp; Symbol.for(&apos;react.element&apos;)) ||  0xeac7;</span><br></pre></td></tr></table></figure>
+
+<p>可见， <code>$$typeof</code>是一个 <code>Symbol</code>类型的变量，这个变量可以防止 <code>XSS</code>。</p>
+<p>如果你的服务器有一个漏洞，允许用户存储任意 <code>JSON</code>对象， 而客户端代码需要一个字符串，这可能会成为一个问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// JSONlet expectedTextButGotJSON = &#123;  type: &apos;div&apos;,  props: &#123;    dangerouslySetInnerHTML: &#123;      __html: &apos;/* put your exploit here */&apos;    &#125;,  &#125;,&#125;;let message = &#123; text: expectedTextButGotJSON &#125;;&lt;p&gt;  &#123;message.text&#125;&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>JSON</code>中不能存储 <code>Symbol</code>类型的变量。</p>
+<p><code>ReactElement.isValidElement</code>函数用来判断一个 <code>React</code>组件是否是有效的，下面是它的具体实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ReactElement.isValidElement = function (object) &#123;  return typeof object === &apos;object&apos; &amp;&amp; object !== null &amp;&amp; object.$$typeof === REACT_ELEMENT_TYPE;&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>可见 <code>React</code>渲染时会把没有 <code>$$typeof</code>标识，以及规则校验不通过的组件过滤掉。</p>
+<p>当你的环境不支持 <code>Symbol</code>时， <code>$$typeof</code>被赋值为 <code>0xeac7</code>，至于为什么， <code>React</code>开发者给出了答案：</p>
+<blockquote>
+<p><code>0xeac7</code>看起来有点像 <code>React</code>。</p>
+</blockquote>
+<h2 id="React组件的渲染流程是什么？"><a href="#React组件的渲染流程是什么？" class="headerlink" title="React组件的渲染流程是什么？"></a>React组件的渲染流程是什么？</h2><ul>
+<li><p>使用 <code>React.createElement</code>或 <code>JSX</code>编写 <code>React</code>组件，实际上所有的 <code>JSX</code>代码最后都会转换成 <code>React.createElement(...)</code>， <code>Babel</code>帮助我们完成了这个转换的过程。</p>
+</li>
+</ul>
+<ul>
+<li><p><code>createElement</code>函数对 <code>key</code>和 <code>ref</code>等特殊的 <code>props</code>进行处理，并获取 <code>defaultProps</code>对默认 <code>props</code>进行赋值，并且对传入的孩子节点进行处理，最终构造成一个 <code>ReactElement</code>对象（所谓的虚拟 <code>DOM</code>）。</p>
+</li>
+</ul>
+<ul>
+<li><p><code>ReactDOM.render</code>将生成好的虚拟 <code>DOM</code>渲染到指定容器上，其中采用了批处理、事务等机制并且对特定浏览器进行了性能优化，最终转换为真实 <code>DOM</code>。</p>
+</li>
+</ul>
+<h2 id="为什么代码中一定要引入React？"><a href="#为什么代码中一定要引入React？" class="headerlink" title="为什么代码中一定要引入React？"></a>为什么代码中一定要引入React？</h2><p><code>JSX</code>只是为 <code>React.createElement(component,props,...children)</code>方法提供的语法糖。</p>
+<p>所有的 <code>JSX</code>代码最后都会转换成 <code>React.createElement(...)</code>， <code>Babel</code>帮助我们完成了这个转换的过程。</p>
+<p>所以使用了 <code>JSX</code>的代码都必须引入 <code>React</code>。</p>
+<h2 id="为什么React组件首字母必须大写？"><a href="#为什么React组件首字母必须大写？" class="headerlink" title="为什么React组件首字母必须大写？"></a>为什么React组件首字母必须大写？</h2><p><code>babel</code>在编译时会判断 <code>JSX</code>中组件的首字母，当首字母为小写时，其被认定为原生 <code>DOM</code>标签， <code>createElement</code>的第一个变量被编译为字符串；当首字母为大写时，其被认定为自定义组件， <code>createElement</code>的第一个变量被编译为对象；</p>
+<h2 id="React在渲染真实Dom时做了哪些性能优化？"><a href="#React在渲染真实Dom时做了哪些性能优化？" class="headerlink" title="React在渲染真实Dom时做了哪些性能优化？"></a>React在渲染真实Dom时做了哪些性能优化？</h2><p>在 <code>IE（8-11）</code>和 <code>Edge</code>浏览器中，一个一个插入无子孙的节点，效率要远高于插入一整个序列化完整的节点树。</p>
+<p><code>React</code>通过 <code>lazyTree</code>，在 <code>IE（8-11）</code>和 <code>Edge</code>中进行单个节点依次渲染节点，而在其他浏览器中则首先将整个大的 <code>DOM</code>结构构建好，然后再整体插入容器。</p>
+<p>并且，在单独渲染节点时， <code>React</code>还考虑了 <code>fragment</code>等特殊节点，这些节点则不会一个一个插入渲染。</p>
+<h2 id="什么是高阶组件？如何实现？"><a href="#什么是高阶组件？如何实现？" class="headerlink" title="什么是高阶组件？如何实现？"></a>什么是高阶组件？如何实现？</h2><p>高阶组件可以看作 <code>React</code>对装饰模式的一种实现，高阶组件就是一个函数，且该函数接受一个组件作为参数，并返回一个新的组件。</p>
+<blockquote>
+<p>高阶组件（ <code>HOC</code>）是 <code>React</code>中的高级技术，用来重用组件逻辑。但高阶组件本身并不是 <code>ReactAPI</code>。它只是一种模式，这种模式是由 <code>React</code>自身的组合性质必然产生的。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function visible(WrappedComponent) &#123;  return class extends Component &#123;    render() &#123;      const &#123; visible, ...props &#125; = this.props;      if (visible === false) return null;      return &lt;WrappedComponent &#123;...props&#125; /&gt;;    &#125;  &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码就是一个 <code>HOC</code>的简单应用，函数接收一个组件作为参数，并返回一个新组件，新组建可以接收一个 <code>visible props</code>，根据 <code>visible</code>的值来判断是否渲染Visible。</p>
+<p><img src="./images/5.png" alt="img"></p>
+<p>我们可以通过以下两种方式实现高阶组件：</p>
+<h3 id="属性代理"><a href="#属性代理" class="headerlink" title="属性代理"></a>属性代理</h3><p>函数返回一个我们自己定义的组件，然后在 <code>render</code>中返回要包裹的组件，这样我们就可以代理所有传入的 <code>props</code>，并且决定如何渲染，实际上 ，这种方式生成的高阶组件就是原组件的父组件，上面的函数 <code>visible</code>就是一个 <code>HOC</code>属性代理的实现方式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function proxyHOC(WrappedComponent) &#123;  return class extends Component &#123;    render() &#123;      return &lt;WrappedComponent &#123;...this.props&#125; /&gt;;    &#125;  &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对比原生组件增强的项：</p>
+<ul>
+<li>可操作所有传入的 <code>props</code></li>
+<li>可操作组件的生命周期</li>
+<li>可操作组件的 <code>static</code>方法</li>
+<li>获取 <code>refs</code></li>
+</ul>
+<h3 id="反向继承"><a href="#反向继承" class="headerlink" title="反向继承"></a>反向继承</h3><p>返回一个组件，继承原组件，在 <code>render</code>中调用原组件的 <code>render</code>。由于继承了原组件，能通过this访问到原组件的 <code>生命周期、props、state、render</code>等，相比属性代理它能操作更多的属性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function inheritHOC(WrappedComponent) &#123;  return class extends WrappedComponent &#123;    render() &#123;      return super.render();    &#125;  &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对比原生组件增强的项：</p>
+<ul>
+<li>可操作所有传入的 <code>props</code></li>
+<li>可操作组件的生命周期</li>
+<li>可操作组件的 <code>static</code>方法</li>
+<li>获取 <code>refs</code></li>
+<li>可操作 <code>state</code></li>
+<li>可以渲染劫持</li>
+</ul>
+<p>推荐阅读：<a href="http://mp.weixin.qq.com/s?__biz=Mzg2NDAzMjE5NQ==&mid=2247484193&idx=1&sn=0c152afb3566f2b600b0e218d5d24017&chksm=ce6ec78df9194e9b3e0e4f18706fd84be22f0f84d1e7554892e169a30265c6fa154731c1c7a3&scene=21#wechat_redirect" target="_blank" rel="noopener">【React深入】从Mixin到HOC再到Hook</a></p>
+<h2 id="HOC在业务场景中有哪些实际应用场景？"><a href="#HOC在业务场景中有哪些实际应用场景？" class="headerlink" title="HOC在业务场景中有哪些实际应用场景？"></a>HOC在业务场景中有哪些实际应用场景？</h2><p><code>HOC</code>可以实现的功能：</p>
+<ul>
+<li>组合渲染</li>
+<li>条件渲染</li>
+<li>操作 <code>props</code></li>
+<li>获取 <code>refs</code></li>
+<li>状态管理</li>
+<li>操作 <code>state</code></li>
+<li>渲染劫持</li>
+</ul>
+<p><code>HOC</code>在业务中的实际应用场景：</p>
+<ul>
+<li>日志打点</li>
+<li>权限控制</li>
+<li>双向绑定</li>
+<li>表单校验</li>
+</ul>
+<p>具体实现请参考我这篇文章：<a href="https://juejin.im/post/5cad39b3f265da03502b1c0a" target="_blank" rel="noopener">https://juejin.im/post/5cad39b3f265da03502b1c0a</a></p>
+<h2 id="高阶组件-HOC-和Mixin的异同点是什么？"><a href="#高阶组件-HOC-和Mixin的异同点是什么？" class="headerlink" title="高阶组件(HOC)和Mixin的异同点是什么？"></a>高阶组件(HOC)和Mixin的异同点是什么？</h2><p><code>Mixin</code>和 <code>HOC</code>都可以用来解决 <code>React</code>的代码复用问题。</p>
+<p><img src="./images/6.png" alt="img"></p>
+<p>图片来源于网络</p>
+<ul>
+<li><code>Mixin</code> 可能会相互依赖，相互耦合，不利于代码维护</li>
+<li>不同的 <code>Mixin</code>中的方法可能会相互冲突</li>
+<li><code>Mixin</code>非常多时，组件是可以感知到的，甚至还要为其做相关处理，这样会给代码造成滚雪球式的复杂性</li>
+</ul>
+<p>而 <code>HOC</code>的出现可以解决这些问题：</p>
+<ul>
+<li>高阶组件就是一个没有副作用的纯函数，各个高阶组件不会互相依赖耦合</li>
+<li>高阶组件也有可能造成冲突，但我们可以在遵守约定的情况下避免这些行为</li>
+<li>高阶组件并不关心数据使用的方式和原因，而被包裹的组件也不关心数据来自何处。高阶组件的增加不会为原组件增加负担</li>
+</ul>
+<h2 id="Hook有哪些优势？"><a href="#Hook有哪些优势？" class="headerlink" title="Hook有哪些优势？"></a>Hook有哪些优势？</h2><ul>
+<li>减少状态逻辑复用的风险</li>
+</ul>
+<p><code>Hook</code>和 <code>Mixin</code>在用法上有一定的相似之处，但是 <code>Mixin</code>引入的逻辑和状态是可以相互覆盖的，而多个 <code>Hook</code>之间互不影响，这让我们不需要在把一部分精力放在防止避免逻辑复用的冲突上。在不遵守约定的情况下使用 <code>HOC</code>也有可能带来一定冲突，比如 <code>props</code>覆盖等等，使用 <code>Hook</code>则可以避免这些问题。</p>
+<ul>
+<li>避免地狱式嵌套</li>
+</ul>
+<p>大量使用 <code>HOC</code>的情况下让我们的代码变得嵌套层级非常深，使用 <code>HOC</code>，我们可以实现扁平式的状态逻辑复用，而避免了大量的组件嵌套。</p>
+<ul>
+<li>让组件更容易理解</li>
+</ul>
+<p>在使用 <code>class</code>组件构建我们的程序时，他们各自拥有自己的状态，业务逻辑的复杂使这些组件变得越来越庞大，各个生命周期中会调用越来越多的逻辑，越来越难以维护。使用 <code>Hook</code>，可以让你更大限度的将公用逻辑抽离，将一个组件分割成更小的函数，而不是强制基于生命周期方法进行分割。</p>
+<ul>
+<li>使用函数代替class</li>
+</ul>
+<p>相比函数，编写一个 <code>class</code>可能需要掌握更多的知识，需要注意的点也越多，比如 <code>this</code>指向、绑定事件等等。另外，计算机理解一个 <code>class</code>比理解一个函数更快。<code>Hooks</code>让你可以在 <code>classes</code>之外使用更多 <code>React</code>的新特性。</p>
+<p>下篇预告：</p>
+<ul>
+<li><code>ReactDiff</code>算法的策略是什么？</li>
+<li><code>React</code>中 <code>key</code>的作用是什么？</li>
+<li><code>ReactFiber</code>是什么？为什么要引入？</li>
+<li>为什么推荐在 <code>componentDidMount</code>中发起网络请求？</li>
+<li><code>React</code>代码优化？</li>
+<li><code>React</code>组件设计要掌握哪些原则？</li>
+<li><code>Redux</code>的核心原理是什么？</li>
+<li>什么是 <code>Redux</code>中间件？</li>
+<li><code>Reduxconnect</code>函数的实现策略？</li>
+<li><code>Mox</code>的核心原理是什么？</li>
+<li><code>Redux</code>和 <code>Mobx</code>的异同点，如何选择？</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/react/" rel="tag"># react</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/14/react/React知识点汇总二/" rel="next" title="React的知识点汇总二">
+                <i class="fa fa-chevron-left"></i> React的知识点汇总二
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Will</p>
+              <p class="site-description motion-element" itemprop="description">面对困难更要有迎难而上的勇气和坚韧</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#React生命周期有哪些，16版本生命周期发生了哪些变化？"><span class="nav-number">1.</span> <span class="nav-text">React生命周期有哪些，16版本生命周期发生了哪些变化？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#15生命周期"><span class="nav-number">1.1.</span> <span class="nav-text">15生命周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16生命周期"><span class="nav-number">1.2.</span> <span class="nav-text">16生命周期</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setState是同步的还是异步的？"><span class="nav-number">2.</span> <span class="nav-text">setState是同步的还是异步的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React如何实现自己的事件机制？"><span class="nav-number">3.</span> <span class="nav-text">React如何实现自己的事件机制？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为何React事件要自己绑定this？"><span class="nav-number">4.</span> <span class="nav-text">为何React事件要自己绑定this？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原生事件和React事件的区别？"><span class="nav-number">5.</span> <span class="nav-text">原生事件和React事件的区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React的合成事件是什么？"><span class="nav-number">6.</span> <span class="nav-text">React的合成事件是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React和原生事件的执行顺序是什么？可以混用吗？"><span class="nav-number">7.</span> <span class="nav-text">React和原生事件的执行顺序是什么？可以混用吗？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟Dom是什么？"><span class="nav-number">8.</span> <span class="nav-text">虚拟Dom是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟Dom比普通Dom更快吗？"><span class="nav-number">9.</span> <span class="nav-text">虚拟Dom比普通Dom更快吗？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟Dom中的-typeof属性的作用是什么？"><span class="nav-number">10.</span> <span class="nav-text">虚拟Dom中的$$typeof属性的作用是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React组件的渲染流程是什么？"><span class="nav-number">11.</span> <span class="nav-text">React组件的渲染流程是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么代码中一定要引入React？"><span class="nav-number">12.</span> <span class="nav-text">为什么代码中一定要引入React？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么React组件首字母必须大写？"><span class="nav-number">13.</span> <span class="nav-text">为什么React组件首字母必须大写？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React在渲染真实Dom时做了哪些性能优化？"><span class="nav-number">14.</span> <span class="nav-text">React在渲染真实Dom时做了哪些性能优化？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是高阶组件？如何实现？"><span class="nav-number">15.</span> <span class="nav-text">什么是高阶组件？如何实现？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#属性代理"><span class="nav-number">15.1.</span> <span class="nav-text">属性代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反向继承"><span class="nav-number">15.2.</span> <span class="nav-text">反向继承</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HOC在业务场景中有哪些实际应用场景？"><span class="nav-number">16.</span> <span class="nav-text">HOC在业务场景中有哪些实际应用场景？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高阶组件-HOC-和Mixin的异同点是什么？"><span class="nav-number">17.</span> <span class="nav-text">高阶组件(HOC)和Mixin的异同点是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hook有哪些优势？"><span class="nav-number">18.</span> <span class="nav-text">Hook有哪些优势？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Will</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

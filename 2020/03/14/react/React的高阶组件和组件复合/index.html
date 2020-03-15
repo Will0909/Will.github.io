@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="react,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="高阶组件 - Hoc返回组件的组件，强化组件功能，如下案例可以为展示组件添加获取数据能力 1234567891011121314151617181920212223242526272829303132333435import React from &apos;react&apos;// 保证功能单一，不关心数据来源，只负责显示function Lesson(props) &amp;#123;    return (">
+<meta name="keywords" content="react">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React的高阶组件和组件复合">
+<meta property="og:url" content="https://jobten.github.io/2020/03/14/react/React的高阶组件和组件复合/index.html">
+<meta property="og:site_name" content="Will&#39;s Blog">
+<meta property="og:description" content="高阶组件 - Hoc返回组件的组件，强化组件功能，如下案例可以为展示组件添加获取数据能力 1234567891011121314151617181920212223242526272829303132333435import React from &apos;react&apos;// 保证功能单一，不关心数据来源，只负责显示function Lesson(props) &amp;#123;    return (">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-03-14T02:35:05.615Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React的高阶组件和组件复合">
+<meta name="twitter:description" content="高阶组件 - Hoc返回组件的组件，强化组件功能，如下案例可以为展示组件添加获取数据能力 1234567891011121314151617181920212223242526272829303132333435import React from &apos;react&apos;// 保证功能单一，不关心数据来源，只负责显示function Lesson(props) &amp;#123;    return (">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jobten.github.io/2020/03/14/react/React的高阶组件和组件复合/">
+
+
+
+
+
+  <title>React的高阶组件和组件复合 | Will's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Will's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jobten.github.io/2020/03/14/react/React的高阶组件和组件复合/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Will">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Will's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">React的高阶组件和组件复合</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-14T10:35:05+08:00">
+                2020-03-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/react/" itemprop="url" rel="index">
+                    <span itemprop="name">react</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/react/react进阶/" itemprop="url" rel="index">
+                    <span itemprop="name">react进阶</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="高阶组件-Hoc"><a href="#高阶组件-Hoc" class="headerlink" title="高阶组件 - Hoc"></a>高阶组件 - Hoc</h2><p>返回组件的组件，强化组件功能，如下案例可以为展示组件添加获取数据能力</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 保证功能单一，不关心数据来源，只负责显示</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Lesson</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &#123; props.stage &#125; : &#123; props.title&#125;</span><br><span class="line">        &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ 模拟数据</span></span><br><span class="line"><span class="regexp">const lessons = [</span></span><br><span class="line"><span class="regexp">    &#123; stage: "React", title: "核心API" &#125;,</span></span><br><span class="line"><span class="regexp">    &#123; stage: "React", title: "组件化1" &#125;,</span></span><br><span class="line"><span class="regexp">    &#123; stage: "React", title: "组件化2" &#125;</span></span><br><span class="line"><span class="regexp">];</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ 负责包装传入组件Comp的高级组件，可以根据传入的索引号获取课程的数据</span></span><br><span class="line"><span class="regexp">const WithContent = Comp =&gt; props =&gt; &#123;</span></span><br><span class="line"><span class="regexp">    const content = lessons[props.index]</span></span><br><span class="line"><span class="regexp">    return &lt;Comp &#123; ...content &#125;&gt;&lt;/</span>Comp&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> LessionWithContent =  WithContent(Lesson)</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">HocTest</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &#123; lessons.map(<span class="function">(<span class="params">content, index</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> (<span class="xml"><span class="tag">&lt;<span class="name">LessionWithContent</span> <span class="attr">index</span>= <span class="string">&#123;</span> <span class="attr">index</span> &#125; <span class="attr">key</span> = <span class="string">&#123;</span> <span class="attr">index</span> &#125;/&gt;</span>)</span></span><br><span class="line"><span class="xml">            &#125;) &#125;</span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="链式调用"><a href="#链式调用" class="headerlink" title="链式调用"></a>链式调用</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 高阶组件withLog负责包装传入组件Comp</span></span><br><span class="line"><span class="comment">// 包装后组件在挂载时可以输出日志记录</span></span><br><span class="line"><span class="keyword">const</span> withLog = <span class="function"><span class="params">Comp</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 返回组件需要生命周期，因此声明为class组件</span></span><br><span class="line">    <span class="keyword">return</span> <span class="class"><span class="keyword">class</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">        render() &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">Comp</span> &#123;<span class="attr">...this.props</span>&#125; /&gt;</span></span></span><br><span class="line"><span class="xml">        &#125;</span></span><br><span class="line"><span class="xml">        componentDidMount() &#123;</span></span><br><span class="line"><span class="xml">            console.log("didMount", this.props)</span></span><br><span class="line"><span class="xml">        &#125;</span></span><br><span class="line"><span class="xml">    &#125;</span></span><br><span class="line"><span class="xml">&#125;</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">const LessionWithContent =  withLog(WithContent(Lesson))</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="装饰器的使用"><a href="#装饰器的使用" class="headerlink" title="装饰器的使用"></a>装饰器的使用</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 装饰器只能用再class上，执行顺序从上往下</span></span><br><span class="line">@withLog</span><br><span class="line">@WithContent</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Lesson2</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">    render() &#123;</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">            &lt;div&gt;</span><br><span class="line">                &#123;<span class="keyword">this</span>.props.stage&#125; - &#123;<span class="keyword">this</span>.props.title&#125;</span><br><span class="line">            &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">        )</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">export default function HocTest() &#123;</span></span><br><span class="line"><span class="regexp">    return (</span></span><br><span class="line"><span class="regexp">        &lt;div&gt;</span></span><br><span class="line"><span class="regexp">            &#123; lessons.map((content, index) =&gt; &#123;</span></span><br><span class="line"><span class="regexp">                return (&lt;Lesson2 index= &#123; index &#125; key = &#123; index &#125;/</span>&gt;)</span><br><span class="line">            &#125;) &#125;</span><br><span class="line">        &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="组件复合-Compositon"><a href="#组件复合-Compositon" class="headerlink" title="组件复合 - Compositon"></a>组件复合 - Compositon</h2><p>复合组件给你足够的敏捷去定义自定义的组件外观和行为</p>
+<h3 id="普通插槽"><a href="#普通插槽" class="headerlink" title="普通插槽"></a>普通插槽</h3><p>下面案例Dialog组件负责展示，内容从外部传入，类似于Vue的<strong>普通插槽</strong></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Dialog定义组件外观和行为</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Dialog</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">border:</span> '<span class="attr">1px</span> <span class="attr">solid</span> <span class="attr">blue</span>'&#125;&#125;&gt;</span>&#123; props.children &#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">CompositionTest</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;Dialog&gt;</span><br><span class="line">                &#123;<span class="comment">/* 传入显示内容 */</span>&#125;</span><br><span class="line">                &lt;h1&gt;组件复合&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">                &lt;p&gt;复合组件给与你足够的敏捷去定义自定义组件的外观和行为&lt;/</span>p&gt;</span><br><span class="line">            &lt;<span class="regexp">/Dialog&gt;</span></span><br><span class="line"><span class="regexp">        &lt;/</span>div&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="具名插槽"><a href="#具名插槽" class="headerlink" title="具名插槽"></a>具名插槽</h3><p>传入对象，key则表示<strong>具名插槽</strong></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取相应部分内容展示在指定位置</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Dialog2</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (<span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">border:</span> '<span class="attr">1px</span> <span class="attr">solid</span> <span class="attr">blue</span>'&#125;&#125;&gt;</span></span></span><br><span class="line"><span class="xml">            &#123; props.children.default &#125;</span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;<span class="name">div</span>&gt;</span> &#123; props.children.footer &#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">CompositionTest</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;h2&gt;具名插槽：&lt;<span class="regexp">/h2&gt;</span></span><br><span class="line"><span class="regexp">            &lt;Dialog2&gt;</span></span><br><span class="line"><span class="regexp">                &#123;&#123; default: (</span></span><br><span class="line"><span class="regexp">                    &lt;div&gt;</span></span><br><span class="line"><span class="regexp">                        &lt;p&gt;default内容&lt;/</span>p&gt;</span><br><span class="line">                    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">                ),</span></span><br><span class="line"><span class="regexp">                footer: &lt;button onClick=&#123;() =&gt; alert("这是footer")&#125;&gt;确定&lt;/</span>button&gt;</span><br><span class="line">                &#125;&#125;</span><br><span class="line">            &lt;<span class="regexp">/Dialog2&gt;</span></span><br><span class="line"><span class="regexp">        &lt;/</span>div&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="作用域插槽"><a href="#作用域插槽" class="headerlink" title="作用域插槽"></a>作用域插槽</h3><p>父组件中可以直接使用子组件的数据，父组件调用子组件时组件的<code>children</code>写成函数，函数的参数在子组件中传入</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Dialog3</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> messages = &#123;</span><br><span class="line">        <span class="string">'foo'</span>: &#123; <span class="attr">title</span>: <span class="string">'foo'</span>, <span class="attr">content</span>: <span class="string">'foo~~'</span>&#125;,</span><br><span class="line">        <span class="string">'bar'</span>: &#123; <span class="attr">title</span>: <span class="string">'bar'</span>, <span class="attr">content</span>: <span class="string">'bar~~'</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> &#123; body, footer &#125; = props.children(messages[props.msg])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (<span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">border:</span> '<span class="attr">1px</span> <span class="attr">solid</span> <span class="attr">blue</span>'&#125;&#125;&gt;</span></span></span><br><span class="line"><span class="xml">            &#123; body &#125;</span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;<span class="name">div</span>&gt;</span> &#123; footer &#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">CompositionTest</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;h2&gt;作用域插槽：&lt;<span class="regexp">/h2&gt;</span></span><br><span class="line"><span class="regexp">            &lt;Dialog3 msg='foo'&gt;</span></span><br><span class="line"><span class="regexp">                &#123;</span></span><br><span class="line"><span class="regexp">                    /</span><span class="regexp">/ 函数形式，根据传入值生成最终内容。title和content是由子组件中决定</span></span><br><span class="line"><span class="regexp">                    (&#123; title, content &#125;) =&gt; (&#123;</span></span><br><span class="line"><span class="regexp">                        body:(</span></span><br><span class="line"><span class="regexp">                            &lt;div&gt;</span></span><br><span class="line"><span class="regexp">                                &lt;h1&gt;&#123; title &#125;&lt;/</span>h1&gt;</span><br><span class="line">                                &lt;p&gt;&#123; content &#125;&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">                            &lt;/</span>div&gt;</span><br><span class="line">                        ),</span><br><span class="line">                        footer: <span class="xml"><span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;</span> () =&gt;</span> alert('footer')&#125;&gt;确定<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line">                    &#125;)</span><br><span class="line">                &#125;</span><br><span class="line">            &lt;<span class="regexp">/Dialog3&gt;</span></span><br><span class="line"><span class="regexp">        &lt;/</span>div&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="如果props-children是jsx，此时它是不能修改的"><a href="#如果props-children是jsx，此时它是不能修改的" class="headerlink" title="如果props.children是jsx，此时它是不能修改的"></a>如果<code>props.children</code>是<code>jsx</code>，此时它是不能修改的</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">RadioGroup</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 不可行,</span></span><br><span class="line">    <span class="comment">// React.Children.forEach(props.children, child =&gt; &#123;</span></span><br><span class="line">    <span class="comment">// child.props.name = props.name;</span></span><br><span class="line">    <span class="comment">// &#125;);</span></span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &#123;React.Children.map(props.children, child =&gt; &#123;</span><br><span class="line">                <span class="comment">// 要修改child属性必须先克隆它</span></span><br><span class="line">                <span class="keyword">return</span> React.cloneElement(child, &#123; <span class="attr">name</span>: props.name &#125;);</span><br><span class="line">            &#125;)&#125;</span><br><span class="line">        &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ Radio传入value,name和children，注意区分</span></span><br><span class="line"><span class="regexp">function Radio(&#123; children, ...rest &#125;) &#123;</span></span><br><span class="line"><span class="regexp">    return (</span></span><br><span class="line"><span class="regexp">        &lt;label&gt;</span></span><br><span class="line"><span class="regexp">            &lt;input type="radio" &#123;...rest&#125; /</span>&gt;</span><br><span class="line">            &#123;children&#125;</span><br><span class="line">        &lt;<span class="regexp">/label&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">export default function CompositionTest() &#123;</span></span><br><span class="line"><span class="regexp">    return (</span></span><br><span class="line"><span class="regexp">            &lt;div&gt;</span></span><br><span class="line"><span class="regexp">                &#123;/</span>* 执行显示消息的key *<span class="regexp">/&#125;</span></span><br><span class="line"><span class="regexp">                &lt;RadioGroup name="mvvm"&gt;</span></span><br><span class="line"><span class="regexp">                    &lt;Radio value="vue"&gt;vue&lt;/</span>Radio&gt;</span><br><span class="line">                    &lt;Radio value=<span class="string">"react"</span>&gt;react&lt;<span class="regexp">/Radio&gt;</span></span><br><span class="line"><span class="regexp">                    &lt;Radio value="ng"&gt;angular&lt;/</span>Radio&gt;</span><br><span class="line">                &lt;<span class="regexp">/RadioGroup&gt;</span></span><br><span class="line"><span class="regexp">            &lt;/</span>div&gt;</span><br><span class="line">        &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="高阶组件和组件复合的区别"><a href="#高阶组件和组件复合的区别" class="headerlink" title="高阶组件和组件复合的区别"></a>高阶组件和组件复合的区别</h2>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/react/" rel="tag"># react</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/14/react/React的Hooks/" rel="next" title="React的Hooks">
+                <i class="fa fa-chevron-left"></i> React的Hooks
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/14/react/React组件间通信/" rel="prev" title="React组件间通信">
+                React组件间通信 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Will</p>
+              <p class="site-description motion-element" itemprop="description">面对困难更要有迎难而上的勇气和坚韧</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#高阶组件-Hoc"><span class="nav-number">1.</span> <span class="nav-text">高阶组件 - Hoc</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#链式调用"><span class="nav-number">1.1.</span> <span class="nav-text">链式调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#装饰器的使用"><span class="nav-number">1.2.</span> <span class="nav-text">装饰器的使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组件复合-Compositon"><span class="nav-number">2.</span> <span class="nav-text">组件复合 - Compositon</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#普通插槽"><span class="nav-number">2.1.</span> <span class="nav-text">普通插槽</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具名插槽"><span class="nav-number">2.2.</span> <span class="nav-text">具名插槽</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#作用域插槽"><span class="nav-number">2.3.</span> <span class="nav-text">作用域插槽</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果props-children是jsx，此时它是不能修改的"><span class="nav-number">2.4.</span> <span class="nav-text">如果props.children是jsx，此时它是不能修改的</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高阶组件和组件复合的区别"><span class="nav-number">3.</span> <span class="nav-text">高阶组件和组件复合的区别</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Will</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

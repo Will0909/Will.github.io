@@ -79,18 +79,21 @@
 
 
 
-<meta name="description" content="####">
+<meta name="description" content="React 15分四个阶段：初始化阶段，挂载阶段，更新阶段，销毁阶段  初始化阶段初始化阶段是在Constructor中进行，主要是数据的初始化，如：props注入到子组件和state的初始化  constructor 构造函数  getDefaultProps props默认值  getInitialState state默认值   挂载阶段挂载阶段负责DOM的挂载，主要包括三个钩子函数：Com">
 <meta name="keywords" content="react">
 <meta property="og:type" content="article">
 <meta property="og:title" content="React的生命周期">
 <meta property="og:url" content="https://jobten.github.io/2019/11/10/react/React的生命周期/index.html">
 <meta property="og:site_name" content="Will&#39;s Blog">
-<meta property="og:description" content="####">
+<meta property="og:description" content="React 15分四个阶段：初始化阶段，挂载阶段，更新阶段，销毁阶段  初始化阶段初始化阶段是在Constructor中进行，主要是数据的初始化，如：props注入到子组件和state的初始化  constructor 构造函数  getDefaultProps props默认值  getInitialState state默认值   挂载阶段挂载阶段负责DOM的挂载，主要包括三个钩子函数：Com">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-03T13:29:28.868Z">
+<meta property="og:image" content="https://jobten.github.io/2019/11/10/react/React的生命周期/images/image-20200315102247870.png">
+<meta property="og:image" content="https://jobten.github.io/2019/11/10/react/React的生命周期/images/image-20200315102407962.png">
+<meta property="og:updated_time" content="2020-03-15T03:22:46.209Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React的生命周期">
-<meta name="twitter:description" content="####">
+<meta name="twitter:description" content="React 15分四个阶段：初始化阶段，挂载阶段，更新阶段，销毁阶段  初始化阶段初始化阶段是在Constructor中进行，主要是数据的初始化，如：props注入到子组件和state的初始化  constructor 构造函数  getDefaultProps props默认值  getInitialState state默认值   挂载阶段挂载阶段负责DOM的挂载，主要包括三个钩子函数：Com">
+<meta name="twitter:image" content="https://jobten.github.io/2019/11/10/react/React的生命周期/images/image-20200315102247870.png">
 
 
 
@@ -326,8 +329,8 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/react/react基础/" itemprop="url" rel="index">
-                    <span itemprop="name">react基础</span>
+                  <a href="/categories/react/react进阶/" itemprop="url" rel="index">
+                    <span itemprop="name">react进阶</span>
                   </a>
                 </span>
 
@@ -363,7 +366,85 @@
       
 
       
-        <p>#### </p>
+        <h2 id="React-15"><a href="#React-15" class="headerlink" title="React 15"></a>React 15</h2><p>分四个阶段：初始化阶段，挂载阶段，更新阶段，销毁阶段</p>
+<p><img src="./images/image-20200315102247870.png" alt="image-20200315102247870"></p>
+<h3 id="初始化阶段"><a href="#初始化阶段" class="headerlink" title="初始化阶段"></a>初始化阶段</h3><p>初始化阶段是在<code>Constructor</code>中进行，主要是数据的初始化，如：<code>props</code>注入到子组件和<code>state</code>的初始化</p>
+<ul>
+<li><p><code>constructor</code> 构造函数</p>
+</li>
+<li><p><code>getDefaultProps</code> <code>props</code>默认值</p>
+</li>
+<li><p><code>getInitialState</code> <code>state</code>默认值</p>
+</li>
+</ul>
+<h3 id="挂载阶段"><a href="#挂载阶段" class="headerlink" title="挂载阶段"></a>挂载阶段</h3><p>挂载阶段负责DOM的挂载，主要包括三个钩子函数：<code>ComponentWillMount</code>, <code>Render</code>, <code>ComponentDidMount</code></p>
+<h4 id="ComponentWillMount"><a href="#ComponentWillMount" class="headerlink" title="ComponentWillMount"></a>ComponentWillMount</h4><p>在组件挂载到DOM之前调用，只会被调用一次, 在初始化阶段调用<code>setState</code>不会引起组件的重新渲染，一般很少使用，因为可以这里的工作提前到<code>Constructor</code>中</p>
+<h4 id="Render"><a href="#Render" class="headerlink" title="Render"></a>Render</h4><p>根据组件的Props和state(重传递和重赋值，无论是否变化都会引起组件重新render)，返回一个React元素(JSX), <strong>注意：不负责组件的渲染</strong>，React本身根据返回的元素去渲染页面DOM, render是纯函数，不可以做`setState会改变组件状态。</p>
+<h4 id="ComponentDidMounted"><a href="#ComponentDidMounted" class="headerlink" title="ComponentDidMounted"></a>ComponentDidMounted</h4><p>组件挂载到DOM后后调用，只调用一次</p>
+<h3 id="更新阶段"><a href="#更新阶段" class="headerlink" title="更新阶段"></a>更新阶段</h3><p>更新阶段包括5个钩子函数：<code>ComponentWillReceiveProps</code> , <code>shouldComponentUpdate</code>, <code>ComponentWillUpdate</code>,  <code>Render</code>,  <code>ComponentUpdate</code></p>
+<p>有两种方式引起组件更新，一是父组件重新渲染，二是组件本身触发<code>setState</code></p>
+<h4 id="父组件重新渲染"><a href="#父组件重新渲染" class="headerlink" title="父组件重新渲染"></a>父组件重新渲染</h4><p>有两种情况：</p>
+<ol>
+<li>父组件直接render导致重传props，可以通过shouldComponentUpdate去做优化，如下：</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">   shouldComponentUpdate(nextProps)&#123; </span><br><span class="line">     <span class="keyword">if</span>(nextProps.someThings === <span class="keyword">this</span>.props.someThings)&#123;</span><br><span class="line">     	<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">   	&#125; </span><br><span class="line">   &#125;</span><br><span class="line">   render() &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;this.props.someThings&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>在componentWillReceiveProps方法中，将props转换成自己的state </li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">Child</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">        <span class="keyword">super</span>(props);</span><br><span class="line">        <span class="keyword">this</span>.state = &#123;</span><br><span class="line">            someThings: props.someThings</span><br><span class="line">        &#125;;</span><br><span class="line">		&#125;</span><br><span class="line">		componentWillReceiveProps(nextProps) &#123; <span class="comment">// 父组件重传props时就会调用这个方法</span></span><br><span class="line">        <span class="keyword">this</span>.setState(&#123;<span class="attr">someThings</span>: nextProps.someThings&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    render() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;this.state.someThings&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">		&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>在该函数(componentWillReceiveProps)中调用<code>this.setState()</code>将不会引起第二次渲染。 是因为<code>componentWillReceiveProps</code>中判断props是否变化了，若变化了，<code>this.setState</code>将引起state变化，从而引 起render，此时就没必要再做第二次因重传props引起的render了，不然重复做一样的渲染了。 </p>
+<h4 id="组件本身触发setState"><a href="#组件本身触发setState" class="headerlink" title="组件本身触发setState"></a>组件本身触发setState</h4><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">   <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">     <span class="keyword">super</span>(props);</span><br><span class="line">     <span class="keyword">this</span>.state = &#123;</span><br><span class="line">       someThings:<span class="number">1</span></span><br><span class="line">  		&#125; </span><br><span class="line">   &#125;</span><br><span class="line">  shouldComponentUpdate(nextStates)&#123; <span class="comment">// 应该使用这个方法，否则无论state是否有变化都将会导致组件 重新渲染</span></span><br><span class="line">    <span class="keyword">if</span>(nextStates.someThings === <span class="keyword">this</span>.state.someThings)&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">  &#125; &#125;</span><br><span class="line">  handleClick = <span class="function"><span class="params">()</span> =&gt;</span> &#123; <span class="comment">// 虽然调用了setState ，但state并无变化 </span></span><br><span class="line">    <span class="keyword">const</span> preSomeThings = <span class="keyword">this</span>.state.someThings</span><br><span class="line">    <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">      someThings: preSomeThings</span><br><span class="line">  	&#125;) &#125;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">onClick</span> = <span class="string">&#123;this.handleClick&#125;</span>&gt;</span>&#123;this.state.someThings&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此阶段分为<code>componentWillReceiveProps，shouldComponentUpdate， componentWillUpdate，render，componentDidUpdate</code></p>
+<h5 id="componentWillReceiveProps-nextProps"><a href="#componentWillReceiveProps-nextProps" class="headerlink" title="componentWillReceiveProps(nextProps)"></a>componentWillReceiveProps(nextProps)</h5><p>此方法只调用于props引起的组件更新过程中，参数nextProps是父组件传给当前组件的新props。但父组件render 方法的调用不能保证重传给当前组件的props是有变化的，所以在此方法中根据nextProps和this.props来查明重传 的props是否改变，以及如果改变了要执行啥，比如根据新的props调用this.setState出发当前组件的重新render </p>
+<h5 id="shouldComponentUpdate-nextProps-nextState"><a href="#shouldComponentUpdate-nextProps-nextState" class="headerlink" title="shouldComponentUpdate(nextProps, nextState)"></a>shouldComponentUpdate(nextProps, nextState)</h5><p>此方法通过比较nextProps，nextState及当前组件的this.props，this.state，返回true时当前组件将继续执行更新 </p>
+<p>过程，返回false则当前组件更新停止，以此可用来减少组件的不必要渲染，优化组件性能。 </p>
+<p>这边也可以看出，就算componentWillReceiveProps()中执行了this.setState，更新了state，但在render前 (如shouldComponentUpdate，componentWillUpdate)，this.state依然指向更新前的state，不然nextState 及当前组件的this.state的对比就一直是true了。 </p>
+<h5 id="componentWillUpdate-nextProps-nextState"><a href="#componentWillUpdate-nextProps-nextState" class="headerlink" title="componentWillUpdate(nextProps, nextState)"></a>componentWillUpdate(nextProps, nextState)</h5><p>此方法在调用render方法前执行，在这边可执行一些组件更新发生前的工作，一般较少用。 </p>
+<h5 id="render"><a href="#render" class="headerlink" title="render"></a>render</h5><p>render方法在上文讲过，这边只是重新调用。 </p>
+<h5 id="componentDidUpdate-prevProps-prevState"><a href="#componentDidUpdate-prevProps-prevState" class="headerlink" title="componentDidUpdate(prevProps, prevState)"></a>componentDidUpdate(prevProps, prevState)</h5><p>此方法在组件更新后被调用，可以操作组件更新的DOM，prevProps和prevState这两个参数指的是组件更新前的 props和state </p>
+<h3 id="销毁阶段"><a href="#销毁阶段" class="headerlink" title="销毁阶段"></a>销毁阶段</h3><p>组件销毁，可以做一些清除工作，如清除计时器，删除手动创建的组件以免引起内存泄漏此阶段只有一个钩子函数<code>ComponentWillUnMount</code></p>
+<h2 id="React-16-4"><a href="#React-16-4" class="headerlink" title="React 16.4"></a>React 16.4</h2><p><img src="./images/image-20200315102407962.png" alt="image-20200315102407962"></p>
+<h3 id="变更原由"><a href="#变更原由" class="headerlink" title="变更原由"></a>变更原由</h3><p>原来(React v16.0前)的生命周期在React v16推出的<strong>Fiber</strong>之后就不合适了，因为如果要开启<code>async rendering</code>，<br>在render函数之前的所有函数都有可能被执行多次 ,用一个静态函数<code>getDerivedStateFromProps</code>来取代其他在render函数之前的 所有函数(<code>componentWillMount，componentWillReceiveProps，componentWillUpdate</code>)，也就是强制开发者在 render之前只做无副作用的操作，而且能做的操作局限在根据props和state决定新的state。<br>所以<code>React16</code>新的生命周期弃用了 <code>componentWillMount、componentWillReceivePorps，componentWillUpdate</code>新增了 <code>getDerivedStateFromProps、getSnapshotBeforeUpdate</code>来代替弃用的三个钩子函数。</p>
+<h3 id="初始化阶段-1"><a href="#初始化阶段-1" class="headerlink" title="初始化阶段"></a>初始化阶段</h3><ul>
+<li><p><code>constructor</code> 构造函数</p>
+</li>
+<li><p><code>getDefaultProps</code> <code>props</code>默认值</p>
+</li>
+<li><p><code>getInitialState</code> <code>state</code>默认值</p>
+</li>
+</ul>
+<h3 id="挂载阶段-1"><a href="#挂载阶段-1" class="headerlink" title="挂载阶段"></a>挂载阶段</h3><ul>
+<li><code>static getDerivedStateFromProps(props,state)</code></li>
+<li><code>render</code></li>
+<li><code>componentDidMount</code></li>
+</ul>
+<blockquote>
+<p><code>getDerivedStateFromProps</code>：组件每次被 <code>rerender</code>的时候，包括在组件构建之后(虚拟 <code>dom</code>之后，实际 <code>dom</code>挂载之前)，每次获取新的 <code>props</code>或 <code>state</code>之后；每次接收新的props之后都会返回一个对象作为新的 <code>state</code>，返回null则说明不需要更新 <code>state</code>；配合 <code>componentDidUpdate</code>，可以覆盖 <code>componentWillReceiveProps</code>的所有用法</p>
+</blockquote>
+<h3 id="更新阶段-1"><a href="#更新阶段-1" class="headerlink" title="更新阶段"></a>更新阶段</h3><ul>
+<li><code>static getDerivedStateFromProps(props,state)</code></li>
+<li><code>shouldComponentUpdate</code></li>
+<li><code>render</code></li>
+<li><code>getSnapshotBeforeUpdate(prevProps,prevState)</code><ul>
+<li><code>componentDidUpdate</code></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><code>getSnapshotBeforeUpdate</code>：触发时间: <code>update</code>发生的时候，在 <code>render</code>之后，在组件 <code>dom</code>渲染之前；返回一个值，作为 <code>componentDidUpdate</code>的第三个参数；配合 <code>componentDidUpdate</code>, 可以覆盖 <code>componentWillUpdate</code>的所有用法, 它使您的组件可以在可 能更改之前从DOM捕获一些信息(例如滚动位置)。此生命周期返回的任何值都将作为参数传递给 componentDidUpdate()。 </p>
+</blockquote>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ScrollingList</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line"> 	<span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">    <span class="keyword">super</span>(props);</span><br><span class="line">    <span class="keyword">this</span>.listRef = React.createRef();</span><br><span class="line">  &#125;</span><br><span class="line">  getSnapshotBeforeUpdate(prevProps, prevState) &#123; <span class="comment">//我们是否要添加新的 items 到列表?</span></span><br><span class="line">  <span class="comment">// 捕捉滚动位置，以便我们可以稍后调整滚动.</span></span><br><span class="line">  <span class="keyword">if</span> (prevProps.list.length &lt; <span class="keyword">this</span>.props.list.length) &#123;</span><br><span class="line">        <span class="keyword">const</span> list = <span class="keyword">this</span>.listRef.current;</span><br><span class="line">        <span class="keyword">return</span> list.scrollHeight - list.scrollTop;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  componentDidUpdate(prevProps, prevState, snapshot) &#123; <span class="comment">//如果我们有snapshot值, 我们已经添加了 新的items.</span></span><br><span class="line">  <span class="comment">// 调整滚动以至于这些新的items 不会将旧items推出视图。</span></span><br><span class="line">  <span class="comment">// (这边的snapshot是 getSnapshotBeforeUpdate方法的返回值) </span></span><br><span class="line">    <span class="keyword">if</span> (snapshot !== <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> list = <span class="keyword">this</span>.listRef.current;</span><br><span class="line">        list.scrollTop = list.scrollHeight - snapshot;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div ref=&#123;<span class="keyword">this</span>.listRef&#125;&gt;&#123;<span class="comment">/* ...contents... */</span>&#125;&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="卸载阶段"><a href="#卸载阶段" class="headerlink" title="卸载阶段"></a>卸载阶段</h3><ul>
+<li><code>componentWillUnmount</code></li>
+</ul>
+<h3 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h3><ul>
+<li><code>componentDidCatch</code></li>
+</ul>
+<p><strong>注意</strong>：<code>React16</code>并没有删除这三个钩子函数，但是不能和新增的钩子函数混用， <code>React17</code>将会删除这三个钩子函数，新增了对错误的处理（ <code>componentDidCatch</code>）</p>
 
       
     </div>
@@ -394,8 +475,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/11/10/node/网络基础/" rel="next" title="网络基础">
-                <i class="fa fa-chevron-left"></i> 网络基础
+              <a href="/2019/11/10/react/React中的表单/" rel="next" title="React中的表单">
+                <i class="fa fa-chevron-left"></i> React中的表单
               </a>
             
           </div>
@@ -404,8 +485,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/11/10/react/React中的表单/" rel="prev" title="React中的表单">
-                React中的表单 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/11/18/node/跨域/" rel="prev" title="跨域">
+                跨域 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -458,8 +539,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -474,7 +564,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -485,7 +575,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -496,7 +586,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -519,6 +609,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#React-15"><span class="nav-number">1.</span> <span class="nav-text">React 15</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化阶段"><span class="nav-number">1.1.</span> <span class="nav-text">初始化阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#挂载阶段"><span class="nav-number">1.2.</span> <span class="nav-text">挂载阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ComponentWillMount"><span class="nav-number">1.2.1.</span> <span class="nav-text">ComponentWillMount</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Render"><span class="nav-number">1.2.2.</span> <span class="nav-text">Render</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ComponentDidMounted"><span class="nav-number">1.2.3.</span> <span class="nav-text">ComponentDidMounted</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新阶段"><span class="nav-number">1.3.</span> <span class="nav-text">更新阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#父组件重新渲染"><span class="nav-number">1.3.1.</span> <span class="nav-text">父组件重新渲染</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#组件本身触发setState"><span class="nav-number">1.3.2.</span> <span class="nav-text">组件本身触发setState</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#componentWillReceiveProps-nextProps"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">componentWillReceiveProps(nextProps)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#shouldComponentUpdate-nextProps-nextState"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">shouldComponentUpdate(nextProps, nextState)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#componentWillUpdate-nextProps-nextState"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">componentWillUpdate(nextProps, nextState)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#render"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">render</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#componentDidUpdate-prevProps-prevState"><span class="nav-number">1.3.2.5.</span> <span class="nav-text">componentDidUpdate(prevProps, prevState)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#销毁阶段"><span class="nav-number">1.4.</span> <span class="nav-text">销毁阶段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-16-4"><span class="nav-number">2.</span> <span class="nav-text">React 16.4</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#变更原由"><span class="nav-number">2.1.</span> <span class="nav-text">变更原由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化阶段-1"><span class="nav-number">2.2.</span> <span class="nav-text">初始化阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#挂载阶段-1"><span class="nav-number">2.3.</span> <span class="nav-text">挂载阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新阶段-1"><span class="nav-number">2.4.</span> <span class="nav-text">更新阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卸载阶段"><span class="nav-number">2.5.</span> <span class="nav-text">卸载阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#错误处理"><span class="nav-number">2.6.</span> <span class="nav-text">错误处理</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
