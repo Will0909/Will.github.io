@@ -304,7 +304,7 @@ function patchText(preVNode, nextVNode) {
 }
 ```
 
-####patchElement
+#### patchElement
 
 ```javascript
 function patchElement(preVNode, nextVNode, container) {

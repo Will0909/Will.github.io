@@ -169,7 +169,7 @@ this.setState({ index: this.state.index + 1 }, () => {
 
 推荐阅读：[由实际问题探究setState的执行机制](http://mp.weixin.qq.com/s?__biz=Mzg2NDAzMjE5NQ==&mid=2247483989&idx=1&sn=d78f889c6e1d7d57058c9c232b1a620e&chksm=ce6ec6f9f9194fef681c79ee869bf58d5413132c73496710b2eb32c859a2249a895c2ce8a7cd&scene=21#wechat_redirect)
 
-为什么有时连续多次setState只有一次生效？
+## 为什么有时连续多次setState只有一次生效？
 
 例如下面的代码，两次打印出的结果是相同的：
 
@@ -387,8 +387,16 @@ ReactElement.isValidElement = function (object) {  return typeof object === 'obj
 
 > 高阶组件（ `HOC`）是 `React`中的高级技术，用来重用组件逻辑。但高阶组件本身并不是 `ReactAPI`。它只是一种模式，这种模式是由 `React`自身的组合性质必然产生的。
 
-```
-function visible(WrappedComponent) {  return class extends Component {    render() {      const { visible, ...props } = this.props;      if (visible === false) return null;      return <WrappedComponent {...props} />;    }  }}
+```jsx
+function visible(WrappedComponent) {  
+    return class extends Component {    
+        render() {      
+            const { visible, ...props } = this.props;      
+            if (visible === false) return null;      
+            return <WrappedComponent {...props} />;    
+        }  
+    }
+}
 ```
 
 上面的代码就是一个 `HOC`的简单应用，函数接收一个组件作为参数，并返回一个新组件，新组建可以接收一个 `visible props`，根据 `visible`的值来判断是否渲染Visible。
@@ -401,8 +409,14 @@ function visible(WrappedComponent) {  return class extends Component {    render
 
 函数返回一个我们自己定义的组件，然后在 `render`中返回要包裹的组件，这样我们就可以代理所有传入的 `props`，并且决定如何渲染，实际上 ，这种方式生成的高阶组件就是原组件的父组件，上面的函数 `visible`就是一个 `HOC`属性代理的实现方式。
 
-```
-function proxyHOC(WrappedComponent) {  return class extends Component {    render() {      return <WrappedComponent {...this.props} />;    }  }}
+```jsx
+function proxyHOC(WrappedComponent) {  
+    return class extends Component {    
+        render() {      
+            return <WrappedComponent {...this.props} />;    
+        }  
+    }
+}
 ```
 
 对比原生组件增强的项：
@@ -416,8 +430,14 @@ function proxyHOC(WrappedComponent) {  return class extends Component {    rende
 
 返回一个组件，继承原组件，在 `render`中调用原组件的 `render`。由于继承了原组件，能通过this访问到原组件的 `生命周期、props、state、render`等，相比属性代理它能操作更多的属性。
 
-```
-function inheritHOC(WrappedComponent) {  return class extends WrappedComponent {    render() {      return super.render();    }  }}
+```jsx
+function inheritHOC(WrappedComponent) {  
+    return class extends WrappedComponent {    
+        render() {      
+            return super.render();    
+        }  
+    }
+}
 ```
 
 对比原生组件增强的项：
