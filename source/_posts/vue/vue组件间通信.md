@@ -133,7 +133,7 @@ inject: ['foo'] // 通过数组取出
 
 #### 后代 => 祖先
 
-一层一层网上传递，相当于多个子传父
+一层一层往上传递，相当于多个子传父
 
 ```js
 // 定义一个dispatch方法，指定要派发事件名称和数据 
@@ -141,8 +141,8 @@ function dispatch(eventName, data) {
 	let parent = this.$parent
 	// 只要还存在父元素就继续往上查找
   while (parent) {
-	// 父元素用$emit触发 
-    parent.$emit(eventName,data) // 递归查找父元素
+		// 父元素用$emit触发 
+    	parent.$emit(eventName,data) // 递归查找父元素
 		parent = parent.$parent
 	} 
 }
